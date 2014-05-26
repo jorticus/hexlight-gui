@@ -1,0 +1,80 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:RGB"
+        xmlns:controls="clr-namespace:RGB.WpfControls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Properties="clr-namespace:RGB.Properties" mc:Ignorable="d" x:Name="window" x:Class="RGB.MainWindow"
+        Title="RGB Control" Height="234.333" Width="441.667">
+    <Window.Resources>
+        <local:ViewModel x:Key="ViewModel"/>
+        <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
+    </Window.Resources>
+    <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}" SnapsToDevicePixels="True">
+        <Rectangle Height="64" Margin="0,10,10,0" VerticalAlignment="Top" Opacity="0.995" Stroke="#19AEAEAE" HorizontalAlignment="Right" Width="71" Effect="{DynamicResource SubtleDropShadow}">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="{Binding SystemColor}"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,22,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0"/>
+                    <GradientStop Color="Red" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,46,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0"/>
+                    <GradientStop Color="#FF73E305" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,69,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0"/>
+                    <GradientStop Color="#FF3244FF" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Slider x:Name="tbRed" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Red}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
+        <Slider x:Name="tbGreen" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Green}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
+        <Slider x:Name="tbBlue" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Blue}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,113,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0" Color="Red"/>
+                    <GradientStop Color="Red" Offset="1"/>
+                    <GradientStop Color="Yellow" Offset="0.17"/>
+                    <GradientStop Color="Lime" Offset="0.33"/>
+                    <GradientStop Color="Cyan" Offset="0.5"/>
+                    <GradientStop Color="Blue" Offset="0.67"/>
+                    <GradientStop Color="Magenta" Offset="0.83"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Slider x:Name="tbHue" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="120" Maximum="360" LargeChange="0.1" Value="{Binding Hue}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,136,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0"/>
+                    <GradientStop Color="{Binding HsvColor}" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Slider x:Name="tbSaturation" HorizontalAlignment="Left" Margin="10,123,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Saturation}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
+        <Rectangle HorizontalAlignment="Left" Height="8" Margin="15,177,0,0" VerticalAlignment="Top" Width="110" Stroke="#33000000">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Offset="0.35" Color="#FFFFFFFB"/>
+                    <GradientStop Color="#FFFF9329"/>
+                    <GradientStop Color="#FF409CFF" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Slider x:Name="tbTemperature" HorizontalAlignment="Left" Margin="10,164,0,0" VerticalAlignment="Top" Width="120" Maximum="12000" LargeChange="1000" Value="{Binding Temperature}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Minimum="2000" AutoToolTipPlacement="BottomRight" SmallChange="100" ToolTip=""/>
+        <controls:HSVSelector Margin="152,10,0,0" HorizontalAlignment="Left" Width="176" Height="172" VerticalAlignment="Top" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" Hue="{Binding Hue}" Saturation="{Binding Saturation}"/>
+    </Grid>
+</Window>

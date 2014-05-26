@@ -1,0 +1,16 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:WpfControls="clr-namespace:RGB.WpfControls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:RGB" mc:Ignorable="d" x:Class="RGB.PopupDial" d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}"
+        Title="PopupDial" Height="128" Width="163" AllowsTransparency="True" WindowStyle="None" Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" Effect="{DynamicResource FormDropShadow}" Deactivated="Window_Deactivated" Visibility="Visible" Activated="Window_Activated" Closed="Window_Closed">
+    <Window.Resources>
+        <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
+        <DropShadowEffect x:Key="FormDropShadow" Opacity="0.4" BlurRadius="16"/>
+    </Window.Resources>
+    <Grid>
+        <Rectangle HorizontalAlignment="Left" Height="90" Margin="116,19,0,0" StrokeThickness="5" VerticalAlignment="Top" Width="24" Fill="White" RadiusX="2" RadiusY="2"/>
+        <Slider Margin="0,22,26,22" Orientation="Vertical" HorizontalAlignment="Right" Width="18" Maximum="1" LargeChange="0.1" SmallChange="0.01" Value="{Binding Brightness}"/>
+        <WpfControls:HSVSelector x:Name="selector" SnapsToDevicePixels="False" Margin="10,10,0,10" ThumbSize="20" Hue="{Binding Hue}" Saturation="{Binding Saturation}" HorizontalAlignment="Left" Width="112"/>
+
+    </Grid>
+</Window>
