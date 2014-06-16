@@ -9,10 +9,10 @@
       <Value Profile="(Default)">1234</Value>
     </Setting>
     <Setting Name="Protocol" Type="System.String" Scope="User">
-      <Value Profile="(Default)">tcp</Value>
+      <Value Profile="(Default)">hexrgb</Value>
     </Setting>
     <Setting Name="ComPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM1</Value>
+      <Value Profile="(Default)">COM31</Value>
     </Setting>
     <Setting Name="ComBaud" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9600</Value>

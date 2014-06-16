@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:RGB"
         xmlns:controls="clr-namespace:RGB.WpfControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Properties="clr-namespace:RGB.Properties" mc:Ignorable="d" x:Name="window" x:Class="RGB.MainWindow"
-        Title="RGB Control" Height="234.333" Width="441.667">
+        Title="RGB Control" Height="286.333" Width="441.667">
     <Window.Resources>
         <local:ViewModel x:Key="ViewModel"/>
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
@@ -76,5 +76,6 @@
         </Rectangle>
         <Slider x:Name="tbTemperature" HorizontalAlignment="Left" Margin="10,164,0,0" VerticalAlignment="Top" Width="120" Maximum="12000" LargeChange="1000" Value="{Binding Temperature}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Minimum="2000" AutoToolTipPlacement="BottomRight" SmallChange="100" ToolTip=""/>
         <controls:HSVSelector Margin="152,10,0,0" HorizontalAlignment="Left" Width="176" Height="172" VerticalAlignment="Top" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" Hue="{Binding Hue}" Saturation="{Binding Saturation}"/>
+        <Slider x:Name="tbBrightness" HorizontalAlignment="Left" Margin="10,207,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Brightness}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
     </Grid>
 </Window>

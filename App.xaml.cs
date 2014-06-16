@@ -19,6 +19,7 @@ namespace RGB
     /// </summary>
     public partial class App : Application
     {
+        public float brightness;
         public RGBController controller;
         public RGBColor color;
         public HSVColor hsvColor;
@@ -26,7 +27,7 @@ namespace RGB
         public ViewModel viewModel;
 
         private static Timer updateTimer;
-        private const double UPDATE_INTERVAL = 1000.0 / 30.0;
+        private const double UPDATE_INTERVAL = 1000.0 / 60.0;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -46,6 +47,10 @@ namespace RGB
                     controller = new ArduinoController(Settings.Default.ComPort, Settings.Default.ComBaud);
                     break;
 
+                case "hexrgb":
+                    controller = new HexController(Settings.Default.ComPort, Settings.Default.ComBaud);
+                    break;
+
                 default:
                     throw new Exception(String.Format("Unknown protocol {0}", Settings.Default.Protocol));
 
@@ -54,6 +59,7 @@ namespace RGB
             //controller = new ArduinoController("COM1");
             //controller = new NetController("visc");
             controller.Color = Colors.Black;
+            controller.Brightness = 0.0f;
             //controller.FadeTo(ColorTemperature.Hot, 0.2);
 
             viewModel = new ViewModel();
@@ -69,12 +75,14 @@ namespace RGB
         void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             controller.Color = color;
+            controller.Brightness = brightness;
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             updateTimer.Enabled = false;
             controller.Color = Colors.Black;
+            controller.Brightness = 0.0f;
         }
 
     }

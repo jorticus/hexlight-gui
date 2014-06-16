@@ -158,7 +158,9 @@ namespace RGB
             // Apply brightness to the colour.
             // Note that RGB/HSV colour spaces can specify the brightness as well.
             // It is up to the end-user to limit user input, if necessary.
-            application.color = rgbColor * brightness;
+            //application.color = rgbColor * brightness;
+            application.color = rgbColor;
+            application.brightness = brightness;
 
             if (this.PropertyChanged != null)
             {

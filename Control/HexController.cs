@@ -9,7 +9,7 @@ using RGB.Util.ColorTypes;
 
 namespace RGB.Control
 {
-    public class ArduinoController : RGBController, IDisposable
+    public class HexController : RGBController, IDisposable
     {
         private const bool apply_cie = false;
 
@@ -39,15 +39,37 @@ namespace RGB.Control
             }
         }
 
-        private void Update()
-        {
-            RGBColor value = color * brightness;
-            RGBColor corrected = (apply_cie) ? CIE1931.CorrectRGB(value) : value;
-            byte[] packet = { (byte)'X', corrected.Rb, corrected.Gb, corrected.Bb };
-            serial.Write(packet, 0, 4);
+        private float limit(float val) {
+            if (val < 0.0f) return 0.0f;
+            if (val > 1.0f) return 1.0f;
+            return val;
         }
 
-        public ArduinoController(string port, int baud = 9600)
+        private void Update()
+        {
+
+            var rbytes = BitConverter.GetBytes((float)limit(color.r));
+            var gbytes = BitConverter.GetBytes((float)limit(color.g));
+            var bbytes = BitConverter.GetBytes((float)limit(color.b));
+            var wbytes = BitConverter.GetBytes(0.0f);               // White channel
+            var lbytes = BitConverter.GetBytes((float)limit(brightness));         // Luminance
+
+
+            List<byte> packet = new List<byte>();
+            packet.Add((byte)'H');
+            packet.Add(0); //padding
+            packet.Add(0); //padding
+            packet.Add(0); //padding
+            packet.AddRange(rbytes);
+            packet.AddRange(gbytes);
+            packet.AddRange(bbytes);
+            packet.AddRange(wbytes);
+            packet.AddRange(lbytes);
+
+            serial.Write(packet.ToArray(), 0, packet.Count);
+        }
+
+        public HexController(string port, int baud = 9600)
         {
             this.port = port;
             this.baud = baud;

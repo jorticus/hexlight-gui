@@ -49,7 +49,7 @@ namespace RGB.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("tcp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("hexrgb")]
         public string Protocol {
             get {
                 return ((string)(this["Protocol"]));
@@ -61,7 +61,7 @@ namespace RGB.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM31")]
         public string ComPort {
             get {
                 return ((string)(this["ComPort"]));

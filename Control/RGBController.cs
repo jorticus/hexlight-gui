@@ -22,6 +22,8 @@ namespace RGB.Control
         /// </summary>
         public abstract RGBColor Color { get; set; }
 
+        public abstract float Brightness { get; set; }
+
         /// <summary>
         /// If true, we're allowed to update the LEDs
         /// </summary>
