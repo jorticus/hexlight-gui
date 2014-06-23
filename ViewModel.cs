@@ -15,7 +15,7 @@ namespace RGB
         private RGBColor rgbColor;
         private HSVColor hsvColor;
         private CIEXYZColour xyzColor;
-        private CIExyYColor xyyColor;
+        private CIEXYYColor xyyColor;
         private bool luminanceCorrection = true;
 
         private ColorTemperature temperature;
@@ -129,7 +129,7 @@ namespace RGB
             }
         }
 
-        public float CieX
+        public double CieX
         {
             get { return xyzColor.X; }
             set
@@ -139,7 +139,7 @@ namespace RGB
                 this.ColorChanged();
             }
         }
-        public float CieY
+        public double CieY
         {
             get { return xyzColor.Y; }
             set
@@ -149,7 +149,7 @@ namespace RGB
                 this.ColorChanged();
             }
         }
-        public float CieZ
+        public double CieZ
         {
             get { return xyzColor.Z; }
             set
@@ -160,7 +160,7 @@ namespace RGB
             }
         }
 
-        public float CIExyY_x
+        public double CIExyY_x
         {
             get { return xyyColor.x; }
             set
@@ -170,7 +170,7 @@ namespace RGB
                 this.ColorChanged();
             }
         }
-        public float CIExyY_y
+        public double CIExyY_y
         {
             get { return xyyColor.y; }
             set
@@ -180,7 +180,7 @@ namespace RGB
                 this.ColorChanged();
             }
         }
-        public float CIExyY_Y
+        public double CIExyY_Y
         {
             get { return xyyColor.Y; }
             set
@@ -244,7 +244,8 @@ namespace RGB
         {
             rgbColor = temperature.ToRGB();
             hsvColor = rgbColor.ToHSV();
-            xyzColor = CIEXYZColour.FromRGB(rgbColor);
+            xyzColor = rgbColor;
+            xyyColor = xyzColor;
             //this.RgbChanged();
         }
 
