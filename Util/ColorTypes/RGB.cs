@@ -105,6 +105,15 @@ namespace RGB.Util.ColorTypes
             return Math.Max(r, Math.Max(g, b));
         }
 
+        /// <summary>
+        /// Returns the grayscale intensity of the RGB colour
+        /// (Colours with the same saturation appear as different intensities)
+        /// </summary>
+        public float GetIntensity()
+        {
+            return 0.2126f * r + 0.7152f * g + 0.0722f * b;
+        }
+
         public static implicit operator HSVColor(RGBColor rgb)
         {
             return rgb.ToHSV();

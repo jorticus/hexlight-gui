@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using RGB.Util;
 using RGB.Util.ColorTypes;
 
 namespace RGB
@@ -13,6 +14,10 @@ namespace RGB
     {
         private RGBColor rgbColor;
         private HSVColor hsvColor;
+        private CIEXYZColour xyzColor;
+        private CIExyYColor xyyColor;
+        private bool luminanceCorrection = true;
+
         private ColorTemperature temperature;
         private float brightness;
         
@@ -70,7 +75,7 @@ namespace RGB
             set
             {
                 hsvColor.hue = value;
-                hsvColor.value = 1.0f;
+                //hsvColor.value = 1.0f;
 
                 this.HsvChanged();
                 this.ColorChanged();
@@ -83,25 +88,24 @@ namespace RGB
             set
             {
                 hsvColor.sat = value;
-                hsvColor.value = 1.0f;
+                //hsvColor.value = 1.0f;
 
                 this.HsvChanged();
                 this.ColorChanged();
             }
         }
-        /*public float Value
+        public float Value
         {
             get { return hsvColor.value; }
             set
             {
                 //if (value != hsvColor.value)
-                {
-                    this.HsvChanged();
-                    this.ColorChanged();
-                }
                 hsvColor.value = value;
+
+                this.HsvChanged();
+                this.ColorChanged();
             }
-        }*/
+        }
 
         public float Temperature
         {
@@ -125,6 +129,77 @@ namespace RGB
             }
         }
 
+        public float CieX
+        {
+            get { return xyzColor.X; }
+            set
+            {
+                xyzColor.X = value;
+                this.CieXYZChanged();
+                this.ColorChanged();
+            }
+        }
+        public float CieY
+        {
+            get { return xyzColor.Y; }
+            set
+            {
+                xyzColor.Y = value;
+                this.CieXYZChanged();
+                this.ColorChanged();
+            }
+        }
+        public float CieZ
+        {
+            get { return xyzColor.Z; }
+            set
+            {
+                xyzColor.Z = value;
+                this.CieXYZChanged();
+                this.ColorChanged();
+            }
+        }
+
+        public float CIExyY_x
+        {
+            get { return xyyColor.x; }
+            set
+            {
+                xyyColor.x = value;
+                this.CiexyYChanged();
+                this.ColorChanged();
+            }
+        }
+        public float CIExyY_y
+        {
+            get { return xyyColor.y; }
+            set
+            {
+                xyyColor.y = value;
+                this.CiexyYChanged();
+                this.ColorChanged();
+            }
+        }
+        public float CIExyY_Y
+        {
+            get { return xyyColor.Y; }
+            set
+            {
+                xyyColor.Y = value;
+                this.CiexyYChanged();
+                this.ColorChanged();
+            }
+        }
+
+        public bool LuminanceCorrection
+        {
+            get { return luminanceCorrection; }
+            set
+            {
+                luminanceCorrection = value;
+                this.ColorChanged();
+            }
+        }
 
         public Color SystemColor { get { return application.color; } }
         public Color HsvColor { get { return new HSVColor(hsvColor.hue, 1.0f, 1.0f).ToRGB(); } }
@@ -138,18 +213,38 @@ namespace RGB
         private void RgbChanged()
         {
             hsvColor = rgbColor.ToHSV();
+            xyzColor = rgbColor;
+            xyyColor = xyzColor;
             //application.color = rgbColor;
         }
 
         private void HsvChanged()
         {
             rgbColor = hsvColor.ToRGB();
+            xyzColor = rgbColor;
+            xyyColor = xyzColor;
             //application.color = rgbColor;
+        }
+
+        private void CieXYZChanged()
+        {
+            rgbColor = xyzColor;
+            xyyColor = xyzColor;
+            hsvColor = rgbColor;
+        }
+
+        private void CiexyYChanged()
+        {
+            xyzColor = xyyColor;
+            rgbColor = xyzColor;
+            hsvColor = rgbColor;
         }
 
         private void TemperatureChanged()
         {
             rgbColor = temperature.ToRGB();
+            hsvColor = rgbColor.ToHSV();
+            xyzColor = CIEXYZColour.FromRGB(rgbColor);
             //this.RgbChanged();
         }
 
@@ -159,7 +254,7 @@ namespace RGB
             // Note that RGB/HSV colour spaces can specify the brightness as well.
             // It is up to the end-user to limit user input, if necessary.
             //application.color = rgbColor * brightness;
-            application.color = rgbColor;
+            application.color = (luminanceCorrection) ? CIE1931.CorrectRGB(rgbColor) : rgbColor;
             application.brightness = brightness;
 
             if (this.PropertyChanged != null)
@@ -171,6 +266,14 @@ namespace RGB
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Hue"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Saturation"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CieX"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CieY"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CieZ"));
+
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CIExyY_x"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CIExyY_y"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("CIExyY_Y"));
 
                 this.PropertyChanged(this, new PropertyChangedEventArgs("SystemColor"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("HsvColor"));

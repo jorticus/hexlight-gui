@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="RenderIcon.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Util\ColorTypes\CIEXYZ.cs" />
     <Compile Include="WinAPI.cs" />
     <Compile Include="WpfControls\HSVSelector.xaml.cs">
       <DependentUpon>HSVSelector.xaml</DependentUpon>

@@ -114,30 +114,33 @@ namespace RGB.WpfControls
 
         private void UpdateSelector()
         {
-            double cx = this.ActualWidth / 2.0;
-            double cy = this.ActualHeight / 2.0;
+            if (!double.IsNaN(this.Hue))
+            {
+                double cx = this.ActualWidth / 2.0;
+                double cy = this.ActualHeight / 2.0;
 
-            double radius = (wheel.ActualOuterRadius - wheel.ActualInnerRadius) * this.Saturation + wheel.ActualInnerRadius;
+                double radius = (wheel.ActualOuterRadius - wheel.ActualInnerRadius) * this.Saturation + wheel.ActualInnerRadius;
 
-            // Snap to middle of wheel when inside InnerRadius
-            if (radius < wheel.ActualInnerRadius + float.Epsilon)
-                radius = 0.0;
+                // Snap to middle of wheel when inside InnerRadius
+                if (radius < wheel.ActualInnerRadius + float.Epsilon)
+                    radius = 0.0;
 
-            double angle = this.Hue + 180.0f;
+                double angle = this.Hue + 180.0f;
 
-            double x = radius * Math.Sin(angle * Math.PI / 180.0);
-            double y = radius * Math.Cos(angle * Math.PI / 180.0);
+                double x = radius * Math.Sin(angle * Math.PI / 180.0);
+                double y = radius * Math.Cos(angle * Math.PI / 180.0);
 
-            double mx = cx + x - this.selector.ActualWidth / 2;
-            double my = cy + y - this.selector.ActualHeight / 2;
+                double mx = cx + x - this.selector.ActualWidth / 2;
+                double my = cy + y - this.selector.ActualHeight / 2;
 
-            hsv.hue = (float)Hue;
-            hsv.sat = (float)Saturation;
-            hsv.value = 1.0f;
+                hsv.hue = (float)Hue;
+                hsv.sat = (float)Saturation;
+                hsv.value = 1.0f;
 
-            this.selector.Margin = new Thickness(mx, my, 0, 0);
-            this.selector.Fill = new SolidColorBrush(hsv.ToRGB());
-            //this.selector.StrokeThickness = this.ThumbSize / 5.0;
+                this.selector.Margin = new Thickness(mx, my, 0, 0);
+                this.selector.Fill = new SolidColorBrush(hsv.ToRGB());
+                //this.selector.StrokeThickness = this.ThumbSize / 5.0;
+            }
         }
 
 

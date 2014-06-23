@@ -16,7 +16,7 @@ namespace RGB.Util
         /// <returns>Percieved intensity, between 0.0 and 1.0</returns>
         public static float LumToBrightness(float L)
         {
-            // See: http://en.wikipedia.org/wiki/CIELUV#The_reverse_transformation
+            // See: http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html#RTFToC2
             // (Yn is assumed to be 1.0)
             return (L <= 0.08f) ? (L / 9.033f) : (float)Math.Pow((L + 0.16f) / 1.16f, 3);
         }

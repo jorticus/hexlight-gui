@@ -8,8 +8,8 @@
         <DropShadowEffect x:Key="FormDropShadow" Opacity="0.4" BlurRadius="16"/>
     </Window.Resources>
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="90" Margin="116,19,0,0" StrokeThickness="5" VerticalAlignment="Top" Width="24" Fill="White" RadiusX="2" RadiusY="2"/>
-        <Slider Margin="0,22,26,22" Orientation="Vertical" HorizontalAlignment="Right" Width="18" Maximum="1" LargeChange="0.1" SmallChange="0.01" Value="{Binding Brightness}"/>
+        <Rectangle HorizontalAlignment="Left" Height="90" Margin="116,19,0,0" StrokeThickness="5" VerticalAlignment="Top" Width="27" Fill="White" RadiusX="2" RadiusY="2"/>
+        <Slider Margin="0,22,23,22" Orientation="Vertical" HorizontalAlignment="Right" Width="21" Maximum="1" LargeChange="0.1" SmallChange="0.01" Value="{Binding Brightness}"/>
         <WpfControls:HSVSelector x:Name="selector" SnapsToDevicePixels="False" Margin="10,10,0,10" ThumbSize="20" Hue="{Binding Hue}" Saturation="{Binding Saturation}" HorizontalAlignment="Left" Width="112"/>
 
     </Grid>
