@@ -77,9 +77,51 @@ namespace RGB.Util.ColorTypes
             return new RGBColor(r, g, b);
         }
 
+        public static HSVColor FromRGB(RGBColor rgb)
+        {
+            HSVColor hsv = new HSVColor();
+
+            float max = (float)Math.Max(rgb.r, Math.Max(rgb.g, rgb.b));
+            float min = (float)Math.Min(rgb.r, Math.Min(rgb.g, rgb.b));
+
+            hsv.value = max;
+
+            float delta = max - min;
+
+            if (max > float.Epsilon)
+            {
+                hsv.sat = delta / max;
+            }
+            else
+            {
+                // r = g = b = 0
+                hsv.sat = 0;
+                hsv.hue = float.NaN; // Undefined
+                return hsv;
+            }
+
+            if (rgb.r == max)
+                hsv.hue = (rgb.g - rgb.b) / delta;    // Between yellow and magenta
+            else if (rgb.g == max)
+                hsv.hue = 2 + (rgb.b - rgb.r) / delta; // Between cyan and yellow
+            else
+                hsv.hue = 4 + (rgb.r - rgb.g) / delta; // Between magenta and cyan
+
+            hsv.hue *= 60.0f; // degrees
+            if (hsv.hue < 0)
+                hsv.hue += 360;
+
+            return hsv;
+        }
+
         public static implicit operator RGBColor(HSVColor hsv)
         {
             return hsv.ToRGB();
+        }
+
+        public static implicit operator HSVColor(RGBColor rgb)
+        {
+            return HSVColor.FromRGB(rgb);
         }
     }
 }

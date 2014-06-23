@@ -57,42 +57,6 @@ namespace RGB.Util.ColorTypes
 
         #region Implicit Conversion
 
-        public HSVColor ToHSV()
-        {
-            float max = (float)Math.Max(r, Math.Max(g, b));
-            float min = (float)Math.Min(r, Math.Min(g, b));
-
-            HSVColor hsv = new HSVColor();
-            hsv.value = max;
-
-            float delta = max - min;
-
-            if (max != 0)
-            {
-                hsv.sat = delta / max;
-            }
-            else
-            {
-                // r = g = b = 0
-                hsv.sat = 0;
-                hsv.hue = float.NaN; // Undefined
-                return hsv;
-            }
-
-            if (this.r >= 1.0f)
-                hsv.hue = (this.g - this.b) / delta;    // Between yellow and magenta
-            else if (this.g >= 1.0f)
-                hsv.hue = 2 + (this.b - this.r) / delta; // Between cyan and yellow
-            else
-                hsv.hue = 4 + (this.r - this.g) / delta; // Between magenta and cyan
-
-            hsv.hue *= 60.0f; // degrees
-            if (hsv.hue < 0)
-                hsv.hue += 360;
-
-            return hsv;
-        }
-
         public float GetSaturation()
         {
             float max = (float)Math.Max(r, Math.Max(g, b));
@@ -112,11 +76,6 @@ namespace RGB.Util.ColorTypes
         public float GetIntensity()
         {
             return 0.2126f * r + 0.7152f * g + 0.0722f * b;
-        }
-
-        public static implicit operator HSVColor(RGBColor rgb)
-        {
-            return rgb.ToHSV();
         }
 
         public static implicit operator RGBColor(Color c)

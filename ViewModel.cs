@@ -212,7 +212,7 @@ namespace RGB
 
         private void RgbChanged()
         {
-            hsvColor = rgbColor.ToHSV();
+            hsvColor = (HSVColor)rgbColor;
             xyzColor = rgbColor;
             xyyColor = xyzColor;
             //application.color = rgbColor;
@@ -243,7 +243,7 @@ namespace RGB
         private void TemperatureChanged()
         {
             rgbColor = temperature.ToRGB();
-            hsvColor = rgbColor.ToHSV();
+            hsvColor = (HSVColor)rgbColor;
             xyzColor = rgbColor;
             xyyColor = xyzColor;
             //this.RgbChanged();
