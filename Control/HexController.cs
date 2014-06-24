@@ -47,10 +47,11 @@ namespace RGB.Control
 
         private void Update()
         {
+            RGBColor rgb = this.color;//= CIE1931.CorrectRGB(this.color);
 
-            var rbytes = BitConverter.GetBytes((float)limit(color.r));
-            var gbytes = BitConverter.GetBytes((float)limit(color.g));
-            var bbytes = BitConverter.GetBytes((float)limit(color.b));
+            var rbytes = BitConverter.GetBytes((float)limit(rgb.r));
+            var gbytes = BitConverter.GetBytes((float)limit(rgb.g));
+            var bbytes = BitConverter.GetBytes((float)limit(rgb.b));
             var wbytes = BitConverter.GetBytes(0.0f);               // White channel
             var lbytes = BitConverter.GetBytes((float)limit(brightness));         // Luminance
 

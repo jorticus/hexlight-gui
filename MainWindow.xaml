@@ -10,10 +10,10 @@
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
     </Window.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}" SnapsToDevicePixels="True">
-        <Label Content="CIE XYZ" HorizontalAlignment="Left" Margin="154,0,0,0" VerticalAlignment="Top"/>
+        <Label Content="CIE XYZ Tristimulus" HorizontalAlignment="Left" Margin="154,0,0,0" VerticalAlignment="Top"/>
 
-        <Label Content="RGB" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-        <Label Content="HSV" HorizontalAlignment="Left" Margin="15,94,0,0" VerticalAlignment="Top"/>
+        <Label Content="Linear RGB" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+        <Label Content="Linear HSV" HorizontalAlignment="Left" Margin="15,94,0,0" VerticalAlignment="Top"/>
         <Rectangle Height="64" Margin="0,10,10,0" VerticalAlignment="Top" Opacity="0.995" Stroke="#19AEAEAE" HorizontalAlignment="Right" Width="71" Effect="{DynamicResource SubtleDropShadow}">
             <Rectangle.Fill>
                 <SolidColorBrush Color="{Binding SystemColor}"/>
@@ -80,7 +80,7 @@
         </Rectangle>
         <Slider x:Name="tbValue" HorizontalAlignment="Left" Margin="10,161,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Value}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
         <Slider x:Name="tbTemperature" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Width="120" Maximum="12000" LargeChange="1000" Value="{Binding Temperature}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Minimum="2000" AutoToolTipPlacement="BottomRight" SmallChange="100" ToolTip=""/>
-        <controls:HSVSelector Margin="0,10,86,0" Height="172" VerticalAlignment="Top" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" Hue="{Binding Hue}" Saturation="{Binding Saturation}" HorizontalAlignment="Right" Width="176"/>
+        <controls:HSVSelector Margin="448,10,86,98" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" Hue="{Binding Hue}" Saturation="{Binding Saturation}"/>
         <Slider x:Name="tbBrightness" HorizontalAlignment="Left" Margin="10,245,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Brightness}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
         <Slider x:Name="tbCIEX" HorizontalAlignment="Left" Margin="154,20,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding CieX}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
         <Slider x:Name="tbCIEY" HorizontalAlignment="Left" Margin="154,43,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding CieY}" TickPlacement="BottomRight" Foreground="#00E5E5E5"/>
