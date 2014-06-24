@@ -8,12 +8,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 using RGB.Util.ColorTypes;
 
 namespace RGB.WpfControls
 {
     public class HSVWheel : Canvas
     {
+        WriteableBitmap bitmap;
+
         #region Dependency Properties
         public static DependencyProperty SegmentCountProperty = DependencyProperty.Register("SegmentCount", typeof(uint), typeof(HSVWheel), new UIPropertyMetadata((uint)0, OnPropertyChanged));
         public static DependencyProperty DialQualityProperty = DependencyProperty.Register("DialQuality", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)4.0, OnPropertyChanged));
@@ -93,84 +96,85 @@ namespace RGB.WpfControls
             DrawHsvDial(dc);
         }
 
+        protected struct rgbastruct
+        {
+            public byte r, g, b, a;
+
+            public rgbastruct(byte r, byte g, byte b, byte a)
+            {
+                this.a = a; this.r = r; this.g = g; this.b = b;
+            }
+        }
+
+        protected virtual rgbastruct ColourFunction(double r, double theta)
+        {
+            HSVColor hsv = new HSVColor((float)((theta + Math.PI) * 180.0 / Math.PI), (float)r, 1.0f);
+            RGBColor rgb = hsv.ToRGB();
+
+            return new rgbastruct(rgb.Rb, rgb.Gb, rgb.Bb, 255);
+        }
+
         protected void DrawHsvDial(DrawingContext drawingContext)
         {
-            //TODO: Optimise the following code by shifting calculations out and only call when properties are changed
-            HSVColor hsv = new HSVColor(0.0f, (float)OuterSaturation, 1.0f);
+            float cx = (float)this.ActualWidth / 2.0f;
+            float cy = (float)this.ActualHeight / 2.0f;
 
-            double cx = this.ActualWidth / 2.0;
-            double cy = this.ActualHeight / 2.0;
-
-            double outer_radius = Math.Min(cx, cy);
-            double inner_radius = outer_radius * InnerRadius;
+            float outer_radius = (float)Math.Min(cx, cy);
             ActualOuterRadius = outer_radius;
 
-            double outer_circumference = 2.0 * Math.PI * outer_radius;
+            //double outer_circumference = 2.0 * Math.PI * outer_radius;
 
-            // Automatically determine the number of segments to use, based on the circumference and quality factor
-            uint num_segments = SegmentCount;
-            if (num_segments == 0)
-                num_segments = (uint)Math.Round(outer_circumference / DialQuality);
+            int bmp_width = (int)this.ActualWidth;
+            int bmp_height = (int)this.ActualHeight;
 
-            //double line_thickness = Math.Ceiling(outer_circumference / (double)num_segments);
+            if (bmp_width <= 0 || bmp_height <= 0)
+                return;
 
-            // Determine the angle of each segment
-            double angle_delta = 360.0 / (double)num_segments;
-            double angle = -angle_delta/2;
+            bitmap = new WriteableBitmap(bmp_width, bmp_height, 96.0, 96.0, PixelFormats.Bgra32, null);
 
-            // Draw a white inner circle to prevent the center from being transparent
-            if (inner_radius > 0.0)
-                drawingContext.DrawEllipse(Brushes.White, null, new Point(cx, cy), inner_radius+1, inner_radius+1);
-
-            Point? last_point = null;
-            for (int i = 0; i < num_segments+1; i++)
+            bitmap.Lock();
+            unsafe
             {
-                hsv.hue = (float)angle + 180.0f;
-                double x = Math.Sin(angle_delta * Math.PI / 180.0);
-                double y = Math.Cos(angle_delta * Math.PI / 180.0);
+                int pBackBuffer = (int)bitmap.BackBuffer;
 
-                Point pt1 = new Point(cx + x * inner_radius, cy + y * inner_radius);
-                Point pt2 = new Point(cx + x * outer_radius, cy + y * outer_radius);
+                for (int y = 0; y < bmp_height; y++) {
+                    for (int x = 0; x < bmp_width; x++) {
+                        int color_data = 0;
+                        //double inner_radius = radius * InnerRadius;
 
-                //Point pt2b = new Point(cx + Math.Sin(-1 * Math.PI / 180.0) * outer_radius, cy + Math.Cos(-angle_delta * Math.PI / 180.0) * outer_radius);
+                        // Convert xy to normalized polar co-ordinates
+                        double dx = x - cx;
+                        double dy = y - cy;
+                        double pr = Math.Sqrt(dx * dx + dy * dy);
 
-                // Create a brush for this slice, with the required HSV colour
-                // NOTE: The gradient is an approximation to the Value channel of HSV, 
-                // so the resulting dial doesn't quite match a real HSV dial
-                LinearGradientBrush brush = new LinearGradientBrush(Colors.White, hsv.ToRGB(), new Point(0.49, InnerGradient), new Point(0.5, OuterGradient));
-                
-                //brush.RelativeTransform = new RotateTransform(-angle+angle_delta/2, 0.5, 0.5);
-                //RadialGradientBrush brush = new RadialGradientBrush(Colors.White, hsv.ToRGB());
-                //brush.Center = new Point(0.5, 0.9);
-                //brush.GradientOrigin = new Point(0.9, 0.5);
+                        // Only draw stuff within the circle
+                        if (pr <= outer_radius)
+                        {
+                            // Compute the colour for the given pixel using polar co-ordinates
+                            double pa = Math.Atan2(dx, dy);
+                            rgbastruct c = ColourFunction(pr / outer_radius, pa);
 
-                Pen pen = new Pen(brush, 1.0); // A thin pen fixes segment appearance
-                //drawingContext.DrawLine(pen, pt1, pt2);
-  
-                if (last_point.HasValue)
-                {
-                    
-                    // Create a wedge slice
-                    var figure = new PathFigure(pt1, new[] { 
-                        new LineSegment(last_point.Value, true),
-                        new LineSegment(pt2, true),
-                    }, true);
-                    var geometry = new PathGeometry(new[] { figure });
+                            // Anti-aliasing
+                            // This works by adjusting the alpha to the alias error between the outer radius (which is integer) 
+                            // and the computed radius, pr (which is float).
+                            double aadelta = pr - (outer_radius - 1.0);
+                            if (aadelta >= 0.0)
+                                c.a = (byte)(255 - aadelta * 255);
 
-                    //geometry.Transform = new RotateTransform(-angle, this.ActualWidth / 2.0, this.ActualHeight/2.0);
-                    //brush.Transform = geometry.Transform;// new RotateTransform(30, pt2.X, pt2.Y);
-                    
-                    // Transform each wedge by the required angle. 
-                    // This avoids having to mess around with gradient transforms, which is an absolute nightmare
-                    drawingContext.PushTransform(new RotateTransform(-angle, cx, cy));
-                    drawingContext.DrawGeometry(brush, pen, geometry);
-                    drawingContext.Pop();
+                            color_data = (c.a << 24) | (c.r << 16) | (c.g << 8) | (c.b << 0);
+                        }
+
+                        *((int*)pBackBuffer) = color_data;
+                        pBackBuffer += 4;
+                    }
                 }
-                //last_point = pt2;
-                last_point = new Point(cx, cy + outer_radius);
-
-                angle += angle_delta;
             }
+            bitmap.AddDirtyRect(new Int32Rect(0, 0, bmp_width, bmp_height)); // I like to get dirty
+            bitmap.Unlock();
+
+            
+            drawingContext.DrawImage(bitmap, new Rect(this.RenderSize));
+
         }
 
         #endregion
