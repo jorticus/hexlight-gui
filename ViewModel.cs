@@ -242,10 +242,10 @@ namespace RGB
 
         private void TemperatureChanged()
         {
-            rgbColor = temperature.ToRGB();
+            xyzColor = (CIEXYZColour)temperature;
+            xyyColor = (CIEXYYColor)xyzColor;
+            rgbColor = (RGBColor)xyzColor;
             hsvColor = (HSVColor)rgbColor;
-            xyzColor = rgbColor;
-            xyyColor = xyzColor;
             //this.RgbChanged();
         }
 

@@ -27,6 +27,9 @@ namespace RGB.Util.ColorTypes
 
         public RGBColor ToRGB()
         {
+            //DEPRECATED: RGB is not device-independant so is not good for specifying colour temperature.
+            // Use the XYZ colour space instead.
+
             float r, g, b;
 
             // Red
@@ -78,9 +81,58 @@ namespace RGB.Util.ColorTypes
             return new RGBColor(r, g, b);
         }
 
-        public static implicit operator RGBColor(ColorTemperature ct)
+
+        public CIEXYZColour ToXYZ()
+        {
+            // See http://en.wikipedia.org/wiki/Planckian_locus#Approximation
+
+            double xc = 0, yc = 0;
+            double T = this.k;
+            double M = 10e+3 / T;
+
+            if (T < 1667.0 || T > 25000.0) {
+                // Undefined
+                return new CIEXYZColour(double.NaN, double.NaN, double.NaN);
+            }
+
+            //TODO: This doesn't work properly, and produces out-of-gamut colours, 
+            // even though the blue temperatures should be completely within the gamut.
+            // Need to create an xyY plot for checking the values...
+
+            double arg1 = 1e9 / (T * T * T), arg2 = 1e6 / (T * T), arg3 = 1e3 / T;
+            if (T >= 1667 && T <= 4000)
+            {
+                xc = -0.2661239 * arg1 - 0.2343580 * arg2 + 0.8776956 * arg3 + 0.179910;
+            }
+            else if (T > 4000 && T <= 25000)
+            {
+                xc = -3.0258469 * arg1 + 2.1070379 * arg2 + 0.2226347 * arg3 + 0.240390;
+            }
+            double xc3 = xc * xc * xc, xc2 = xc * xc;
+            if (T >= 1667 && T <= 2222)
+            {
+                yc = -1.1063814 * xc3 - 1.34811020 * xc2 + 2.18555832 * xc - 0.20219683;
+            }
+            else if (T > 2222 && T <= 4000)
+            {
+                yc = -0.9549476 * xc3 - 1.37418593 * xc2 + 2.09137015 * xc - 0.16748867;
+            }
+            else if (T > 4000 && T <= 25000)
+            {
+                yc = +3.0817580 * xc3 - 5.87338670 * xc2 + 3.75112997 * xc - 0.37001483;
+            }
+
+            return new CIEXYYColor(xc, yc, 0.2);
+        }
+
+        /*public static implicit operator RGBColor(ColorTemperature ct)
         {
             return ct.ToRGB();
+        }*/
+
+        public static implicit operator CIEXYZColour(ColorTemperature ct)
+        {
+            return ct.ToXYZ();
         }
     }
 }
