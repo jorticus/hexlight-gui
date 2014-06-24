@@ -7,6 +7,26 @@ using System.Windows.Media;
 
 namespace RGB.Util.ColorTypes
 {
+    public struct RGBStruct
+    {
+        public byte r, g, b, a;
+
+        public RGBStruct(byte r, byte g, byte b, byte a = 255)
+        {
+            this.r = r; this.g = g; this.b = b; this.a = a;
+        }
+
+        public int ToARGB32()
+        {
+            return (a << 24) | (r << 16) | (g << 8) | (b << 0);
+        }
+
+        public int ToRGB32()
+        {
+            return (r << 16) | (g << 8) | (b << 0);
+        }
+    }
+
     public struct RGBColor
     {
         public float r, g, b;

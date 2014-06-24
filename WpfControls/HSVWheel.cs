@@ -96,22 +96,12 @@ namespace RGB.WpfControls
             DrawHsvDial(dc);
         }
 
-        protected struct rgbastruct
-        {
-            public byte r, g, b, a;
-
-            public rgbastruct(byte r, byte g, byte b, byte a)
-            {
-                this.a = a; this.r = r; this.g = g; this.b = b;
-            }
-        }
-
-        protected virtual rgbastruct ColourFunction(double r, double theta)
+        protected virtual RGBStruct ColourFunction(double r, double theta)
         {
             HSVColor hsv = new HSVColor((float)((theta + Math.PI) * 180.0 / Math.PI), (float)r, 1.0f);
             RGBColor rgb = hsv.ToRGB();
 
-            return new rgbastruct(rgb.Rb, rgb.Gb, rgb.Bb, 255);
+            return new RGBStruct(rgb.Rb, rgb.Gb, rgb.Bb, 255);
         }
 
         protected void DrawHsvDial(DrawingContext drawingContext)
@@ -152,7 +142,7 @@ namespace RGB.WpfControls
                         {
                             // Compute the colour for the given pixel using polar co-ordinates
                             double pa = Math.Atan2(dx, dy);
-                            rgbastruct c = ColourFunction(pr / outer_radius, pa);
+                            RGBStruct c = ColourFunction(pr / outer_radius, pa);
 
                             // Anti-aliasing
                             // This works by adjusting the alpha to the alias error between the outer radius (which is integer) 
@@ -161,7 +151,7 @@ namespace RGB.WpfControls
                             if (aadelta >= 0.0)
                                 c.a = (byte)(255 - aadelta * 255);
 
-                            color_data = (c.a << 24) | (c.r << 16) | (c.g << 8) | (c.b << 0);
+                            color_data = c.ToARGB32();
                         }
 
                         *((int*)pBackBuffer) = color_data;
