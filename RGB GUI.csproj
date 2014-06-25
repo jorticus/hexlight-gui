@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Control\HexController.cs" />
+    <Compile Include="Control\HLDCParser.cs" />
     <Compile Include="PopupDial.xaml.cs">
       <DependentUpon>PopupDial.xaml</DependentUpon>
     </Compile>
@@ -71,6 +72,9 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Util\ColorTypes\CIEXYZ.cs" />
     <Compile Include="WinAPI.cs" />
+    <Compile Include="WpfControls\CIEPlot.xaml.cs">
+      <DependentUpon>CIEPlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfControls\HSVSelector.xaml.cs">
       <DependentUpon>HSVSelector.xaml</DependentUpon>
     </Compile>
@@ -82,6 +86,10 @@
     <Compile Include="ViewModel.cs" />
     <Compile Include="WpfControls\HSVWheel.cs" />
     <Page Include="PopupDial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfControls\CIEPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

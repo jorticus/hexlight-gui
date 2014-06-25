@@ -73,6 +73,14 @@ namespace RGB.Util.ColorTypes
             if (b < 0.0f) b = 0.0f;
         }
 
+        public bool OutOfGamut
+        {
+            get
+            {
+                return (r < 0.0f || g < 0.0f || b < 0.0f || r > 1.0f || g > 1.0f || b > 1.0f);
+            }
+        }
+
         #endregion
 
         #region Implicit Conversion

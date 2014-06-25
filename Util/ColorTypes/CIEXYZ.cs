@@ -125,12 +125,12 @@ namespace RGB.Util.ColorTypes
 
         public static implicit operator RGBColor(CIEXYZColour xyz)
         {
-            return xyz.ToRGB(CIERGBDefinition.CIERGB);
+            return xyz.ToRGB(CIERGBDefinition.sRGB);
         }
 
         public static implicit operator CIEXYZColour(RGBColor rgb)
         {
-            return CIEXYZColour.FromRGB(rgb, CIERGBDefinition.CIERGB);
+            return CIEXYZColour.FromRGB(rgb, CIERGBDefinition.sRGB);
         }
 
         public static implicit operator Vector<double>(CIEXYZColour xyz)
