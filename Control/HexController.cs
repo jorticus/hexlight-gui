@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using RGB.Util;
@@ -18,6 +19,8 @@ namespace RGB.Control
         private string port;
         private int baud;
         private SerialPort serial;
+
+        public enum Mode { HostControl, Trig, Cycle, Audio };
 
         #region Protocol Command Defs
 
@@ -45,7 +48,7 @@ namespace RGB.Control
 #pragma warning disable 0169 // Field XYZ is never used
 #pragma warning disable 0649 // Field XYZ is never assigned to, and will always have its default value XX
 
-        private struct PWMStruct
+        public struct PWMStruct
         {
             public Int16 CH1;  // Yes, signed ints. range is 0-32767, to match fractional Q15 datatype.
             public Int16 CH2;
@@ -102,6 +105,144 @@ namespace RGB.Control
 
         #endregion
 
+        #region Protocol Handlers
+
+        /// <summary>
+        /// Read a complete frame from the serial device.
+        /// </summary>
+        private byte[] ReceiveFrame()
+        {
+            HLDCFramer framer = new HLDCFramer();
+            while (true)
+            {
+                serial.WriteTimeout = 1000;
+                int b = serial.ReadByte();
+                if ((b < 0) || (framer.ProcessByte((byte)b)))
+                    break;
+            }
+            return framer.FrameBytes;
+        }
+
+        /// <summary>
+        /// Send a command to the device
+        /// </summary>
+        /// <typeparam name="T">The struct to use for parameters</typeparam>
+        /// <param name="command">Command to execute</param>
+        /// <param name="payload">Command parameter data to send</param>
+        public void SendPacket<T>(byte command, T payload)
+        {
+            byte[] packet = HLDCProtocol.CreatePacket<T>(command, payload);
+            serial.Write(packet, 0, packet.Length);
+        }
+
+        public void SendPacket(byte command, byte[] payload=null)
+        {
+            byte[] packet = HLDCProtocol.CreatePacket(command, payload);
+            serial.Write(packet, 0, packet.Length);
+        }
+
+        /// <summary>
+        /// Wait for a reply from the device, after sending a command.
+        /// If the command is not what was expected, an exception is raised.
+        /// </summary>
+        /// <param name="expected_command">The command that is expected</param>
+        /// <returns>Raw payload bytes</returns>
+        public byte[] ReadReply(byte expected_command)
+        {
+            byte[] response = ReceiveFrame();
+            byte command;
+            byte[] payload;
+            HLDCProtocol.ParsePacket(response, out command, out payload);
+
+            if (command != expected_command)
+                throw new Exception("HLDC Protocol Error - Invalid reply");
+
+            return payload;
+        }
+
+        public T ReadReply<T>(byte expected_command)
+        {
+            byte[] response = ReceiveFrame();
+            byte command;
+            T payload;
+            HLDCProtocol.ParsePacket<T>(response, out command, out payload);
+
+            if (command != expected_command)
+                throw new Exception("HLDC Protocol Error - Invalid reply");
+
+            return payload;
+        }
+
+        #endregion
+
+        #region Protocol Implementation
+
+        public void PowerOn()
+        {
+            SendPacket(CMD_POWER_ON);
+            ReadReply(CMD_POWER_ON);
+        }
+
+        public void PowerOff()
+        {
+            SendPacket(CMD_POWER_OFF);
+            ReadReply(CMD_POWER_OFF);
+        }
+
+        public void SetMode(Mode mode)
+        {
+            SendPacket(CMD_SET_MODE, new byte[] { (byte)mode });
+            ReadReply(CMD_SET_MODE);
+        }
+
+        public void SetPWM(PWMStruct values)
+        {
+            SendPacket<PWMStruct>(CMD_SET_PWM, values);
+            ReadReply(CMD_SET_PWM);
+        }
+
+        // Not valid, because the PWM value isn't available for reading
+        /*public PWMStruct GetPWM()
+        {
+            SendPacket(CMD_GET_PWM);
+            return ReadReply<PWMStruct>(CMD_GET_PWM);
+        }*/
+
+        public void SetXYZ(CIEXYZColour xyz)
+        {
+            SendPacket<XYZStruct>(CMD_SET_XYZ, new XYZStruct
+            {
+                X = (float)xyz.X, Y = (float)xyz.Y, Z = (float)xyz.Z
+            });
+            ReadReply(CMD_SET_XYZ);
+        }
+
+        public CIEXYZColour GetXYZ()
+        {
+            SendPacket(CMD_GET_XYZ);
+            var xyz = ReadReply<XYZStruct>(CMD_GET_XYZ);
+            return new CIEXYZColour(xyz.X, xyz.Y, xyz.Z);
+        }
+
+        public void SetXYY(CIEXYYColor xyy)
+        {
+            SendPacket<XYYStruct>(CMD_SET_XYY, new XYYStruct
+            {
+                x = (float)xyy.x, y = (float)xyy.y, Y = (float)xyy.Y
+            });
+            ReadReply(CMD_SET_XYY);
+        }
+
+        public CIEXYYColor GetXYY()
+        {
+            SendPacket(CMD_GET_XYY);
+            var xyy = ReadReply<XYYStruct>(CMD_GET_XYY);
+            return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
+        }
+
+        #endregion
+
+
         private float limit(float val) {
             if (val < 0.0f) return 0.0f;
             if (val > 1.0f) return 1.0f;
@@ -118,24 +259,13 @@ namespace RGB.Control
         private void Update()
         {
             RGBColor rgb = this.color;//= CIE1931.CorrectRGB(this.color);
-
-            byte[] packet = HLDCParser.CreatePacket<PWMStruct>(0, new PWMStruct
+            SetPWM(new PWMStruct
             {
                 CH1 = FloatToInt16(rgb.r),
                 CH2 = FloatToInt16(rgb.g),
                 CH3 = FloatToInt16(rgb.b),
                 CH4 = 0
             });
-
-            //var packet = HLDCParser.CreatePacket(0x7E, new byte[] { });
-            /*foreach (var b in packet)
-                serial.Write(new byte[] { b }, 0, 1);*/
-            serial.Write(packet, 0, packet.Length);
-
-            byte[] buf = new byte[100];
-            serial.Read(buf, 0, buf.Length);
-            if (buf[0] != 0)
-                return;
         }
 
 

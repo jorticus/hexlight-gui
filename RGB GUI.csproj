@@ -71,6 +71,7 @@
     <Compile Include="RenderIcon.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Util\ColorTypes\CIEXYZ.cs" />
+    <Compile Include="Util\StructInterop.cs" />
     <Compile Include="WinAPI.cs" />
     <Compile Include="WpfControls\CIEPlot.xaml.cs">
       <DependentUpon>CIEPlot.xaml</DependentUpon>
