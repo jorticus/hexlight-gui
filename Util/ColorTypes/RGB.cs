@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace RGB.Util.ColorTypes
+namespace HexLight.Util.ColorTypes
 {
     public struct RGBStruct
     {

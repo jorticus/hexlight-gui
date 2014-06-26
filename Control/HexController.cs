@@ -5,10 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using RGB.Util;
-using RGB.Util.ColorTypes;
+using HexLight.Util;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.Control
+namespace HexLight.Control
 {
     public class HexController : RGBController, IDisposable
     {
@@ -149,7 +149,7 @@ namespace RGB.Control
         /// <returns>Raw payload bytes</returns>
         public byte[] ReadReply(byte expected_command)
         {
-            byte[] response = ReceiveFrame();
+            /*byte[] response = ReceiveFrame();
             byte command;
             byte[] payload;
             HLDCProtocol.ParsePacket(response, out command, out payload);
@@ -157,10 +157,11 @@ namespace RGB.Control
             if (command != expected_command)
                 throw new Exception("HLDC Protocol Error - Invalid reply");
 
-            return payload;
+            return payload;*/
+            return null;
         }
 
-        public T ReadReply<T>(byte expected_command)
+        /*public T ReadReply<T>(byte expected_command)
         {
             byte[] response = ReceiveFrame();
             byte command;
@@ -171,7 +172,7 @@ namespace RGB.Control
                 throw new Exception("HLDC Protocol Error - Invalid reply");
 
             return payload;
-        }
+        }*/
 
         #endregion
 
@@ -220,8 +221,9 @@ namespace RGB.Control
         public CIEXYZColour GetXYZ()
         {
             SendPacket(CMD_GET_XYZ);
-            var xyz = ReadReply<XYZStruct>(CMD_GET_XYZ);
-            return new CIEXYZColour(xyz.X, xyz.Y, xyz.Z);
+            //var xyz = ReadReply<XYZStruct>(CMD_GET_XYZ);
+            //return new CIEXYZColour(xyz.X, xyz.Y, xyz.Z);
+            return new CIEXYZColour();
         }
 
         public void SetXYY(CIEXYYColor xyy)
@@ -236,8 +238,9 @@ namespace RGB.Control
         public CIEXYYColor GetXYY()
         {
             SendPacket(CMD_GET_XYY);
-            var xyy = ReadReply<XYYStruct>(CMD_GET_XYY);
-            return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
+            //var xyy = ReadReply<XYYStruct>(CMD_GET_XYY);
+            //return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
+            return new CIEXYYColor();
         }
 
         #endregion
@@ -266,6 +269,7 @@ namespace RGB.Control
                 CH3 = FloatToInt16(rgb.b),
                 CH4 = 0
             });
+
         }
 
 

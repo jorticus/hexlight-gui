@@ -4,10 +4,10 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RGB.Util;
-using RGB.Util.ColorTypes;
+using HexLight.Util;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.Control
+namespace HexLight.Control
 {
     public class ArduinoController : RGBController, IDisposable
     {

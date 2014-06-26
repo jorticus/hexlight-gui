@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using RGB.Util;
-using RGB.Util.ColorTypes;
+using HexLight.Util;
+using HexLight.Util.ColorTypes;
 
-namespace RGB
+namespace HexLight
 {
     public class ViewModel : INotifyPropertyChanged
     {

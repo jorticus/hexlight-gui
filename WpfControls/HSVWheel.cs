@@ -9,9 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using RGB.Util.ColorTypes;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.WpfControls
+namespace HexLight.WpfControls
 {
     public class HSVWheel : Canvas
     {

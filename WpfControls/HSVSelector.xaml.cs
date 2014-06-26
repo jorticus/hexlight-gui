@@ -14,9 +14,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RGB.Util.ColorTypes;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.WpfControls
+namespace HexLight.WpfControls
 {
     /// <summary>
     /// Interaction logic for HSVSelector.xaml

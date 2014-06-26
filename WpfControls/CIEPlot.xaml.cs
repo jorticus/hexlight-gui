@@ -12,15 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RGB.Util.ColorTypes;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.WpfControls
+namespace HexLight.WpfControls
 {
     /// <summary>
     /// Interaction logic for CIEPlot.xaml
     /// </summary>
     public partial class CIEPlot : UserControl
     {
+        public CIERGBDefinition cieRgbDefinition = CIERGBDefinition.CIERGB;
+
         public CIEPlot()
         {
             InitializeComponent();

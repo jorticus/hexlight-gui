@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using RGB.Util.ColorTypes;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.Control
+namespace HexLight.Control
 {
     /// <summary>
     /// This defines the minimum required implementation for any RGB controller interface

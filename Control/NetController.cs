@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using RGB.Util;
-using RGB.Util.ColorTypes;
+using HexLight.Util;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.Control
+namespace HexLight.Control
 {
     public class NetController : RGBController
     {

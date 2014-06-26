@@ -6,13 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Timers;
-using RGB.Control;
-using RGB.Util;
-using RGB.Util.ColorTypes;
-using RGB.Properties;
+using HexLight.Control;
+using HexLight.Util;
+using HexLight.Util.ColorTypes;
+using HexLight.Properties;
 using System.Windows.Media;
 
-namespace RGB
+namespace HexLight
 {
     /// <summary>
     /// Interaction logic for App.xaml

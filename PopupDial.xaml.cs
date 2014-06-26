@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 //using Hardcodet.Wpf.TaskbarNotification;
 
-namespace RGB
+namespace HexLight
 {
     /// <summary>
     /// Interaction logic for PopupDial.xaml

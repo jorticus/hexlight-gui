@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RGB.Util.ColorTypes;
+using HexLight.Util.ColorTypes;
 
-namespace RGB.Util
+namespace HexLight.Util
 {
     class CIE1931
     {

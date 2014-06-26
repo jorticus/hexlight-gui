@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using RGB.Util;
+using HexLight.Util;
 
-namespace RGB.Control
+namespace HexLight.Control
 {
     /// <summary>
     /// High-Level Data Link Control Protocol (Or at least a subset of it)
@@ -244,7 +244,6 @@ namespace RGB.Control
                         {
                             state = State.waitingForSOF;
                             throw new Exception("HLDC Framer Error - Not enough bytes for frame");
-                            return true;
                         }
 
                         frameAvailable = true;

@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace RGB.Util.ColorTypes
+namespace HexLight.Util.ColorTypes
 {
     /// <summary>
     /// Defines the RGB primaries to use when converting XYZ to RGB colourspace.

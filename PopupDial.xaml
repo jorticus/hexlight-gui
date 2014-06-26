@@ -1,7 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:WpfControls="clr-namespace:RGB.WpfControls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:RGB" mc:Ignorable="d" x:Class="RGB.PopupDial" d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}"
+        xmlns:WpfControls="clr-namespace:HexLight.WpfControls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:HexLight" mc:Ignorable="d" x:Class="HexLight.PopupDial" d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}"
         Title="PopupDial" Height="128" Width="163" AllowsTransparency="True" WindowStyle="None" Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" Effect="{DynamicResource FormDropShadow}" Deactivated="Window_Deactivated" Visibility="Visible" Activated="Window_Activated" Closed="Window_Closed">
     <Window.Resources>
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>

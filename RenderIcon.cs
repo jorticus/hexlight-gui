@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using RGB.WpfControls;
+using HexLight.WpfControls;
 
-namespace RGB
+namespace HexLight
 {
     public class RenderIcon
     {

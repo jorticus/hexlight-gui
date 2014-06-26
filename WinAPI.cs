@@ -2,7 +2,7 @@
 using System.Drawing;
 using System;
 
-namespace RGB
+namespace HexLight
 {
     public class WinAPI
     {

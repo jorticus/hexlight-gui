@@ -12,11 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RGB.Control;
-using RGB.Util.ColorTypes;
-using RGB.WpfControls;
+using HexLight.Control;
+using HexLight.Util.ColorTypes;
+using HexLight.WpfControls;
 
-namespace RGB
+namespace HexLight
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
