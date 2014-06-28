@@ -106,7 +106,6 @@ namespace HexLight.Control
                 throw new Exception("Invalid data received");
 
             return payload;
-            return null;
         }
 
         protected override T ReadReply<T>(byte expected_command)
