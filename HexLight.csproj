@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -79,8 +79,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Control\HexController.cs" />
-    <Compile Include="Control\HLDCParser.cs" />
+    <Compile Include="Control\HexLight\HexControllerHID.cs" />
+    <Compile Include="Control\HexLight\HexController.cs" />
+    <Compile Include="WinAPI\SetupAPI.cs" />
+    <Compile Include="WinAPI\WinApiFile.cs" />
+    <Compile Include="Control\HexLight\HexControllerSerial.cs" />
+    <Compile Include="Control\HexLight\HLDCParser.cs" />
+    <Compile Include="HID\HID.cs" />
     <Compile Include="PopupDial.xaml.cs">
       <DependentUpon>PopupDial.xaml</DependentUpon>
     </Compile>
@@ -88,7 +93,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Util\ColorTypes\CIEXYZ.cs" />
     <Compile Include="Util\StructInterop.cs" />
-    <Compile Include="WinAPI.cs" />
+    <Compile Include="WinAPI\WinAPI.cs" />
     <Compile Include="WpfControls\CIEPlot.xaml.cs">
       <DependentUpon>CIEPlot.xaml</DependentUpon>
     </Compile>

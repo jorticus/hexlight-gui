@@ -8,6 +8,14 @@ using HexLight.Util;
 
 namespace HexLight.Control
 {
+
+    public class HLDCException : Exception {
+        public HLDCException() : base() { }
+        public HLDCException(string message) : base(message) { }
+        public HLDCException(string message, Exception innerException) : base(message, innerException) { }
+
+    }
+
     /// <summary>
     /// High-Level Data Link Control Protocol (Or at least a subset of it)
     /// http://en.wikipedia.org/wiki/High-Level_Data_Link_Control
@@ -235,7 +243,7 @@ namespace HexLight.Control
                         if (buffer.Count == HLDCProtocol.MAX_PACKET_LEN)
                         {
                             state = State.waitingForSOF;
-                            throw new Exception("HLDC Framer Error - No EOF found");
+                            throw new HLDCException("HLDC Framer Error - No EOF found");
                         }
                     }
                     else
@@ -243,7 +251,8 @@ namespace HexLight.Control
                         if (buffer.Count < HLDCProtocol.MIN_PACKET_LEN)
                         {
                             state = State.waitingForSOF;
-                            throw new Exception("HLDC Framer Error - Not enough bytes for frame");
+                            return true;
+                            //throw new HLDCException("HLDC Framer Error - Not enough bytes for frame");
                         }
 
                         frameAvailable = true;

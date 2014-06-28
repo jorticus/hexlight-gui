@@ -43,12 +43,17 @@ namespace HexLight
                     controller = new NetController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
                     break;
 
-                case "serial":
+                case "arduino":
                     controller = new ArduinoController(Settings.Default.ComPort, Settings.Default.ComBaud);
                     break;
 
-                case "hexrgb":
-                    controller = new HexController(Settings.Default.ComPort, Settings.Default.ComBaud);
+                case "hexlight-serial":
+                    controller = new HexControllerSerial(Settings.Default.ComPort, Settings.Default.ComBaud);
+                    break;
+
+                case "hexlight-hid":
+                case "hexlight":
+                    controller = new HexControllerHID(Settings.Default.DeviceID);
                     break;
 
                 default:
@@ -74,8 +79,16 @@ namespace HexLight
 
         void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+#if DEBUG
+            (sender as Timer).Stop();
+#endif
+
             controller.Color = color;
             controller.Brightness = brightness;
+
+#if DEBUG
+            (sender as Timer).Start();
+#endif
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

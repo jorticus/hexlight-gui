@@ -14,6 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 //using Hardcodet.Wpf.TaskbarNotification;
+using HexLight.WinAPI;
 
 namespace HexLight
 {
@@ -103,7 +104,7 @@ namespace HexLight
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            var rect = WinAPI.GetTrayRectangle();
+            var rect = WinAPI.WinAPI.GetTrayRectangle();
             this.Top = rect.Top - this.ActualHeight;
             this.Left = rect.Right - this.ActualWidth;
         }
