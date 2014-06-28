@@ -152,7 +152,8 @@ namespace HexLight.Control
         public void SetPWM(PWMStruct values)
         {
             SendPacket<PWMStruct>(CMD_SET_PWM, values);
-            ReadReply(CMD_SET_PWM);
+            //ReadReply(CMD_SET_PWM);
+            //TODO: Need to try and synchronize packets better
         }
 
         // Not valid, because the PWM value isn't available for reading

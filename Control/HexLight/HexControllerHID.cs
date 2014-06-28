@@ -44,8 +44,7 @@ namespace HexLight.Control
                 using (var rx = device.GetReadFile())
                 {
                     byte[] buffer = new byte[COMMAND_PACKET_SIZE];
-                    if (rx.Read(buffer, COMMAND_PACKET_SIZE) == 0)
-                        throw new Exception("No data received");
+                    rx.Read(buffer, COMMAND_PACKET_SIZE);
 
                     foreach (var b in buffer)
                     {
@@ -128,6 +127,9 @@ namespace HexLight.Control
             this.deviceID = deviceID;
             this.device = new HidDevice(deviceID);
             this.device.Scan();
+
+            // required when running outside visual studio for some reason???
+            //SendPacket(0x00);
 
             this.Connected = true;
         }

@@ -36,29 +36,39 @@ namespace HexLight
             RenderIcon.RenderToPng(48, 48, "48px.png", 0.55);
             RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
 
-            // Load settings
-            switch (Settings.Default.Protocol.ToLower())
+            try
             {
-                case "tcp":
-                    controller = new NetController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
-                    break;
 
-                case "arduino":
-                    controller = new ArduinoController(Settings.Default.ComPort, Settings.Default.ComBaud);
-                    break;
+                // Load settings
+                switch (Settings.Default.Protocol.ToLower())
+                {
+                    case "tcp":
+                        controller = new NetController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+                        break;
 
-                case "hexlight-serial":
-                    controller = new HexControllerSerial(Settings.Default.ComPort, Settings.Default.ComBaud);
-                    break;
+                    case "arduino":
+                        controller = new ArduinoController(Settings.Default.ComPort, Settings.Default.ComBaud);
+                        break;
 
-                case "hexlight-hid":
-                case "hexlight":
-                    controller = new HexControllerHID(Settings.Default.DeviceID);
-                    break;
+                    case "hexlight-serial":
+                        controller = new HexControllerSerial(Settings.Default.ComPort, Settings.Default.ComBaud);
+                        break;
 
-                default:
-                    throw new Exception(String.Format("Unknown protocol {0}", Settings.Default.Protocol));
+                    case "hexlight-hid":
+                    case "hexlight":
+                        controller = new HexControllerHID(Settings.Default.DeviceID);
+                        break;
 
+                    default:
+                        throw new Exception(String.Format("Unknown protocol {0}", Settings.Default.Protocol));
+
+                }
+
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Error connecting to device\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(1);
+                return;
             }
 
             //controller = new ArduinoController("COM1");
@@ -93,9 +103,14 @@ namespace HexLight
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            updateTimer.Enabled = false;
-            controller.Color = Colors.Black;
-            controller.Brightness = 0.0f;
+            if (updateTimer != null)
+                updateTimer.Enabled = false;
+
+            if (controller != null)
+            {
+                controller.Color = Colors.Black;
+                controller.Brightness = 0.0f;
+            }
         }
 
     }

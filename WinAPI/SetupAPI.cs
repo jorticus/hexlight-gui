@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexLight.WinAPI
+namespace ViscTronics.WinAPI
 {
     class SetupAPI
     {
@@ -17,7 +17,10 @@ namespace HexLight.WinAPI
         public const int DIGCF_PROFILE           = 0x00000008;
         public const int DIGCF_DEVICEINTERFACE   = 0x00000010;
 
+        public const int SPDRP_DEVICEDESC = 0x00000000;
         public const int SPDRP_HARDWAREID = 0x00000001;
+        public const int SPDRP_FRIENDLYNAME = 0x0000000C;
+        public const int SPDRP_LOCATION_INFORMATION = 0x0000000D;
 
         public const int ERROR_NO_MORE_ITEMS = 259;
 
@@ -165,6 +168,43 @@ namespace HexLight.WinAPI
            ref SP_DEVINFO_DATA deviceInfoData
         );
 
+        public static String SetupDiGetDeviceRegistryProperty(
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            uint Property
+        )
+        {
+            UInt32 dwRegType;
+            UInt32 dwRegSize;
+
+            SetupAPI.SetupDiGetDeviceRegistryProperty(DeviceInfoSet, ref DeviceInfoData, Property, out dwRegType, null, 0, out dwRegSize);
+            byte[] propertyValueBuffer = new byte[dwRegSize];
+            if (!SetupAPI.SetupDiGetDeviceRegistryProperty(DeviceInfoSet, ref DeviceInfoData, Property, out dwRegType, propertyValueBuffer, dwRegSize, out dwRegSize))
+                return null;
+
+            return System.Text.Encoding.Unicode.GetString(propertyValueBuffer);
+        }
+
+        [DllImport(@"setupapi.dll", SetLastError = true)]
+        public static extern bool SetupDiSetDeviceRegistryProperty(
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            uint Property,
+            byte[] PropertyBuffer,
+            uint PropertyBufferSize
+        );
+
+        public static bool SetupDiSetDeviceRegistryProperty(
+                        IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            uint Property,
+            String PropertyValue
+        )
+        {
+            //byte[] propertyValueBuffer = System.Text.Encoding.Unicode.GetBytes(PropertyValue);
+            byte[] propertyValueBuffer = System.Text.Encoding.ASCII.GetBytes(PropertyValue);
+            return SetupDiSetDeviceRegistryProperty(DeviceInfoSet, ref DeviceInfoData, Property, propertyValueBuffer, (uint)propertyValueBuffer.Length);
+        }
 
         #endregion
 

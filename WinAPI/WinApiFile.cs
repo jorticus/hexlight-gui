@@ -5,12 +5,22 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
-namespace HexLight.WinAPI
+namespace ViscTronics.WinAPI
 {
+    public class WinApiFileException : Exception
+    {
+        public WinApiFileException() { }
+        public WinApiFileException(string message) : base(message) { }
+        public WinApiFileException(string message, Exception innerException) : base(message, innerException) { }
+    }
+
     // Modified version of this http://buiba.blogspot.co.nz/2009/06/using-winapi-createfile-readfile.html
     public class WinApiFile : IDisposable
     {
+        private const int DEFAULT_TIMEOUT = 1000; //ms
+
         /* ---------------------------------------------------------
          * private members
          * ------------------------------------------------------ */
@@ -74,7 +84,7 @@ namespace HexLight.WinAPI
             CreationDisposition fCreationDisposition)
         {
             FileName = sFileName;
-            Open(fDesiredAccess, fShareMode, fCreationDisposition, 0);
+            Open(fDesiredAccess, fShareMode, fCreationDisposition, FlagsAndAttributes.FILE_FLAG_OVERLAPPED);
         }
 
 
@@ -101,7 +111,7 @@ namespace HexLight.WinAPI
             {
                 fShareMode = ShareMode.FILE_SHARE_NONE;
             }
-            Open(fDesiredAccess, fShareMode, fCreationDisposition, 0);
+            Open(fDesiredAccess, fShareMode, fCreationDisposition, FlagsAndAttributes.FILE_FLAG_OVERLAPPED);
         }
 
         public void Open(
@@ -169,23 +179,59 @@ namespace HexLight.WinAPI
          * Read and Write
          * ------------------------------------------------------ */
 
-        public uint Read(byte[] buffer, uint cbToRead)
+        public uint Read(byte[] buffer, uint cbToRead, int timeout = DEFAULT_TIMEOUT)
         {
-            // returns bytes read
             uint cbThatWereRead = 0;
-            if (!ReadFile(_hFile, buffer, cbToRead,
-             ref cbThatWereRead, IntPtr.Zero))
-                ThrowLastWin32Err();
+            OVERLAPPED overlapped = new OVERLAPPED();
+
+            if (!ReadFile(_hFile, buffer, cbToRead, IntPtr.Zero, ref overlapped))
+            {
+                if (Marshal.GetLastWin32Error() != ERROR_IO_PENDING)
+                    ThrowLastWin32Err();
+            }
+
+            // Wait for the operation to complete
+            int waitResult = WaitForSingleObject(_hFile, timeout);
+            if (waitResult != WAIT_OBJECT_0)
+            {
+                if (waitResult == WAIT_TIMEOUT)
+                {
+                    throw new WinApiFileException("Timeout while waiting for device");
+                }
+                else
+                {
+                    CancelIo(_hFile);
+                    ThrowLastWin32Err();
+                }
+            }
+            
             return cbThatWereRead;
         }
 
-        public uint Write(byte[] buffer, uint cbToWrite)
+        public uint Write(byte[] buffer, uint cbToWrite, int timeout = DEFAULT_TIMEOUT)
         {
-            // returns bytes read
             uint cbThatWereWritten = 0;
-            if (!WriteFile(_hFile, buffer, cbToWrite,
-             ref cbThatWereWritten, IntPtr.Zero))
-                ThrowLastWin32Err();
+            OVERLAPPED overlapped = new OVERLAPPED();
+
+            if (!WriteFile(_hFile, buffer, cbToWrite, IntPtr.Zero, ref overlapped))
+            {
+                if (Marshal.GetLastWin32Error() != ERROR_IO_PENDING)
+                    ThrowLastWin32Err();
+            }
+
+            // Wait for the operation to complete
+            int waitResult = WaitForSingleObject(_hFile, timeout);
+            if (waitResult != WAIT_OBJECT_0)
+            {
+                if (waitResult == WAIT_TIMEOUT)
+                {
+                    throw new WinApiFileException("Timeout while waiting for device");
+                } else {
+                    CancelIo(_hFile);
+                    ThrowLastWin32Err();
+                }
+            }
+
             return cbThatWereWritten;
         }
 
@@ -264,6 +310,15 @@ namespace HexLight.WinAPI
          * WINAPI STUFF
          * ------------------------------------------------------ */
 
+        [StructLayout(LayoutKind.Sequential, Pack = 8)]
+        public struct OVERLAPPED
+        {
+            private IntPtr InternalLow;
+            private IntPtr InternalHigh;
+            public long Offset;
+            public IntPtr EventHandle;
+        }
+
         private void ThrowLastWin32Err()
         {
             Marshal.ThrowExceptionForHR(
@@ -320,6 +375,13 @@ namespace HexLight.WinAPI
             FILE_FLAG_OPEN_NO_CALL = 0x100000
         }
 
+        private const uint WAIT_ABANDONED = 0x00000080;
+        private const uint WAIT_OBJECT_0 = 0x00000000;
+        private const uint WAIT_TIMEOUT = 0x00000102;
+        private const uint WAIT_FAILED = 0xFFFFFFFF;
+
+        private const uint ERROR_IO_PENDING = 997;
+
         public const uint INVALID_HANDLE_VALUE = 0xFFFFFFFF;
         public const uint INVALID_SET_FILE_POINTER = 0xFFFFFFFF;
         // Use interop to call the CreateFile function.
@@ -344,16 +406,16 @@ namespace HexLight.WinAPI
          SafeFileHandle hFile,
          Byte[] aBuffer,
          UInt32 cbToRead,
-         ref UInt32 cbThatWereRead,
-         IntPtr pOverlapped);
+         IntPtr cbThatWereRead,
+         ref OVERLAPPED pOverlapped);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern bool WriteFile(
          SafeFileHandle hFile,
          Byte[] aBuffer,
          UInt32 cbToWrite,
-         ref UInt32 cbThatWereWritten,
-         IntPtr pOverlapped);
+         IntPtr cbThatWereWritten,
+         ref OVERLAPPED pOverlapped);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern UInt32 SetFilePointer(
@@ -370,5 +432,17 @@ namespace HexLight.WinAPI
         internal static extern UInt32 GetFileSize(
          SafeFileHandle hFile,
          IntPtr pFileSizeHigh);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern Int32 WaitForSingleObject(SafeFileHandle Handle, Int32 Wait);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool GetOverlappedResult(SafeFileHandle hFile,
+           [In] ref OVERLAPPED lpOverlapped,
+           out uint lpNumberOfBytesTransferred, bool bWait);
+
+        [DllImport("kernel32.dll")]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool CancelIo(SafeFileHandle hFile);
     }
 }
