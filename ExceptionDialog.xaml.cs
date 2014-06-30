@@ -36,7 +36,9 @@ namespace HexLight
 
             if (ex != null)
             {
-                fm.messageLabel.Text += "\n\nException Details:\n" + ex.Message;
+                fm.messageLabel.Text += "\n\n" + ex.Message;
+
+                fm.detailsLabel.Text = "Exception Details:\n\n" + ex.ToString();
             }
 
             fm.Title = "HexLight Controller";
@@ -91,6 +93,25 @@ namespace HexLight
         {
             modalResult = ModalResult.Debug;
             Close();
+        }
+
+        private void Window_LayoutUpdated(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.MinWidth = this.ActualWidth;
+            this.MinHeight = this.ActualHeight;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            this.SizeToContent = System.Windows.SizeToContent.Height;
+            this.ResizeMode = System.Windows.ResizeMode.CanResizeWithGrip;
+            detailsScroller.Visibility = System.Windows.Visibility.Visible;
+            btnShowDetails.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }
