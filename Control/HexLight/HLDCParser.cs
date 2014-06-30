@@ -9,12 +9,64 @@ using HexLight.Util;
 namespace HexLight.Control
 {
 
+    #region Exceptions
     public class HLDCException : Exception {
         public HLDCException() : base() { }
         public HLDCException(string message) : base(message) { }
         public HLDCException(string message, Exception innerException) : base(message, innerException) { }
-
     }
+
+    public class HLDCProtocolException : HLDCException
+    {
+        public const byte ERROR_UNKNOWN = 1;
+        public const byte ERROR_PACKET_TOO_BIG = 2;
+        public const byte ERROR_PACKET_TOO_SMALL = 3;
+        public const byte ERROR_PAYLOAD_TOO_SMALL = 4;
+        public const byte ERROR_UNESCAPE_ERROR = 5;
+        public const byte ERROR_INVALID_CRC = 6;
+        public const byte ERROR_FORMING_RESPONSE_PACKET = 7;
+        public const byte ERROR_INVALID_COMMAND = 8;
+        public const byte ERROR_INVALID_PAYLOAD = 9;
+
+        public byte error_code;
+
+        public HLDCProtocolException(string message, byte code = 1) : base(message) { this.error_code = code; }
+
+        public static HLDCProtocolException FromCode(byte error_code)
+        {
+            string message = "Unknown Error";
+            switch (error_code)
+            {
+                case ERROR_PACKET_TOO_BIG:
+                    message = "Packet too big";
+                    break;
+                case ERROR_PACKET_TOO_SMALL:
+                    message = "Packet too small";
+                    break;
+                case ERROR_PAYLOAD_TOO_SMALL:
+                    message = "Payload too small";
+                    break;
+                case ERROR_UNESCAPE_ERROR:
+                    message = "Error parsing packet data";
+                    break;
+                case ERROR_INVALID_CRC:
+                    message = "Invalid CRC";
+                    break;
+                case ERROR_FORMING_RESPONSE_PACKET:
+                    message = "Error forming response packet";
+                    break;
+                case ERROR_INVALID_COMMAND:
+                    message = "Unsupported command";
+                    break;
+                case ERROR_INVALID_PAYLOAD:
+                    message = "Invalid payload data";
+                    break;
+            }
+            return new HLDCProtocolException(String.Format("Packet Error ({0})", message), error_code);
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// High-Level Data Link Control Protocol (Or at least a subset of it)
@@ -30,6 +82,8 @@ namespace HexLight.Control
         public const byte HLDC_FRAME_DELIMITER = 0x7E;
         public const byte HLDC_ESCAPE = 0x7D;
         public const byte HLDC_ESCAPE_MASK = 0x20;
+
+        public const byte CMD_ERROR = 0xFF;
 
         public static readonly int MAX_PACKET_LEN = 64;
         public static readonly int HEADER_SIZE = Marshal.SizeOf(typeof(HeaderStruct));
@@ -168,6 +222,15 @@ namespace HexLight.Control
 
             var footerBytes = new ArraySegment<byte>(packet, HEADER_SIZE + header.length, FOOTER_SIZE).ToArray();
             FooterStruct footer = StructInterop.ByteArrayToStruct<FooterStruct>(footerBytes);
+
+            // Detect protocol errors
+            if (header.command == CMD_ERROR)
+            {
+                if (payload != null && payload.Length > 0)
+                    throw HLDCProtocolException.FromCode(payload[0]);
+                else
+                    throw new HLDCException("HLDC Malformed Error Message");
+            }
 
             command = header.command;
         }

@@ -34,11 +34,13 @@ namespace HexLight
         public static bool ShowException(string message, Exception ex = null, ExceptionSeverity severity = ExceptionSeverity.Error)
         {
             var fm = new ExceptionDialog();
-            fm.messageLabel.Text = message;
+            fm.messageLabel.Text = (message != null) ? message : "";
 
             if (ex != null)
             {
-                fm.messageLabel.Text += "\n\n" + ex.Message;
+                if (message != null) fm.messageLabel.Text += "\n\n";
+                fm.messageLabel.Text += ex.Message;
+
                 fm.detailsLabel.Text = "Exception Details:\n\n" + ex.ToString();
             }
             else

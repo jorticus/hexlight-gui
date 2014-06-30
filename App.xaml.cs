@@ -60,7 +60,10 @@ namespace HexLight
                 if (e.Exception is System.Reflection.TargetInvocationException && e.Exception.InnerException != null)
                     ex = e.Exception.InnerException;
 
-                ExceptionDialog.ShowException("Error", ex, ExceptionSeverity.Unhandled);
+                if (ex is TimerException)
+                    ex = ex.InnerException;
+
+                ExceptionDialog.ShowException(null, ex, ExceptionSeverity.Unhandled);
 
                 // Re-enable timer if Ignoring the exception
                 if (ex is TimerException && (ex as TimerException).Timer.Enabled == false)
@@ -122,8 +125,8 @@ namespace HexLight
                 return;
             }
 
-            controller.Color = Colors.Black;
-            controller.Brightness = 0.0f;
+            //controller.Color = Colors.Black;
+            //controller.Brightness = 0.0f;
             //controller.FadeTo(ColorTemperature.Hot, 0.2);
             
             viewModel = new ViewModel();
@@ -162,8 +165,8 @@ namespace HexLight
 #endif
             try
             {
-                //controller.Color = color;
-                //controller.Brightness = brightness;
+                controller.Color = color;
+                controller.Brightness = brightness;
             }
             catch (Exception ex)
             {
