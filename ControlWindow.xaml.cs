@@ -19,22 +19,28 @@ using HexLight.WpfControls;
 namespace HexLight
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ControlWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ControlWindow : Window
     {
         public App application { get { return (App.Current as App); } }
         public RGBColor Color { get { return application.color; } set { application.color = value; } }
 
-        public MainWindow()
+        public ControlWindow(object viewModel = null)
         {
             InitializeComponent();
-            this.DataContext = application.viewModel;
+            this.DataContext = viewModel;
         }
 
         private void HSVSelector_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
     }
 }

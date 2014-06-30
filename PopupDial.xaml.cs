@@ -27,61 +27,20 @@ namespace HexLight
 
         public App application { get { return (App.Current as App); } }
 
-        private NotifyIcon trayIcon;
-        private bool ignoreClick = false; // Not yet implemented
-
         // Maybe I should implement form fade in/fade out in XAML?
         private Duration fadeInDuration = new Duration(TimeSpan.FromSeconds(0.1));
         private Duration fadeOutDuration = new Duration(TimeSpan.FromSeconds(0.3));
         private EasingFunctionBase fadeEasingFunction = new QuadraticEase() { EasingMode = EasingMode.EaseInOut };
 
-        public PopupDial()
+        public PopupDial(object viewModel = null)
         {
             InitializeComponent();
 
             this.ShowInTaskbar = false;
             this.Visibility = Visibility.Hidden;
-            this.DataContext = application.viewModel;
-
-           trayIcon = new NotifyIcon();
-            trayIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(
-                System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name);
-            trayIcon.Click += trayIcon_Click;
-            trayIcon.Visible = true;
-
-            trayIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new[] {
-                new System.Windows.Forms.MenuItem("Exit", trayIcon_Exit_Click)
-            });
-
+            this.DataContext = viewModel;
         }
 
-
-        void trayIcon_Exit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        void trayIcon_Click(object sender, EventArgs e)
-        {
-            
-            //TODO: Animate
-            if (!ignoreClick)
-            {
-                if (this.IsVisible)
-                {
-                    //this.Hide();
-                    this.FadeOut();
-                }
-                else
-                {
-                    this.FadeIn();
-                    //this.Show();
-                    //this.Activate();
-                }
-            }
-            ignoreClick = false;
-            return;
-        }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -111,10 +70,10 @@ namespace HexLight
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            trayIcon.Visible = false;
+            //trayIcon.Visible = false;
         }
 
-        private void FadeIn()
+        public void FadeIn()
         {
             this.Opacity = 0.0;
             this.Show();
@@ -126,7 +85,7 @@ namespace HexLight
             this.BeginAnimation(PopupDial.OpacityProperty, anim);
         }
 
-        private void FadeOut()
+        public void FadeOut()
         {
             var anim = new DoubleAnimation(1.0, 0.0, fadeOutDuration, FillBehavior.HoldEnd);
             anim.EasingFunction = fadeEasingFunction;
@@ -137,6 +96,12 @@ namespace HexLight
             };
 
             this.BeginAnimation(PopupDial.OpacityProperty, anim);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
     }
 }
