@@ -9,9 +9,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WinForms = System.Windows.Forms;
 
 namespace HexLight
 {
@@ -37,8 +39,12 @@ namespace HexLight
             if (ex != null)
             {
                 fm.messageLabel.Text += "\n\n" + ex.Message;
-
                 fm.detailsLabel.Text = "Exception Details:\n\n" + ex.ToString();
+            }
+            else
+            {
+                fm.detailsGrid.Visibility = Visibility.Hidden;
+                fm.btnShowDetails.Visibility = Visibility.Hidden;
             }
 
             fm.Title = "HexLight Controller";
@@ -112,10 +118,15 @@ namespace HexLight
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            this.SizeToContent = System.Windows.SizeToContent.Height;
+            //WindowInteropHelper windowInteropHelper = new WindowInteropHelper(this);
+            //WinForms.Screen screen = WinForms.Screen.FromHandle(windowInteropHelper.Handle);
+
+            this.SizeToContent = System.Windows.SizeToContent.Manual;
             this.ResizeMode = System.Windows.ResizeMode.CanResizeWithGrip;
             detailsScroller.Visibility = System.Windows.Visibility.Visible;
             btnShowDetails.Visibility = System.Windows.Visibility.Collapsed;
+
+            this.Height += 200;
         }
     }
 }

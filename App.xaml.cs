@@ -57,10 +57,10 @@ namespace HexLight
                 Exception ex = e.Exception;
 
                 // If exception occurred in another thread
-                if (e.Exception is System.Reflection.TargetInvocationException)
+                if (e.Exception is System.Reflection.TargetInvocationException && e.Exception.InnerException != null)
                     ex = e.Exception.InnerException;
 
-                ExceptionDialog.ShowException("Unhandled Exception", e.Exception.InnerException, ExceptionSeverity.Unhandled);
+                ExceptionDialog.ShowException("Error", ex, ExceptionSeverity.Unhandled);
 
                 // Re-enable timer if Ignoring the exception
                 if (ex is TimerException && (ex as TimerException).Timer.Enabled == false)
@@ -162,8 +162,8 @@ namespace HexLight
 #endif
             try
             {
-                controller.Color = color;
-                controller.Brightness = brightness;
+                //controller.Color = color;
+                //controller.Brightness = brightness;
             }
             catch (Exception ex)
             {
