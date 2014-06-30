@@ -42,33 +42,13 @@ namespace HexLight
 
         void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            ExceptionDialog.ShowException("Unhandled Exception", e.Exception.InnerException, ExceptionSeverity.Unhandled);
+            e.Handled = true;
+
             // If exception occurred in another thread
-            if (e.Exception is System.Reflection.TargetInvocationException)
-                ShowExceptionDialog(e.Exception.InnerException);
-            else
-            {
-                ShowExceptionDialog(e.Exception);
-                e.Handled = true;
-            }
+            //if (e.Exception is System.Reflection.TargetInvocationException)
         }
 
-        public void ShowExceptionDialog(Exception ex)
-        {
-            CriticalError("Unhandled Error", ex);
-        }
-        public void CriticalError(string message, Exception ex = null)
-        {
-            string msg = message;
-            if (ex != null)
-            {
-                msg += "\n\nException Details:\n" + ex.Message;
-                msg += "\n\n" + ex.StackTrace.Split('\n')[0].Trim();
-            }
-
-
-            MessageBox.Show(msg, "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Shutdown(1);
-        }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -76,6 +56,7 @@ namespace HexLight
             RenderIcon.RenderToPng(32, 32, "32px.png", 0.55);
             RenderIcon.RenderToPng(48, 48, "48px.png", 0.55);
             RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
+            RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
 
             try
             {
@@ -106,14 +87,14 @@ namespace HexLight
             }
             catch (Exception ex)
             {
-                CriticalError("Could not connect to the device. Is it plugged in?", ex);
-                Shutdown(1);
+                ExceptionDialog.ShowException("Could not connect to the device. Is it plugged in?", ex, severity: ExceptionSeverity.Critical);
                 return;
             }
 
             //controller = new ArduinoController("COM1");
             //controller = new NetController("visc");
             controller.Color = Colors.Black;
+            
             controller.Brightness = 0.0f;
             //controller.FadeTo(ColorTemperature.Hot, 0.2);
             
@@ -132,6 +113,7 @@ namespace HexLight
             ///// Tray Icon & Tray Menu /////
 
             trayIcon = new WinForms.NotifyIcon();
+            trayIcon.Text = "HexLight Controller";
             trayIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(
                 System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name);
             trayIcon.Click += trayIcon_Click;
@@ -145,27 +127,24 @@ namespace HexLight
 
         void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+#if DEBUG
+            (sender as Timer).Stop();
+#endif
             try
             {
+                controller.Color = color;
+                controller.Brightness = brightness;
+            }
+            catch (Exception ex)
+            {
+                // Pass the exception to the main thread
+                Application.Current.Dispatcher.Invoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new Action<Exception>((exc) => { throw exc; }), ex);
+            }
 #if DEBUG
-                (sender as Timer).Stop();
+            (sender as Timer).Start();
 #endif
-
-                    controller.Color = color;
-                    controller.Brightness = brightness;
-#if DEBUG
-                (sender as Timer).Start();
-#endif
-                }
-                catch (Exception ex)
-                {
-                    // Pass the exception to the main thread
-                    Application.Current.Dispatcher.Invoke(
-                        System.Windows.Threading.DispatcherPriority.Normal,
-                        new Action<Exception>((exc) => { throw exc; }), ex);
-
-                    (sender as Timer).Stop(); // Ensure the timer is stopped
-                }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
