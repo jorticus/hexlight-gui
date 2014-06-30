@@ -9,7 +9,7 @@ using HexLight.Util.ColorTypes;
 
 namespace HexLight.Control
 {
-    public class ArduinoController : RGBController, IDisposable
+    public class SimpleSerialController : RGBController, IDisposable
     {
         private const bool apply_cie = false;
 
@@ -47,7 +47,7 @@ namespace HexLight.Control
             serial.Write(packet, 0, 4);
         }
 
-        public ArduinoController(string port, int baud = 9600)
+        public SimpleSerialController(string port, int baud = 9600)
         {
             this.port = port;
             this.baud = baud;

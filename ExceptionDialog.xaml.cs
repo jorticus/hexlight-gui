@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace HexLight
 {
-    public enum ExceptionSeverity { Error, Critical, Unhandled }
+    public enum ExceptionSeverity { Warning, Error, Critical, Unhandled }
     
 
 
@@ -45,6 +45,8 @@ namespace HexLight
             switch (severity)
             {
                 case ExceptionSeverity.Critical:
+                    fm.btnIgnore.Visibility = Visibility.Hidden;
+                    fm.btnDebug.Visibility = Visibility.Hidden;
                     fm.Title += " - Critical Error";
                     break;
                 case ExceptionSeverity.Error:
@@ -53,16 +55,18 @@ namespace HexLight
                 case ExceptionSeverity.Unhandled:
                     fm.Title += " - Unhandled Exception";
                     break;
-            }
-
-            // Hide Ignore/Debug buttons if error is critical, since we cannot recover from it.
-            if (severity == ExceptionSeverity.Critical)
-            {
-                fm.btnIgnore.Visibility = Visibility.Hidden;
-                fm.btnDebug.Visibility = Visibility.Hidden;
+                case ExceptionSeverity.Warning:
+                    fm.btnIgnore.Visibility = Visibility.Hidden;
+                    fm.btnDebug.Visibility = Visibility.Hidden;
+                    fm.btnAbort.Content = "OK";
+                    fm.Title += " - Error";
+                    break;
             }
 
             fm.ShowDialog();
+
+            if (severity == ExceptionSeverity.Warning)
+                return true;
 
             // Shutdown the app if required
             if (severity == ExceptionSeverity.Critical || fm.modalResult == ModalResult.Abort)

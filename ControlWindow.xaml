@@ -4,15 +4,15 @@
         xmlns:local="clr-namespace:HexLight"
         xmlns:controls="clr-namespace:HexLight.WpfControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Properties="clr-namespace:HexLight.Properties" mc:Ignorable="d" x:Name="window" x:Class="HexLight.ControlWindow"
-        Title="HexLight Control Panel" Height="517.333" Width="771.667" Closing="window_Closing">
+        Title="HexLight Control Panel" Height="434.333" Width="771.667" Closing="window_Closing" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:ViewModel x:Key="ViewModel"/>
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
     </Window.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}" SnapsToDevicePixels="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="287*"/>
-            <RowDefinition Height="197*"/>
+            <RowDefinition Height="286"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="CIE XYZ Tristimulus" HorizontalAlignment="Left" Margin="154,0,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
 
@@ -97,15 +97,12 @@
 
         <controls:CIESelector Margin="312,10,0,0" Height="172" VerticalAlignment="Top" HorizontalAlignment="Left" Width="183" Effect="{DynamicResource SubtleDropShadow}" X="{Binding CIExyY_x}" Y="{Binding CIExyY_y}"></controls:CIESelector>
 
-        <Grid Grid.Row="1">
-            <Border BorderThickness="0,1,0,0" Height="2" VerticalAlignment="Top" Margin="10,0">
-                <Border.BorderBrush>
-                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlDarkColorKey}}"/>
-                </Border.BorderBrush>
-
-            </Border>
-            <Label Content="HexLight Device Configuration" Margin="10,-2,0,0" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180"/>
-            <CheckBox Content="Enable USB Microphone Audio" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="180" Height="18"/>
-        </Grid>
+        <Border BorderThickness="0,1,0,0" Height="2" VerticalAlignment="Top" Margin="10,0" Grid.Row="1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlDarkColorKey}}"/>
+            </Border.BorderBrush>
+        </Border>
+        <Label Content="HexLight Device Configuration" Margin="10,2,0,0" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180" Grid.Row="1"/>
+        <CheckBox Content="Enable USB Microphone Audio" HorizontalAlignment="Left" Margin="22,29,0,0" VerticalAlignment="Top" Width="192" Height="18" Grid.Row="1"/>
     </Grid>
 </Window>

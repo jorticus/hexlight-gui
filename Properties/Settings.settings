@@ -5,9 +5,6 @@
     <Setting Name="ServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1234</Value>
     </Setting>
-    <Setting Name="Protocol" Type="System.String" Scope="User">
-      <Value Profile="(Default)">hexlight</Value>
-    </Setting>
     <Setting Name="ComBaud" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9600</Value>
     </Setting>
@@ -19,6 +16,9 @@
     </Setting>
     <Setting Name="DeviceID" Type="System.String" Scope="User">
       <Value Profile="(Default)">VID_04D8&amp;PID_1E00</Value>
+    </Setting>
+    <Setting Name="Protocol" Type="HexLight.DeviceProtocol" Scope="User">
+      <Value Profile="(Default)">HexLightUSB</Value>
     </Setting>
   </Settings>
 </SettingsFile>

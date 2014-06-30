@@ -37,18 +37,6 @@ namespace HexLight.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("hexlight")]
-        public string Protocol {
-            get {
-                return ((string)(this["Protocol"]));
-            }
-            set {
-                this["Protocol"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9600")]
         public int ComBaud {
             get {
@@ -92,6 +80,18 @@ namespace HexLight.Properties {
             }
             set {
                 this["DeviceID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("HexLightUSB")]
+        public global::HexLight.DeviceProtocol Protocol {
+            get {
+                return ((global::HexLight.DeviceProtocol)(this["Protocol"]));
+            }
+            set {
+                this["Protocol"] = value;
             }
         }
     }

@@ -56,45 +56,46 @@ namespace HexLight
             RenderIcon.RenderToPng(32, 32, "32px.png", 0.55);
             RenderIcon.RenderToPng(48, 48, "48px.png", 0.55);
             RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
-            RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
+            //RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
 
             try
             {
                 // Load settings
-                switch (Settings.Default.Protocol.ToLower())
+                switch (Settings.Default.Protocol)
                 {
-                    case "tcp":
-                        controller = new NetController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+                    case DeviceProtocol.SimpleTCP:
+                        controller = new SimpleTcpController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
                         break;
 
-                    case "arduino":
-                        controller = new ArduinoController(Settings.Default.ComPort, Settings.Default.ComBaud);
+                    case DeviceProtocol.SimpleSerial:
+                        controller = new SimpleSerialController(Settings.Default.ComPort, Settings.Default.ComBaud);
                         break;
 
-                    case "hexlight-serial":
+                    case DeviceProtocol.HexLightSerial:
                         controller = new HexControllerSerial(Settings.Default.ComPort, Settings.Default.ComBaud);
                         break;
 
-                    case "hexlight-hid":
-                    case "hexlight":
+                    case DeviceProtocol.HexLightUSB:
                         controller = new HexControllerHID(Settings.Default.DeviceID);
                         break;
-
+                    
                     default:
-                        throw new Exception(String.Format("Unknown protocol {0}", Settings.Default.Protocol));
-
+                        throw new Exception(String.Format("Unknown device protocol {0}", Settings.Default.Protocol));
                 }
+
             }
             catch (Exception ex)
             {
-                ExceptionDialog.ShowException("Could not connect to the device. Is it plugged in?", ex, severity: ExceptionSeverity.Critical);
+                // Show the settings dialog if an exception occurrs, 
+                // to allow the user to re-configure if necessary.
+                var fm = new SettingsWindow();
+                ExceptionDialog.ShowException("Could not connect to the device. Check application settings and try again", ex, severity: ExceptionSeverity.Warning);
+                fm.ShowDialog();
+                Shutdown(1);
                 return;
             }
 
-            //controller = new ArduinoController("COM1");
-            //controller = new NetController("visc");
             controller.Color = Colors.Black;
-            
             controller.Brightness = 0.0f;
             //controller.FadeTo(ColorTemperature.Hot, 0.2);
             
@@ -103,12 +104,13 @@ namespace HexLight
             controlWindow = new ControlWindow(viewModel);
             popupDial = new PopupDial(viewModel);
 
+            #if DEBUG
+                controlWindow.Show();
+            #endif
+
             updateTimer = new Timer(UPDATE_INTERVAL);
             updateTimer.Elapsed += updateTimer_Elapsed;
             updateTimer.Enabled = true;
-
-            //PopupDial fm = new PopupDial();
-            //fm.ShowDialog();
 
             ///// Tray Icon & Tray Menu /////
 
@@ -121,6 +123,7 @@ namespace HexLight
 
             trayIcon.ContextMenu = new WinForms.ContextMenu(new[] {
                 new WinForms.MenuItem("Control Panel", trayIcon_ControlPanel_Click),
+                new WinForms.MenuItem("Settings", trayIcon_Settings_Click),
                 new WinForms.MenuItem("Exit", trayIcon_Exit_Click),
             });
         }
@@ -168,6 +171,15 @@ namespace HexLight
             controlWindow.Show();
             if (popupDial.IsVisible)
                 popupDial.Hide(); // Prevent dial from appearing
+        }
+
+        void trayIcon_Settings_Click(object sender, EventArgs e)
+        {
+            if (popupDial.IsVisible)
+                popupDial.Hide(); // Prevent dial from appearing
+
+            var fm = new SettingsWindow();
+            fm.ShowDialog();
         }
 
         void trayIcon_Exit_Click(object sender, EventArgs e)

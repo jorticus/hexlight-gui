@@ -39,8 +39,9 @@ namespace HexLight
 
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            Hide();
+            #if DEBUG
+                Application.Current.Shutdown(0);
+            #endif
         }
     }
 }

@@ -10,7 +10,7 @@ using HexLight.Util.ColorTypes;
 
 namespace HexLight.Control
 {
-    public class NetController : RGBController
+    public class SimpleTcpController : RGBController
     {
         private const bool apply_cie = true;
 
@@ -48,7 +48,7 @@ namespace HexLight.Control
             socket.Client.Send(packet);
         }
 
-        public NetController(string host, int port = 1234)
+        public SimpleTcpController(string host, int port = 1234)
         {
             this.host = host;
             this.port = port;
