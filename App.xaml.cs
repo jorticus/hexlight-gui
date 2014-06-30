@@ -15,6 +15,16 @@ using WinForms = System.Windows.Forms;
 
 namespace HexLight
 {
+    public class TimerException : Exception
+    {
+        public Timer Timer { get; private set; }
+        public TimerException(string message, Exception innerException, Timer sender)
+            : base(message, innerException)
+        {
+            Timer = sender;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -42,11 +52,28 @@ namespace HexLight
 
         void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            ExceptionDialog.ShowException("Unhandled Exception", e.Exception.InnerException, ExceptionSeverity.Unhandled);
-            e.Handled = true;
+            try
+            {
+                Exception ex = e.Exception;
 
-            // If exception occurred in another thread
-            //if (e.Exception is System.Reflection.TargetInvocationException)
+                // If exception occurred in another thread
+                if (e.Exception is System.Reflection.TargetInvocationException)
+                    ex = e.Exception.InnerException;
+
+                ExceptionDialog.ShowException("Unhandled Exception", e.Exception.InnerException, ExceptionSeverity.Unhandled);
+
+                // Re-enable timer if Ignoring the exception
+                if (ex is TimerException && (ex as TimerException).Timer.Enabled == false)
+                    (ex as TimerException).Timer.Start();
+
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                // Fail-safe
+                Shutdown(1);
+                return;
+            }
         }
 
 
@@ -140,10 +167,11 @@ namespace HexLight
             }
             catch (Exception ex)
             {
+                (sender as Timer).Stop();
                 // Pass the exception to the main thread
                 Application.Current.Dispatcher.Invoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new Action<Exception>((exc) => { throw exc; }), ex);
+                    new Action<Exception>((exc) => { throw new TimerException("Exception in Timer Thread", exc, sender as Timer); }), ex);
             }
 #if DEBUG
             (sender as Timer).Start();
@@ -155,11 +183,15 @@ namespace HexLight
             if (updateTimer != null)
                 updateTimer.Enabled = false;
 
-            if (controller != null)
+            try
             {
-                controller.Color = Colors.Black;
-                controller.Brightness = 0.0f;
+                if (controller != null)
+                {
+                    controller.Color = Colors.Black;
+                    controller.Brightness = 0.0f;
+                }
             }
+            catch (Exception ex) { } // Don't worry about exceptions while closing down
         }
 
 

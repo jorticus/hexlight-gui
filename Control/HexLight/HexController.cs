@@ -36,6 +36,8 @@ namespace HexLight.Control
         private const byte CMD_SET_XYZ_CAL = 0x20;
         private const byte CMD_GET_XYZ_CAL = 0x21;
 
+        private const byte CMD_ENABLE_USBAUDIO = 0x30;
+
         private const byte CMD_ACK = 0xFF;
 
         #endregion
