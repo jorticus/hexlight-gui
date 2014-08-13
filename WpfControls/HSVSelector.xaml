@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:HexLight.WpfControls"
              mc:Ignorable="d" d:DesignHeight="128" d:DesignWidth="128" >
     <Grid>
-        <controls:HSVWheel x:Name="wheel" Panel.ZIndex="-1" OuterGradient="0.9" OuterSaturation="0.95" InnerRadius="0.05" Margin="10" MouseDown="wheel_MouseDown">
+        <controls:HSVWheel x:Name="wheel" Panel.ZIndex="-1" Margin="10" MouseDown="wheel_MouseDown">
             <!--<controls:HSVWheel.Effect>
                 <BlurEffect Radius="16"/>
             </controls:HSVWheel.Effect>-->

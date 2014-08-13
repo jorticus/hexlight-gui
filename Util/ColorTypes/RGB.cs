@@ -108,12 +108,12 @@ namespace HexLight.Util.ColorTypes
 
         public static implicit operator RGBColor(Color c)
         {
-            return new RGBColor(c.ScR, c.ScG, c.ScB);
+            return new RGBColor(c.R/255.0f, c.G/255.0f, c.B/255.0f);
         }
 
         public static implicit operator Color(RGBColor c)
         {
-            return new Color() { ScR = c.r, ScG = c.g, ScB = c.b, ScA = 1.0f };
+            return new Color() { R = (byte)(c.r*255), G = (byte)(c.g*255), B = (byte)(c.b*255), A = 255 };
         }
 
         #endregion
