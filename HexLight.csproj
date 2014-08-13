@@ -116,6 +116,9 @@
     <Compile Include="Util\ColorTypes\RGB.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="WpfControls\HSVWheel.cs" />
+    <Compile Include="WpfControls\RadialSlider.xaml.cs">
+      <DependentUpon>RadialSlider.xaml</DependentUpon>
+    </Compile>
     <Page Include="ExceptionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +157,10 @@
       <DependentUpon>ControlWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WpfControls\RadialSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

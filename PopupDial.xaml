@@ -8,9 +8,15 @@
         <DropShadowEffect x:Key="FormDropShadow" Opacity="0.4" BlurRadius="16"/>
     </Window.Resources>
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="90" Margin="116,19,0,0" StrokeThickness="5" VerticalAlignment="Top" Width="26" Fill="White" RadiusX="2" RadiusY="2"/>
-        <Slider Margin="0,22,23,22" Orientation="Vertical" HorizontalAlignment="Right" Width="21" Maximum="1" LargeChange="0.1" SmallChange="0.01" Value="{Binding Brightness}"/>
         <WpfControls:HSVSelector x:Name="selector" SnapsToDevicePixels="False" Margin="10,10,0,10" ThumbSize="20" Hue="{Binding Hue}" Saturation="{Binding Saturation}" HorizontalAlignment="Left" Width="112"/>
+        <WpfControls:RadialSlider Margin="68,10,-13,0" ArcOffset="56,0" ArcStopAngle="147" Height="108" VerticalAlignment="Top" ArcRadius="44" ThumbSize="22,14" BorderThickness="0" ArcStrokeThickness="9" ArcStartAngle="33" ThumbStrokeThickness="3" Foreground="White" Width="108" ThumbOutline="#FFA6A6A6" Maximum="0" Value="{Binding Brightness}" Minimum="1">
+            <WpfControls:RadialSlider.ArcBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#99000000" Offset="1"/>
+                    <GradientStop Color="White"/>
+                </LinearGradientBrush>
+            </WpfControls:RadialSlider.ArcBrush>
+        </WpfControls:RadialSlider>
 
     </Grid>
 </Window>

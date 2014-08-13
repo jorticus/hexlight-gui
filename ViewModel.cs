@@ -255,8 +255,10 @@ namespace HexLight
             // Note that RGB/HSV colour spaces can specify the brightness as well.
             // It is up to the end-user to limit user input, if necessary.
             //application.color = rgbColor * brightness;
-            application.color = (luminanceCorrection) ? CIE1931.CorrectRGB(rgbColor) : rgbColor;
-            application.brightness = brightness;
+            RGBColor color = rgbColor * brightness;
+            if (luminanceCorrection)
+                color = CIE1931.CorrectRGB(color);
+            application.color = color;
 
             if (this.PropertyChanged != null)
             {
