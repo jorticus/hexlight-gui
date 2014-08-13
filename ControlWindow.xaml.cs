@@ -41,6 +41,9 @@ namespace HexLight
         {
             #if DEBUG
                 Application.Current.Shutdown(0);
+            #else
+                e.Cancel = true;
+                this.Hide();
             #endif
         }
     }
