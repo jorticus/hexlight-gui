@@ -12,31 +12,9 @@
             <RowDefinition/>
             <RowDefinition Height="39"/>
         </Grid.RowDefinitions>
-        <Label Content="Device" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <RadioButton x:Name="rbSimpleSerial" Content="Simple - Serial Port" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" GroupName="DeviceType" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Protocol, ConverterParameter=SimpleSerial, Converter={StaticResource enumConverter}}"/>
-        <RadioButton x:Name="rbSimpleTCP" Content="Simple - TCP/IP" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" GroupName="DeviceType" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Protocol, ConverterParameter=SimpleTCP, Converter={StaticResource enumConverter}}"/>
-        <RadioButton x:Name="rbHexLightUSB" Content="HexLight - USB HID" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" GroupName="DeviceType" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Protocol, ConverterParameter=HexLightUSB, Converter={StaticResource enumConverter}}"/>
-        <RadioButton x:Name="rbHexLightSerial" Content="HexLight - Serial Port" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" GroupName="DeviceType" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Protocol, ConverterParameter=HexLightSerial, Converter={StaticResource enumConverter}}"/>
-        <GroupBox Header="Serial Port Configuration" HorizontalAlignment="Left" Height="63" Margin="10,110,0,0" VerticalAlignment="Top" Width="221">
-            <Grid Margin="0,0,0,0" >
-                <ComboBox x:Name="txtComPort" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="73" IsEditable="True" Text="{Binding Source={x:Static properties:Settings.Default}, Path=ComPort}">
-                    <ComboBoxItem Content="COM1"/>
-                </ComboBox>
-                <TextBox x:Name="txtComBaudRate" HorizontalAlignment="Left" Height="21" Margin="88,10,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=ComBaud}" VerticalAlignment="Top" Width="61"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="TCP/IP Configuration" HorizontalAlignment="Left" Height="63" Margin="10,178,0,0" VerticalAlignment="Top" Width="221">
-            <Grid Margin="0,0,0,0" >
-                <TextBox x:Name="txtTCPAddr" HorizontalAlignment="Left" Height="23" Margin="10,8,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=ServerAddress}" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="txtTCPPort" HorizontalAlignment="Left" Height="23" Margin="135,8,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=ServerPort}" VerticalAlignment="Top" Width="64"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="USB Configuration" HorizontalAlignment="Left" Height="63" Margin="10,246,0,0" VerticalAlignment="Top" Width="221">
-            <Grid Margin="0,0,0,0" >
-                <TextBox x:Name="txtUsbDeviceId" HorizontalAlignment="Left" Height="23" Margin="10,8,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=DeviceID}" VerticalAlignment="Top" Width="120"/>
-            </Grid>
-        </GroupBox>
+        <Label Content="Driver" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,12,10" Grid.Row="1" VerticalAlignment="Bottom" Width="75" IsCancel="True" Click="btnCancel_Click" />
         <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,92,10" Grid.Row="1" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="btnOK_Click" />
+        <ComboBox x:Name="cbDrivers" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="230"/>
     </Grid>
 </Window>

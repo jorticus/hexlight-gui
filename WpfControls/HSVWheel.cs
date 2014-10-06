@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 
 namespace HexLight.WpfControls
 {

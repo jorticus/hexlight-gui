@@ -8,7 +8,7 @@ using System.Windows;
 using System.Timers;
 using HexLight.Control;
 using HexLight.Util;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 using HexLight.Properties;
 using System.Windows.Media;
 using WinForms = System.Windows.Forms;
@@ -39,6 +39,8 @@ namespace HexLight
 
         public PopupDial popupDial;
         public ControlWindow controlWindow;
+
+        public IEnumerable<Type> controllers;
 
         private WinForms.NotifyIcon trayIcon;
 
@@ -88,10 +90,12 @@ namespace HexLight
             RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
             //RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
 
+            controllers = Controllers.ListControllers();
+
             try
             {
                 // Load settings
-                switch (Settings.Default.Protocol)
+                /*switch (Settings.Default.Protocol)
                 {
                     case DeviceProtocol.SimpleTCP:
                         controller = new SimpleTcpController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
@@ -111,7 +115,7 @@ namespace HexLight
                     
                     default:
                         throw new Exception(String.Format("Unknown device protocol {0}", Settings.Default.Protocol));
-                }
+                }*/
 
             }
             catch (Exception ex)
@@ -170,11 +174,12 @@ namespace HexLight
             }
             catch (Exception ex)
             {
-                (sender as Timer).Stop();
+                /*(sender as Timer).Stop();
                 // Pass the exception to the main thread
                 Application.Current.Dispatcher.Invoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
                     new Action<Exception>((exc) => { throw new TimerException("Exception in Timer Thread", exc, sender as Timer); }), ex);
+                 */
             }
 #if DEBUG
             (sender as Timer).Start();

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexLight.Util.ColorTypes
+namespace HexLight.Colour
 {
-    struct ColorTemperature
+    public struct ColorTemperature
     {
         public float k; // Temperature in kelvins
 

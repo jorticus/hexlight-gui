@@ -5,31 +5,16 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using HexLight.Util;
-using HexLight.Util.ColorTypes;
-using HexLight.HID;
+using HexLight.Colour;
 
 namespace HexLight.Control
 {
-    public class HexControllerHID : HexController, IDisposable
+    public class HexControllerSerial : HexController, IDisposable
     {
-        private string deviceID;
-        private HidDevice device;
+        private string port;
+        private int baud;
+        private SerialPort serial;
 
-        #region Protocol Structs
-
-        private const int COMMAND_PACKET_SIZE = 65;
-
-        /*[StructLayout(LayoutKind.Sequential, Pack = 1, Size = COMMAND_PACKET_SIZE)]
-        public struct GenericHidPacket
-        {
-            public byte WindowsReserved;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = COMMAND_PACKET_SIZE-1)]
-            public byte[] Data;
-        }*/
-
-        #endregion
 
         #region Protocol Handlers
 
@@ -41,33 +26,16 @@ namespace HexLight.Control
             HLDCFramer framer = new HLDCFramer();
             while (true)
             {
-                using (var rx = device.GetReadFile())
-                {
-                    byte[] buffer = new byte[COMMAND_PACKET_SIZE];
-                    rx.Read(buffer, COMMAND_PACKET_SIZE);
 
-                    foreach (var b in buffer)
-                    {
-                        bool finished = framer.ProcessByte(b);
-                        if (finished && framer.FrameBytes != null)
-                            return framer.FrameBytes;
-                    }
+                serial.WriteTimeout = 1000;
+                int b = serial.ReadByte();
 
-                }
+                bool finished = framer.ProcessByte((byte)b);
+
+                if ((b < 0) || (finished && framer.FrameBytes != null))
+                    break;
             }
-        }
-
-        private void WritePacket(byte[] packet)
-        {
-            List<byte> data = new List<byte>() { 0 };
-            data.AddRange(packet);
-
-            int padding = COMMAND_PACKET_SIZE - data.Count;
-            for (int i = 0; i < padding; i++)
-                data.Add(0);
-
-            using (var tx = device.GetWriteFile())
-                tx.Write(data.ToArray(), COMMAND_PACKET_SIZE);
+            return framer.FrameBytes;
         }
 
         /// <summary>
@@ -79,13 +47,13 @@ namespace HexLight.Control
         protected override void SendPacket<T>(byte command, T payload)
         {
             byte[] packet = HLDCProtocol.CreatePacket<T>(command, payload);
-            WritePacket(packet);
+            serial.Write(packet, 0, packet.Length);
         }
 
         protected override void SendPacket(byte command, byte[] payload = null)
         {
             byte[] packet = HLDCProtocol.CreatePacket(command, payload);
-            WritePacket(packet);
+            serial.Write(packet, 0, packet.Length);
         }
 
         /// <summary>
@@ -102,7 +70,7 @@ namespace HexLight.Control
             HLDCProtocol.ParsePacket(response, out command, out payload);
 
             if (command != expected_command)
-                throw new Exception("Invalid data received");
+                throw new Exception("HLDC Protocol Error - Invalid reply");
 
             return payload;
         }
@@ -122,21 +90,20 @@ namespace HexLight.Control
 
         #endregion
 
-        public HexControllerHID(string deviceID)
+
+        public HexControllerSerial(string port, int baud = 9600)
         {
-            this.deviceID = deviceID;
-            this.device = new HidDevice(deviceID);
-            this.device.Scan();
-
-            // required when running outside visual studio for some reason???
-            //SendPacket(0x00);
-
+            this.port = port;
+            this.baud = baud;
+            serial = new SerialPort(port, baud);
+            serial.Open();
             this.Connected = true;
         }
 
         public void Dispose()
         {
             this.Connected = false;
+            serial.Close();
         }
     }
 }

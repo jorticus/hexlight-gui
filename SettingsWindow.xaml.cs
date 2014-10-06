@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HexLight.Properties;
+using HexLight.Control;
 
 namespace HexLight
 {
@@ -28,6 +29,7 @@ namespace HexLight
         {
             InitializeComponent();
 
+            
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

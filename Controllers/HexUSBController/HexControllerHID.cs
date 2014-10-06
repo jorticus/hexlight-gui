@@ -6,16 +6,30 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using HexLight.Util;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
+using HexLight.HID;
 
 namespace HexLight.Control
 {
-    public class HexControllerSerial : HexController, IDisposable
+    public class HexControllerHID : HexController, IDisposable
     {
-        private string port;
-        private int baud;
-        private SerialPort serial;
+        private string deviceID;
+        private HidDevice device;
 
+        #region Protocol Structs
+
+        private const int COMMAND_PACKET_SIZE = 65;
+
+        /*[StructLayout(LayoutKind.Sequential, Pack = 1, Size = COMMAND_PACKET_SIZE)]
+        public struct GenericHidPacket
+        {
+            public byte WindowsReserved;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = COMMAND_PACKET_SIZE-1)]
+            public byte[] Data;
+        }*/
+
+        #endregion
 
         #region Protocol Handlers
 
@@ -27,16 +41,33 @@ namespace HexLight.Control
             HLDCFramer framer = new HLDCFramer();
             while (true)
             {
+                using (var rx = device.GetReadFile())
+                {
+                    byte[] buffer = new byte[COMMAND_PACKET_SIZE];
+                    rx.Read(buffer, COMMAND_PACKET_SIZE);
 
-                serial.WriteTimeout = 1000;
-                int b = serial.ReadByte();
+                    foreach (var b in buffer)
+                    {
+                        bool finished = framer.ProcessByte(b);
+                        if (finished && framer.FrameBytes != null)
+                            return framer.FrameBytes;
+                    }
 
-                bool finished = framer.ProcessByte((byte)b);
-
-                if ((b < 0) || (finished && framer.FrameBytes != null))
-                    break;
+                }
             }
-            return framer.FrameBytes;
+        }
+
+        private void WritePacket(byte[] packet)
+        {
+            List<byte> data = new List<byte>() { 0 };
+            data.AddRange(packet);
+
+            int padding = COMMAND_PACKET_SIZE - data.Count;
+            for (int i = 0; i < padding; i++)
+                data.Add(0);
+
+            using (var tx = device.GetWriteFile())
+                tx.Write(data.ToArray(), COMMAND_PACKET_SIZE);
         }
 
         /// <summary>
@@ -48,13 +79,13 @@ namespace HexLight.Control
         protected override void SendPacket<T>(byte command, T payload)
         {
             byte[] packet = HLDCProtocol.CreatePacket<T>(command, payload);
-            serial.Write(packet, 0, packet.Length);
+            WritePacket(packet);
         }
 
         protected override void SendPacket(byte command, byte[] payload = null)
         {
             byte[] packet = HLDCProtocol.CreatePacket(command, payload);
-            serial.Write(packet, 0, packet.Length);
+            WritePacket(packet);
         }
 
         /// <summary>
@@ -71,7 +102,7 @@ namespace HexLight.Control
             HLDCProtocol.ParsePacket(response, out command, out payload);
 
             if (command != expected_command)
-                throw new Exception("HLDC Protocol Error - Invalid reply");
+                throw new Exception("Invalid data received");
 
             return payload;
         }
@@ -91,20 +122,21 @@ namespace HexLight.Control
 
         #endregion
 
-
-        public HexControllerSerial(string port, int baud = 9600)
+        public HexControllerHID(string deviceID)
         {
-            this.port = port;
-            this.baud = baud;
-            serial = new SerialPort(port, baud);
-            serial.Open();
+            this.deviceID = deviceID;
+            this.device = new HidDevice(deviceID);
+            this.device.Scan();
+
+            // required when running outside visual studio for some reason???
+            //SendPacket(0x00);
+
             this.Connected = true;
         }
 
         public void Dispose()
         {
             this.Connected = false;
-            serial.Close();
         }
     }
 }

@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using HexLight.Util;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 
 namespace HexLight.Control
 {
-    public class SimpleTcpController : RGBController
+    /*public class SimpleTcpController : RGBController
     {
         private const bool apply_cie = true;
 
@@ -63,5 +62,5 @@ namespace HexLight.Control
         {
             socket.Close();
         }
-    }
+    }*/
 }

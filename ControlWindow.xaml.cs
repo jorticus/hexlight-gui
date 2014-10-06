@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HexLight.Control;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 using HexLight.WpfControls;
 
 namespace HexLight
@@ -45,6 +45,19 @@ namespace HexLight
                 e.Cancel = true;
                 this.Hide();
             #endif
+        }
+        
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            //if (!(application.controller is HexController))
+            //    throw new Exception("Controller does not support this command");
+
+            //(application.controller as HexController).EnableUsbAudio((sender as CheckBox).IsChecked.Value);
         }
     }
 }

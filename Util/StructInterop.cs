@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HexLight.Util
 {
-    class StructInterop
+    public class StructInterop
     {
         public static byte[] StructToByteArray<T>(T struc)
         {

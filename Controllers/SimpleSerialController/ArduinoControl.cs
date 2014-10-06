@@ -4,8 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HexLight.Util;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 
 namespace HexLight.Control
 {

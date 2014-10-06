@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexLight.Util.ColorTypes
+namespace HexLight.Colour
 {
     public struct HSVColor
     {

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 
 namespace HexLight.Control
 {
     /// <summary>
     /// This defines the minimum required implementation for any RGB controller interface
     /// </summary>
-    public abstract class RGBController
+    public abstract class RGBController : IControllerBase
     {
         public RGBColor Whitebalance { get; set; }
 

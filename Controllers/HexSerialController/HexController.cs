@@ -5,12 +5,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using HexLight.Util;
-using HexLight.Util.ColorTypes;
+using HexLight.Colour;
 
 namespace HexLight.Control
 {
-    public abstract class HexController : RGBController
+    public abstract class HexController : RGBController, IControllerBase
     {
         private const bool apply_cie = false;
 
@@ -154,7 +153,7 @@ namespace HexLight.Control
         public void SetPWM(PWMStruct values)
         {
             SendPacket<PWMStruct>(CMD_SET_PWM, values);
-            //ReadReply(CMD_SET_PWM);
+            ReadReply(CMD_SET_PWM);
             //TODO: Need to try and synchronize packets better
         }
 
@@ -197,6 +196,12 @@ namespace HexLight.Control
             //var xyy = ReadReply<XYYStruct>(CMD_GET_XYY);
             //return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
             return new CIEXYYColor();
+        }
+
+        public void EnableUsbAudio(bool enabled)
+        {
+            SendPacket(CMD_ENABLE_USBAUDIO, new byte[] { (byte)((enabled) ? 1 : 0) });
+            ReadReply(CMD_ENABLE_USBAUDIO);
         }
 
         #endregion

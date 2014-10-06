@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace ViscTronics.WinAPI
+namespace HexLight.WinAPI
 {
     public class WinApiFileException : Exception
     {

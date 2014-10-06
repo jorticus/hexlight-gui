@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HexLight.Util.ColorTypes;
 
-namespace HexLight.Util
+namespace HexLight.Colour
 {
-    class CIE1931
+    public class CIE1931
     {
         /// <summary>
         /// Apply CIE intensity perception to the given lumininace value
