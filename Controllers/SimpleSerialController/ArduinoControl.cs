@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using HexLight.Colour;
 
 namespace HexLight.Control
 {
+    public class SimpleSerialControllerSettings : ControllerSettings
+    {
+        public int Baud;
+        public string Port;
+    }
+
+    [ControllerName("Arduino")]
     public class SimpleSerialController : RGBController, IDisposable
     {
         private const bool apply_cie = false;

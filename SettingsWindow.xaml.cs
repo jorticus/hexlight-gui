@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HexLight.Properties;
 using HexLight.Control;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace HexLight
 {
@@ -29,7 +31,24 @@ namespace HexLight
         {
             InitializeComponent();
 
-            
+            var controllers = Controllers.ListControllers();
+            var activeControllerName = HexLight.Properties.Settings.Default.Controller;
+
+            // Populate the listbox
+            cbDrivers.Items.Clear();
+            cbDrivers.Items.Add(ControllerItem.NullController);
+            int idx = 0;
+            foreach (var controller in controllers)
+            {
+                idx++;
+                cbDrivers.Items.Add(new ControllerItem(controller));
+                if (controller.FullName == activeControllerName)
+                    cbDrivers.SelectedIndex = idx;
+            }
+
+            //TODO: Use ValueConverters and Bindings ?
+            //TODO: Save the selected value
+            //TODO: Provide a way for plugins to provide their own property UI?
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

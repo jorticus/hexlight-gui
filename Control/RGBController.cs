@@ -4,16 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Reflection;
 using HexLight.Colour;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.Configuration;
 
 namespace HexLight.Control
 {
     /// <summary>
     /// This defines the minimum required implementation for any RGB controller interface
     /// </summary>
-    public abstract class RGBController : IControllerBase
+    public abstract class RGBController
     {
         public RGBColor Whitebalance { get; set; }
+        public ControllerSettings Settings { get; set; }
 
         #region Abstract Definitions
 
@@ -63,7 +69,5 @@ namespace HexLight.Control
             
             Color = dest;
         }
-
-        #endregion
     }
 }

@@ -11,7 +11,9 @@ using HexLight.Util;
 using HexLight.Colour;
 using HexLight.Properties;
 using System.Windows.Media;
+using System.Configuration.Provider;
 using WinForms = System.Windows.Forms;
+using System.Reflection;
 
 namespace HexLight
 {
@@ -90,32 +92,51 @@ namespace HexLight
             RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
             //RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
 
-            controllers = Controllers.ListControllers();
+            var settings = HexLight.Properties.Settings.Default;
 
             try
             {
-                // Load settings
-                /*switch (Settings.Default.Protocol)
+                var controllerName = settings.Controller;
+                var controllerType = Controllers.GetControllerByName(controllerName);
+
+                if (controllerType != null)
                 {
-                    case DeviceProtocol.SimpleTCP:
-                        controller = new SimpleTcpController(Settings.Default.ServerAddress, Settings.Default.ServerPort);
-                        break;
+                    string propKey = controllerName;
+                    Type settingsType = Controllers.GetControllerSettingsType(controllerType);
 
-                    case DeviceProtocol.SimpleSerial:
-                        controller = new SimpleSerialController(Settings.Default.ComPort, Settings.Default.ComBaud);
-                        break;
+                    // Add entry for custom settings property (required for it to be accessable)
+                    var prop = new SettingsProperty(propKey);
+                    prop.DefaultValue = null;
+                    prop.IsReadOnly = false;
+                    prop.PropertyType = settingsType;  // Must match the actual type being used for it to serialize properly
+                    prop.Provider = settings.Providers["LocalFileSettingsProvider"];
+                    prop.Attributes.Add(typeof(System.Configuration.UserScopedSettingAttribute), new System.Configuration.UserScopedSettingAttribute());
+                    prop.SerializeAs = SettingsSerializeAs.Xml;
+                    prop.ThrowOnErrorSerializing = true;
+                    prop.ThrowOnErrorDeserializing = true;
+                    settings.Properties.Add(prop);
+                    settings.Reload();
 
-                    case DeviceProtocol.HexLightSerial:
-                        controller = new HexControllerSerial(Settings.Default.ComPort, Settings.Default.ComBaud);
-                        break;
+                    // Load the settings for the specific controller
+                    var conf = settings[propKey];
 
-                    case DeviceProtocol.HexLightUSB:
-                        controller = new HexControllerHID(Settings.Default.DeviceID);
-                        break;
-                    
-                    default:
-                        throw new Exception(String.Format("Unknown device protocol {0}", Settings.Default.Protocol));
-                }*/
+                    if (conf == null)
+                    {
+                        // Set defaults
+                        conf = (ControllerSettings)Activator.CreateInstance(settingsType);
+                        settings[propKey] = conf;
+                        settings.Save();
+                    }
+
+                    // Try and instantiate the controller with the current config
+                    try
+                    {
+                        controller = (RGBController)Activator.CreateInstance(controllerType,
+                            new object[] { (ControllerSettings)conf }
+                        );
+                    }
+                    catch (TargetInvocationException ex) { throw ex.InnerException; }
+                }
 
             }
             catch (Exception ex)
@@ -132,7 +153,8 @@ namespace HexLight
             //controller.Color = Colors.Black;
             //controller.Brightness = 0.0f;
             //controller.FadeTo(ColorTemperature.Hot, 0.2);
-            
+
+
             viewModel = new ViewModel();
 
             controlWindow = new ControlWindow(viewModel);

@@ -2,23 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HexLight.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1234</Value>
-    </Setting>
-    <Setting Name="ComBaud" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9600</Value>
-    </Setting>
-    <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1</Value>
-    </Setting>
-    <Setting Name="ComPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM1</Value>
-    </Setting>
-    <Setting Name="DeviceID" Type="System.String" Scope="User">
-      <Value Profile="(Default)">VID_04D8&amp;PID_1E00</Value>
-    </Setting>
-    <Setting Name="Protocol" Type="HexLight.DeviceProtocol" Scope="User">
-      <Value Profile="(Default)">HexLightUSB</Value>
+    <Setting Name="Controller" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HexLight.Control.HexControllerHID</Value>
     </Setting>
   </Settings>
 </SettingsFile>

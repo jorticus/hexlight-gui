@@ -58,6 +58,7 @@
       <HintPath>packages\MathNet.Numerics.3.0.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
@@ -213,10 +214,6 @@
     <Resource Include="arrow_down_alt1_12x12.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Controllers\ControllerBase\ControllerBase.csproj">
-      <Project>{9c742d04-655e-438d-8a31-0525476e5678}</Project>
-      <Name>ControllerBase</Name>
-    </ProjectReference>
     <ProjectReference Include="HexColour\HexColour.csproj">
       <Project>{e9fa70fb-56c9-446d-93d8-77389e8497fa}</Project>
       <Name>HexColour</Name>

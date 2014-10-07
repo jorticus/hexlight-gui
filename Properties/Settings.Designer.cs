@@ -25,73 +25,13 @@ namespace HexLight.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1234")]
-        public int ServerPort {
+        [global::System.Configuration.DefaultSettingValueAttribute("HexLight.Control.HexControllerHID")]
+        public string Controller {
             get {
-                return ((int)(this["ServerPort"]));
+                return ((string)(this["Controller"]));
             }
             set {
-                this["ServerPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9600")]
-        public int ComBaud {
-            get {
-                return ((int)(this["ComBaud"]));
-            }
-            set {
-                this["ComBaud"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
-        public string ServerAddress {
-            get {
-                return ((string)(this["ServerAddress"]));
-            }
-            set {
-                this["ServerAddress"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
-        public string ComPort {
-            get {
-                return ((string)(this["ComPort"]));
-            }
-            set {
-                this["ComPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("VID_04D8&PID_1E00")]
-        public string DeviceID {
-            get {
-                return ((string)(this["DeviceID"]));
-            }
-            set {
-                this["DeviceID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HexLightUSB")]
-        public global::HexLight.DeviceProtocol Protocol {
-            get {
-                return ((global::HexLight.DeviceProtocol)(this["Protocol"]));
-            }
-            set {
-                this["Protocol"] = value;
+                this["Controller"] = value;
             }
         }
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using HexLight.Control;
@@ -48,6 +50,85 @@ namespace HexLight.Control
                     where type.IsSubclassOf(typeof(RGBController))
                         && !type.IsAbstract
                     select type;
+        }
+
+        /// <summary>
+        /// Get a friendly human-readable name for the specified controller type
+        /// </summary>
+        public static string GetControllerName(Type controller)
+        {
+            if (controller != null)
+            {
+                var attr = controller.GetCustomAttribute<HexLight.Control.ControllerName>();
+                string name = attr.Name;
+
+                if (controller.Assembly != Assembly.GetExecutingAssembly())
+                    name += " (" + controller.Assembly.ManifestModule.Name + ")";
+
+                return name;
+            }
+            return "Null Controller";
+        }
+
+        /// <summary>
+        /// Get the appropriate type for the settings class
+        /// </summary>
+        public static Type GetControllerSettingsType(Type controller)
+        {
+            if (controller != null)
+                return controller.GetCustomAttribute<HexLight.Control.ControllerSettingsType>().Type;
+            return null;
+        }
+
+        /// <summary>
+        /// Get controller type by GUID (type.guid)
+        /// </summary>
+        public static Type GetControllerByGuid(Guid guid)
+        {
+            if (guid == Guid.Empty)
+                return null;
+
+            var controllers = ListControllers();
+
+            return (from controller in controllers
+                    where controller.GUID == guid
+                    select controller).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Get controller type by full class name (type.FullName)
+        ///   eg. "HexLight.Control.RGBController"
+        /// </summary>
+        public static Type GetControllerByName(string name)
+        {
+            // eg. 'HexLight.Control.RGBController'
+
+            if (name == null || name == "")
+                return null;
+
+            var controllers = ListControllers();
+
+            return (from controller in controllers
+                    where controller.FullName == name
+                    select controller).FirstOrDefault();
+        }
+    }
+
+    public class ControllerItem
+    {
+        public Type Controller { get; protected set; }
+        public static ControllerItem NullController = new ControllerItem(null);
+
+        public ControllerItem() { Controller = null; }
+
+        public ControllerItem(Type controller)
+        {
+            this.Controller = controller;
+        }
+
+        public override string ToString()
+        {
+            return Controllers.GetControllerName(Controller);
         }
     }
 }

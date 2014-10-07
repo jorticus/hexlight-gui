@@ -9,7 +9,7 @@ using HexLight.Colour;
 
 namespace HexLight.Control
 {
-    public abstract class HexController : RGBController, IControllerBase
+    public abstract class HexController : RGBController
     {
         private const bool apply_cie = false;
 
