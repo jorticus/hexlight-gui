@@ -96,47 +96,12 @@ namespace HexLight
 
             try
             {
+                // Get the class of the controller to use
                 var controllerName = settings.Controller;
                 var controllerType = Controllers.GetControllerByName(controllerName);
 
-                if (controllerType != null)
-                {
-                    string propKey = controllerName;
-                    Type settingsType = Controllers.GetControllerSettingsType(controllerType);
-
-                    // Add entry for custom settings property (required for it to be accessable)
-                    var prop = new SettingsProperty(propKey);
-                    prop.DefaultValue = null;
-                    prop.IsReadOnly = false;
-                    prop.PropertyType = settingsType;  // Must match the actual type being used for it to serialize properly
-                    prop.Provider = settings.Providers["LocalFileSettingsProvider"];
-                    prop.Attributes.Add(typeof(System.Configuration.UserScopedSettingAttribute), new System.Configuration.UserScopedSettingAttribute());
-                    prop.SerializeAs = SettingsSerializeAs.Xml;
-                    prop.ThrowOnErrorSerializing = true;
-                    prop.ThrowOnErrorDeserializing = true;
-                    settings.Properties.Add(prop);
-                    settings.Reload();
-
-                    // Load the settings for the specific controller
-                    var conf = settings[propKey];
-
-                    if (conf == null)
-                    {
-                        // Set defaults
-                        conf = (ControllerSettings)Activator.CreateInstance(settingsType);
-                        settings[propKey] = conf;
-                        settings.Save();
-                    }
-
-                    // Try and instantiate the controller with the current config
-                    try
-                    {
-                        controller = (RGBController)Activator.CreateInstance(controllerType,
-                            new object[] { (ControllerSettings)conf }
-                        );
-                    }
-                    catch (TargetInvocationException ex) { throw ex.InnerException; }
-                }
+                // Instantiate the controller and load any custom settings for it
+                controller = Controllers.LoadController(settings, controllerType);
 
             }
             catch (Exception ex)
@@ -149,6 +114,10 @@ namespace HexLight
                 Shutdown(1);
                 return;
             }
+
+            /*var fm2 = new SettingsWindow();
+            fm2.ShowDialog();
+            Shutdown(1);*/
 
             //controller.Color = Colors.Black;
             //controller.Brightness = 0.0f;

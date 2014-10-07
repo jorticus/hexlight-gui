@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -60,6 +61,8 @@ namespace HexLight.Control
             if (controller != null)
             {
                 var attr = controller.GetCustomAttribute<HexLight.Control.ControllerName>();
+                if (attr == null)
+                    throw new Exception("[ControllerName] attribute not specified for controller class");
                 string name = attr.Name;
 
                 if (controller.Assembly != Assembly.GetExecutingAssembly())
@@ -76,7 +79,13 @@ namespace HexLight.Control
         public static Type GetControllerSettingsType(Type controller)
         {
             if (controller != null)
-                return controller.GetCustomAttribute<HexLight.Control.ControllerSettingsType>().Type;
+            {
+                var attr = controller.GetCustomAttribute<HexLight.Control.ControllerSettingsType>();
+                if (attr == null)
+                    throw new Exception("[ControllerSettingsType] attribute not specified for controller class");
+                return attr.Type;
+
+            }
             return null;
         }
 
@@ -111,6 +120,73 @@ namespace HexLight.Control
             return (from controller in controllers
                     where controller.FullName == name
                     select controller).FirstOrDefault();
+        }
+
+        public static ControllerSettings GetControllerSettings(ApplicationSettingsBase settings, Type controllerType)
+        {
+            if (controllerType == null)
+                return null;
+
+            string propKey = controllerType.FullName;
+            Type settingsType = Controllers.GetControllerSettingsType(controllerType);
+
+            if (settingsType == null)
+                return null;
+
+            // Add entry for custom settings property (required for it to be accessable)
+            var prop = new SettingsProperty(propKey);
+            prop.DefaultValue = null;
+            prop.IsReadOnly = false;
+            prop.PropertyType = settingsType;  // Must match the actual type being used for it to serialize properly
+            prop.Provider = settings.Providers["LocalFileSettingsProvider"];
+            prop.Attributes.Add(typeof(System.Configuration.UserScopedSettingAttribute), new System.Configuration.UserScopedSettingAttribute());
+            prop.SerializeAs = SettingsSerializeAs.Xml;
+            prop.ThrowOnErrorSerializing = true;
+            prop.ThrowOnErrorDeserializing = true;
+            try
+            {
+                settings.Properties.Add(prop);
+                settings.Reload();
+            }
+            catch (System.ArgumentException) { } // Ignore if it's already been added
+
+            // Load the settings for the specific controller
+            var conf = settings[propKey];
+
+            if (conf == null)
+            {
+                // Set defaults
+                conf = (ControllerSettings)Activator.CreateInstance(settingsType);
+                settings[propKey] = conf;
+                settings.Save();
+            }
+
+            return (ControllerSettings)conf;
+        }
+
+        /// <summary>
+        /// Load controller-specific settings and instantiate the controller
+        /// </summary>
+        /// <param name="settings">The application settings that stores the controller-specific config</param>
+        /// <param name="controllerType">The type of the class of controller to instantiate</param>
+        /// <returns>The instantiated controller</returns>
+        public static RGBController LoadController(ApplicationSettingsBase settings, Type controllerType)
+        {
+            if (controllerType != null)
+            {
+                var controllerSettings = GetControllerSettings(settings, controllerType);
+
+                // Try and instantiate the controller with the current config
+                try
+                {
+                    return (RGBController)Activator.CreateInstance(controllerType,
+                        new object[] { controllerSettings }
+                    );
+                }
+                catch (TargetInvocationException ex) { throw ex.InnerException; }
+
+            }
+            return null;
         }
     }
 

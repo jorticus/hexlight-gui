@@ -6,17 +6,37 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using HexLight.Colour;
+using System.Windows.Controls;
+using System.ComponentModel;
+using System.Windows.Media;
 
 namespace HexLight.Control
 {
     public class SimpleSerialControllerSettings : ControllerSettings
     {
-        public int Baud;
-        public string Port;
+        private int baud = 9600;
+        private string port = "COM1";
+
+        public int Baud
+        {
+            get { return baud; }
+            set { baud = value; ConnChanged("Baud"); }
+        }
+        public string Port
+        {
+            get { return port; }
+            set { port = value; ConnChanged("Port"); }
+        }
+
+        public override UserControl GetSettingsPage()
+        {
+            return new SerialSettingsPage();
+        }
     }
 
     [ControllerName("Arduino")]
-    public class SimpleSerialController : RGBController, IDisposable
+    [ControllerSettingsType(typeof(SimpleSerialControllerSettings))]
+    public class SimpleSerialController : RGBController
     {
         private const bool apply_cie = false;
 
@@ -54,19 +74,36 @@ namespace HexLight.Control
             serial.Write(packet, 0, 4);
         }
 
-        public SimpleSerialController(string port, int baud = 9600)
+        /// <summary>
+        /// Parameterless constructor, use default settings
+        /// </summary>
+        public SimpleSerialController()
         {
-            this.port = port;
-            this.baud = baud;
+            Settings = new SimpleSerialControllerSettings();
+            Initialize();
+        }
+
+        public SimpleSerialController(ControllerSettings settings)
+        {
+            Settings = settings;
+            Initialize();
+        }
+
+        protected void Initialize()
+        {
+            var settings = (Settings as SimpleSerialControllerSettings);
+            this.port = settings.Port;
+            this.baud = settings.Baud;
             serial = new SerialPort(port, baud);
             serial.Open();
             this.Connected = true;
             this.brightness = 1.0f;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.Connected = false;
+            //Color = Colors.Black;
             serial.Close();
         }
     }

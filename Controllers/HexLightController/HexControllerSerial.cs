@@ -6,17 +6,35 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using HexLight.Colour;
 
 namespace HexLight.Control
 {
     public class HexControllerSerialSettings : ControllerSettings
     {
-        public int Baud;
-        public string Port;
+        private int baud = 9600;
+        private string port = "COM1";
+
+        public int Baud
+        {
+            get { return baud; }
+            set { baud = value; ConnChanged("Baud"); }
+        }
+        public string Port
+        {
+            get { return port; }
+            set { port = value; ConnChanged("Port"); }
+        }
+
+        public override UserControl GetSettingsPage()
+        {
+            return new SerialSettingsPage();
+        }
     }
 
     [ControllerName("HexLight Serial")]
+    [ControllerSettingsType(typeof(HexControllerSerialSettings))]
     public class HexControllerSerial : HexController, IDisposable
     {
         private string port;
@@ -98,21 +116,32 @@ namespace HexLight.Control
 
         #endregion
 
+        /// <summary>
+        /// Parameterless constructor, use default settings
+        /// </summary>
         public HexControllerSerial()
         {
-
+            Settings = new HexControllerHIDSettings();
+            Initialize();
         }
 
-        public HexControllerSerial(string port, int baud = 9600)
+        public HexControllerSerial(ControllerSettings settings)
         {
-            this.port = port;
-            this.baud = baud;
+            Settings = settings;
+            Initialize();
+        }
+
+        protected void Initialize()
+        {
+            var settings = (Settings as HexControllerSerialSettings);
+            this.port = settings.Port;
+            this.baud = settings.Baud;
             serial = new SerialPort(port, baud);
             serial.Open();
             this.Connected = true;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.Connected = false;
             serial.Close();

@@ -12,9 +12,12 @@
             <RowDefinition/>
             <RowDefinition Height="39"/>
         </Grid.RowDefinitions>
-        <Label Content="Driver" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Driver" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,12,10" Grid.Row="1" VerticalAlignment="Bottom" Width="75" IsCancel="True" Click="btnCancel_Click" />
         <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,92,10" Grid.Row="1" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="btnOK_Click" />
-        <ComboBox x:Name="cbDrivers" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="230"/>
+        <ComboBox x:Name="cbDrivers" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top" Width="230" SelectionChanged="cbDrivers_SelectionChanged"/>
+        <Label x:Name="lblNotLoaded" Content="Controller Not Loaded" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top"/>
+        <Grid x:Name="contentGrid" Margin="0,51,0,31" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblError" Content="Error" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Height="25" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

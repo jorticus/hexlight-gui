@@ -13,13 +13,25 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace HexLight.Control
 {
     
     public class HexControllerHIDSettings : ControllerSettings
     {
-        public string DeviceID = "0000";
+        private string deviceId = "VID_04D8&PID_1E00";
+        public string DeviceID
+        {
+            get { return deviceId; }
+            set { deviceId = value; ConnChanged("DeviceID"); }
+        }
+
+        public override UserControl GetSettingsPage()
+        {
+            return new HIDSettingsPage();
+        }
     }
 
     [ControllerName("HexLight USB-HID")]
@@ -164,8 +176,9 @@ namespace HexLight.Control
             this.Connected = true;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
+            Color = Colors.Black;
             this.Connected = false;
         }
     }

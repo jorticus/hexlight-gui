@@ -16,7 +16,7 @@ namespace HexLight.Control
     /// <summary>
     /// This defines the minimum required implementation for any RGB controller interface
     /// </summary>
-    public abstract class RGBController
+    public abstract class RGBController : IDisposable
     {
         public RGBColor Whitebalance { get; set; }
         public ControllerSettings Settings { get; set; }
@@ -68,6 +68,13 @@ namespace HexLight.Control
 
             
             Color = dest;
+        }
+
+        #endregion
+
+        public virtual void Dispose()
+        {
+            
         }
     }
 }
