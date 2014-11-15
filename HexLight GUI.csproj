@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="RenderIcon.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Util\CircularMath.cs" />
     <Compile Include="WinAPI\WinAPI.cs" />
     <Compile Include="WpfControls\CIEPlot.xaml.cs">
       <DependentUpon>CIEPlot.xaml</DependentUpon>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HexLight.Util;
 
 namespace HexLight.WpfControls
 {
@@ -162,29 +163,12 @@ namespace HexLight.WpfControls
 
         #region Calculations
 
-        private Point ComputeCartesianCoordinate(double angle, double radius, Point offset)
+        private Point CalculateCenter(Point offset)
         {
-            double cx = this.ActualWidth / 2.0 - offset.X;
-            double cy = this.ActualHeight / 2.0 - offset.Y;
-
-            angle = 180.0 - angle;
-
-            double x = radius * Math.Sin(angle * Math.PI / 180.0);
-            double y = radius * Math.Cos(angle * Math.PI / 180.0);
-
-            return new Point(cx + x, cy + y);
-        }
-
-        private double ComputeAngle(Point point, Point offset)
-        {
-            double cx = this.ActualWidth / 2.0 - offset.X;
-            double cy = this.ActualHeight / 2.0 - offset.Y;
-
-            double dx = point.X - cx;
-            double dy = point.Y - cy;
-
-            double angle = 180.0 - (Math.Atan2(dx, dy) / Math.PI * 180.0);
-            return angle;
+            return new Point(
+                this.ActualWidth / 2.0 - offset.X,
+                this.ActualHeight / 2.0 - offset.Y
+            );
         }
 
         #endregion
@@ -207,9 +191,10 @@ namespace HexLight.WpfControls
 
         private void UpdateArc()
         {
+            Point center = CalculateCenter(this.ArcOffset);
             double radius = this.ArcRadius + (this.selector.ActualWidth / 2);
-            arcPathFigure.StartPoint = ComputeCartesianCoordinate(this.ArcStartAngle, radius, this.ArcOffset);
-            arcPathSegment.Point = ComputeCartesianCoordinate(this.ArcStopAngle, radius, this.ArcOffset);
+            arcPathFigure.StartPoint = CircularMath.PointFromAngle(this.ArcStartAngle, radius, center);
+            arcPathSegment.Point = CircularMath.PointFromAngle(this.ArcStopAngle, radius, center);
             arcPathSegment.Size = new Size(radius, radius);
             arcPathSegment.IsLargeArc = (Math.Abs(this.ArcStopAngle - this.ArcStartAngle) > 180.0);
             arcPathSegment.SweepDirection = SweepDirection.Clockwise;
@@ -226,7 +211,7 @@ namespace HexLight.WpfControls
 
             if (!double.IsNaN(angle))
             {
-                Point valuePoint = ComputeCartesianCoordinate(angle, radius, this.ArcOffset);
+                Point valuePoint = CircularMath.PointFromAngle(angle, radius, CalculateCenter(this.ArcOffset));
 
                 this.selector.Margin = new Thickness(valuePoint.X - this.selector.ActualWidth / 2, valuePoint.Y - this.selector.ActualHeight / 2, 0, 0);
                 (this.selector.RenderTransform as RotateTransform).Angle = angle + 90.0;
@@ -260,17 +245,24 @@ namespace HexLight.WpfControls
             }
         }
 
+
+
         private void UpdateSelectorFromPoint(Point point)
         {
-            // Calculate value from point
-            double angle = ComputeAngle(point, this.ArcOffset);
-            double normAngle = (angle - this.ArcStartAngle) / (this.ArcStopAngle - this.ArcStartAngle);
-            //if (normAngle < 0.0) normAngle += 1.0;
+            // Calculate angle from point (0..360)
+            double angle = CircularMath.AngleFromPoint(point, CalculateCenter(this.ArcOffset));
 
-            double value = normAngle * (this.Maximum - this.Minimum) + this.Minimum;
-            this.Value = value;
+            // Convert to a normalized value between 0.0 and 1.0
+            double normAngle = CircularMath.NormMap(this.ArcStartAngle, this.ArcStopAngle, angle);
 
-            UpdateSelector();
+            // And update the value
+            if (!double.IsNaN(normAngle))
+            {
+                double value = normAngle * (this.Maximum - this.Minimum) + this.Minimum;
+                this.Value = value;
+
+                UpdateSelector();
+            }
         }
         #endregion
     }
