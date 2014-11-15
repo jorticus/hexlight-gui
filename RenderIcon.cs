@@ -15,10 +15,10 @@ namespace HexLight
     {
         public static void RenderToPng(int w, int h, string filename, double thumb_size = 0.5)
         {
-            var ctl = new HSVSelector();
+            var ctl = new WheelSelector();
 
             ctl.ThumbSize = w * thumb_size;
-            ctl.Saturation = 0.0;
+            ctl.Rad = 0.0;
             
             ctl.Measure(new Size(w, h));
             ctl.Arrange(new Rect(new Size(w, h)));

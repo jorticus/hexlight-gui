@@ -153,7 +153,7 @@ namespace HexLight.WpfControls
         {
             if (isDragging)
             {
-                // Calculate Hue and Saturation from the mouse position
+                // Calculate Theta and Rad from the mouse position
                 UpdateSelectorFromPoint(Mouse.GetPosition(cieplot));
             }
         }
@@ -162,8 +162,8 @@ namespace HexLight.WpfControls
         {
             this.X = Math.Max(Math.Min(point.X / cieplot.ActualWidth, 1.0), 0.0);
             this.Y = Math.Max(Math.Min(1.0 - (point.Y / cieplot.ActualHeight), 1.0), 0.0);
-            //this.Hue = CalculateHue(point);
-            //this.Saturation = CalculateSaturation(point);
+            //this.Theta = CalculateHue(point);
+            //this.Rad = CalculateSaturation(point);
             UpdateSelector();
         }
 
@@ -177,7 +177,7 @@ namespace HexLight.WpfControls
 
             double angle = Math.Atan2(dx, dy) / Math.PI * 180.0;
 
-            // Hue is offset by 180 degrees, so red appears at the top
+            // Theta is offset by 180 degrees, so red appears at the top
             double hue = angle - 180.0;
             if (hue < 0) hue += 360.0;
 
@@ -226,7 +226,7 @@ namespace HexLight.WpfControls
             // updated at the same time. I tried using two seaprate DoubleAnimations
             // but the second one would not update the property.
 
-            Point from = new Point(this.Hue, this.Saturation);
+            Point from = new Point(this.Theta, this.Rad);
             Point to = new Point(CalculateHue(point), CalculateSaturation(point));
             Duration duration = new Duration(TimeSpan.FromSeconds(AnimationSpeed));
 
@@ -239,7 +239,7 @@ namespace HexLight.WpfControls
 
             sb.Children.Add(hs_animation);
             Storyboard.SetTarget(hs_animation, this);
-            Storyboard.SetTargetProperty(hs_animation, new PropertyPath(HSVSelector.HSAnimationProperty));
+            Storyboard.SetTargetProperty(hs_animation, new PropertyPath(WheelSelector.HSAnimationProperty));
 
             sb.FillBehavior = FillBehavior.Stop;
 

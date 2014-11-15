@@ -68,6 +68,17 @@ namespace HexLight
             }
         }
 
+        public RGBColor RGB
+        {
+            get { return rgbColor; }
+            set
+            {
+                rgbColor = value;
+                this.RgbChanged();
+                this.ColorChanged();
+            }
+        }
+
         public float Hue
         {
             get { return hsvColor.hue; }
@@ -101,6 +112,17 @@ namespace HexLight
                 //if (value != hsvColor.value)
                 hsvColor.value = value;
 
+                this.HsvChanged();
+                this.ColorChanged();
+            }
+        }
+
+        public HSVColor HSV
+        {
+            get { return hsvColor; }
+            set
+            {
+                hsvColor = value;
                 this.HsvChanged();
                 this.ColorChanged();
             }
@@ -154,6 +176,17 @@ namespace HexLight
             set
             {
                 xyzColor.Z = value;
+                this.CieXYZChanged();
+                this.ColorChanged();
+            }
+        }
+
+        public CIEXYZColour XYZ
+        {
+            get { return xyzColor; }
+            set
+            {
+                xyzColor = value;
                 this.CieXYZChanged();
                 this.ColorChanged();
             }
@@ -264,14 +297,17 @@ namespace HexLight
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Red"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Green"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Blue"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("RGB"));
 
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Hue"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Saturation"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("HSV"));
 
                 this.PropertyChanged(this, new PropertyChangedEventArgs("CieX"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("CieY"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("CieZ"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("XYZ"));
 
                 this.PropertyChanged(this, new PropertyChangedEventArgs("CIExyY_x"));
                 this.PropertyChanged(this, new PropertyChangedEventArgs("CIExyY_y"));

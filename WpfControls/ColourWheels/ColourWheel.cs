@@ -11,18 +11,13 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using HexLight.Colour;
 
-namespace HexLight.WpfControls
+namespace HexLight.WpfControls.ColourWheels
 {
-    public class HSVWheel : Canvas
+    public abstract class ColourWheel : Canvas
     {
         WriteableBitmap bitmap;
 
         #region Dependency Properties
-        public static DependencyProperty SegmentCountProperty = DependencyProperty.Register("SegmentCount", typeof(uint), typeof(HSVWheel), new UIPropertyMetadata((uint)0, OnPropertyChanged));
-        public static DependencyProperty DialQualityProperty = DependencyProperty.Register("DialQuality", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)4.0, OnPropertyChanged));
-        public static DependencyProperty OuterSaturationProperty = DependencyProperty.Register("OuterSaturation", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)1.0, OnPropertyChanged));
-        public static DependencyProperty InnerGradientProperty = DependencyProperty.Register("InnerGradient", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)0.15, OnPropertyChanged));
-        public static DependencyProperty OuterGradientProperty = DependencyProperty.Register("OuterGradient", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)1.0, OnPropertyChanged));
         public static DependencyProperty InnerRadiusProperty = DependencyProperty.Register("InnerRadius", typeof(double), typeof(HSVWheel), new UIPropertyMetadata((double)0.0, OnPropertyChanged));
 
         public static void OnPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
@@ -34,41 +29,6 @@ namespace HexLight.WpfControls
         #endregion
 
         #region Designer Properties
-
-        [Description("The number of colour segments to use. Set to 0 to automatically determine based on SegmentQuality"), Category("Appearance")]
-        public uint SegmentCount
-        {
-            get { return (uint)base.GetValue(SegmentCountProperty); }
-            set { base.SetValue(SegmentCountProperty, value); }
-        }
-
-        [Description("If SegmentCount is 0, automatically calculate the number of segments required using this factor. Lower values produce more segments, and should be between 2.0 - 5.0"), Category("Appearance")]
-        public double DialQuality
-        {
-            get { return (double)base.GetValue(DialQualityProperty); }
-            set { base.SetValue(DialQualityProperty, value); }
-        }
-
-        [Description("The maximum saturation around the outer edge of the wheel. Must be between 0.0 to 1.0"), Category("Appearance")]
-        public double OuterSaturation
-        {
-            get { return (double)base.GetValue(OuterSaturationProperty); }
-            set { base.SetValue(OuterSaturationProperty, value); }
-        }
-
-        [Description("The endstop for the inner gradient, with 0.0 being in the middle and 1.0 being on the outer edge."), Category("Appearance")]
-        public double InnerGradient
-        {
-            get { return (double)base.GetValue(InnerGradientProperty); }
-            set { base.SetValue(InnerGradientProperty, value); }
-        }
-
-        [Description("The endstop for the outer gradient, with 0.0 being in the middle and 1.0 being on the outer edge."), Category("Appearance")]
-        public double OuterGradient
-        {
-            get { return (double)base.GetValue(OuterGradientProperty); }
-            set { base.SetValue(OuterGradientProperty, value); }
-        }
 
         [Description("The radius of the inner circle, as a percentage of the outer circle radius. Must be positive but less than 1.0"), Category("Appearance")]
         public double InnerRadius
@@ -96,13 +56,31 @@ namespace HexLight.WpfControls
             DrawHsvDial(dc);
         }
 
-        protected virtual RGBStruct ColourFunction(double r, double theta)
+        /// <summary>
+        /// The function used to draw the pixels in the colour wheel.
+        /// </summary>
+        protected RGBStruct ColourFunction(double r, double theta)
         {
-            HSVColor hsv = new HSVColor((float)((theta + Math.PI) * 180.0 / Math.PI), (float)r, 1.0f);
-            RGBColor rgb = hsv.ToRGB();
-
+            RGBColor rgb = ColourMapping(r, theta, 1.0);
             return new RGBStruct(rgb.Rb, rgb.Gb, rgb.Bb, 255);
         }
+
+        /// <summary>
+        /// The colour mapping between Rad/Theta and RGB
+        /// </summary>
+        /// <param name="r">Radius/Saturation, between 0 and 1</param>
+        /// <param name="theta">Angle/Hue, between 0 and 360</param>
+        /// <returns>The RGB colour</returns>
+        public virtual RGBColor ColourMapping(double radius, double theta, double value)
+        {
+            return new RGBColor(1.0f, 1.0f, 1.0f);
+        }
+
+        public virtual Point InverseColourMapping(RGBColor rgb)
+        {
+            return new Point(0, 0);
+        }
+
 
         protected void DrawHsvDial(DrawingContext drawingContext)
         {
@@ -142,7 +120,7 @@ namespace HexLight.WpfControls
                         {
                             // Compute the colour for the given pixel using polar co-ordinates
                             double pa = Math.Atan2(dx, dy);
-                            RGBStruct c = ColourFunction(pr / outer_radius, pa);
+                            RGBStruct c = ColourFunction(pr / outer_radius,  ((pa + Math.PI) * 180.0 / Math.PI));
 
                             // Anti-aliasing
                             // This works by adjusting the alpha to the alias error between the outer radius (which is integer) 

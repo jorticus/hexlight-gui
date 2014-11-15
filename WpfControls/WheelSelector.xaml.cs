@@ -15,25 +15,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HexLight.Colour;
+using HexLight.Util;
 
 namespace HexLight.WpfControls
 {
     /// <summary>
-    /// Interaction logic for HSVSelector.xaml
+    /// Interaction logic for WheelSelector.xaml
     /// </summary>
-    public partial class HSVSelector : UserControl
+    public partial class WheelSelector : UserControl
     {
+        //NOTE: Theta is equivalent to Hue, and Rad is equivalent to Saturation, if an HSV colour model is being used.
+        // This is done in case other colour models are being used.
 
         #region Dependency Properties
 
-        public static DependencyProperty ThumbSizeProperty = DependencyProperty.Register("ThumbSize", typeof(double), typeof(HSVSelector), new FrameworkPropertyMetadata(0.0, OnThumbSizeChanged));
-        public static DependencyProperty HueProperty = DependencyProperty.Register("Hue", typeof(double), typeof(HSVSelector), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
-        public static DependencyProperty SaturationProperty = DependencyProperty.Register("Saturation", typeof(double), typeof(HSVSelector), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
+        public static DependencyProperty ThumbSizeProperty = DependencyProperty.Register("ThumbSize", typeof(double), typeof(WheelSelector), new FrameworkPropertyMetadata(0.0, OnThumbSizeChanged));
+        public static DependencyProperty ThetaProperty = DependencyProperty.Register("Theta", typeof(double), typeof(WheelSelector), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
+        public static DependencyProperty RadProperty = DependencyProperty.Register("Rad", typeof(double), typeof(WheelSelector), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
+        public static DependencyProperty RGBValueProperty = DependencyProperty.Register("RGBValue", typeof(RGBColor), typeof(WheelSelector), new FrameworkPropertyMetadata(new RGBColor(1.0f, 1.0f, 1.0f), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
 
         public static void OnThumbSizeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             // Force a re-render of the object if the thumb size changes
-            HSVSelector ctl = (obj as HSVSelector);
+            WheelSelector ctl = (obj as WheelSelector);
 
             ctl.UpdateThumbSize();
             ctl.InvalidateMeasure();    // Updating the thumbsize changes the dial radius
@@ -41,19 +45,37 @@ namespace HexLight.WpfControls
             ctl.InvalidateVisual();     // And then re-paint everything
         }
 
+        private static bool propUpdateFlag = false;
+
         public static void OnColorChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
+
             // Force a re-render of the object if a visual-related property changes
-            HSVSelector ctl = (obj as HSVSelector);
+            WheelSelector ctl = (obj as WheelSelector);
             ctl.InvalidateVisual();
 
-            // Force an update of the property binding, because animations don't update the property itself.
-            //ctl.SetValue(args.Property, args.NewValue);
-            if (args.Property == HSVSelector.HueProperty)
-                ctl.Hue = (double)args.NewValue;
+            //TODO: Figure out how to handle circular dependencies properly.
+            // Currently I'm using propUpdateFlag to prevent infinite loops here.
+            // Ideally there should be a way to update the local values without calling 
+            // this callback again (but still notifying other users)
 
-            if (args.Property == HSVSelector.SaturationProperty)
-                ctl.Saturation = (double)args.NewValue;
+            if (!propUpdateFlag)
+            {
+                propUpdateFlag = true;
+
+                if (args.Property == WheelSelector.ThetaProperty || args.Property == WheelSelector.RadProperty)
+                    ctl.RGBValue = ctl.wheel.ColourMapping(ctl.Rad, CircularMath.Mod(ctl.Theta), 1.0);
+
+                if (args.Property == WheelSelector.RGBValueProperty)
+                {
+                    var rgb = (RGBColor)args.NewValue;
+                    var pt = ctl.wheel.InverseColourMapping(rgb);
+                    ctl.SetCurrentValue(ThetaProperty, pt.X);
+                    ctl.SetCurrentValue(RadProperty, pt.Y);
+                }
+
+                propUpdateFlag = false;
+            }
         }
 
         #endregion
@@ -67,17 +89,24 @@ namespace HexLight.WpfControls
             set { base.SetValue(ThumbSizeProperty, value); UpdateThumbSize(); }
         }
 
-        [Description("Hue, 0.0 to 360.0 degrees"), Category("Common")]
-        public double Hue
+        [Description("Theta, an angle, 0.0 to 360.0 degrees"), Category("Common")]
+        public double Theta
         {
-            get { return (double)base.GetValue(HueProperty); }
-            set { base.SetValue(HueProperty, value); }
+            get { return (double)base.GetValue(ThetaProperty); }
+            set { base.SetValue(ThetaProperty, CircularMath.Mod(value)); }
         }
-        [Description("Saturation, 0.0 (white) to 1.0 (saturated)"), Category("Common")]
-        public double Saturation
+        [Description("Rad, radial distance, 0.0 to 1.0"), Category("Common")]
+        public double Rad
         {
-            get { return (double)base.GetValue(SaturationProperty); }
-            set { base.SetValue(SaturationProperty, value); }
+            get { return (double)base.GetValue(RadProperty); }
+            set { base.SetValue(RadProperty, value); }
+        }
+
+        [Description("Currently selected colour"), Category("Common")]
+        public RGBColor RGBValue
+        {
+            get { return (RGBColor)base.GetValue(RGBValueProperty); }
+            set { base.SetValue(RGBValueProperty, value); }
         }
 
         #endregion
@@ -85,15 +114,45 @@ namespace HexLight.WpfControls
         #region Other Properties
 
         private HSVColor hsv;
-        public HSVColor Color { get { return hsv; } }
+        private RGBColor rgbValue;
+        //public HSVColor Color { get { return hsv; } }
+
+
+        public Type WheelClass { 
+            get { return wheelClass; }
+            set { wheelClass = value; InstantiateWheel(); }
+        }
+
+        protected Type wheelClass = typeof(ColourWheels.HSVWheel);
+        protected ColourWheels.ColourWheel wheel;
 
         #endregion
 
         private bool isDragging = false;
       
-        public HSVSelector()
+        public WheelSelector()
         {
             InitializeComponent();
+
+            if (wheel == null)
+                InstantiateWheel();
+        }
+
+        protected void InstantiateWheel()
+        {
+            if (wheel != null)
+                this.grid.Children.Remove(wheel);
+
+            if (wheelClass != null)
+            {
+                wheel = (ColourWheels.ColourWheel)Activator.CreateInstance(WheelClass);
+                wheel.Name = "wheel";
+                wheel.Margin = new Thickness(10.0);
+                wheel.MouseDown += wheel_MouseDown;
+                wheel.CacheMode = new BitmapCache();
+                Canvas.SetZIndex(wheel, -1);
+                this.grid.Children.Add(wheel);
+            }
         }
 
         #region Rendering
@@ -114,18 +173,18 @@ namespace HexLight.WpfControls
 
         private void UpdateSelector()
         {
-            if (!double.IsNaN(this.Hue))
+            if (!double.IsNaN(this.Theta) && !double.IsNaN(this.Rad))
             {
                 double cx = this.ActualWidth / 2.0;
                 double cy = this.ActualHeight / 2.0;
 
-                double radius = (wheel.ActualOuterRadius - wheel.ActualInnerRadius) * this.Saturation + wheel.ActualInnerRadius;
+                double radius = (wheel.ActualOuterRadius - wheel.ActualInnerRadius) * this.Rad + wheel.ActualInnerRadius;
 
                 // Snap to middle of wheel when inside InnerRadius
                 if (radius < wheel.ActualInnerRadius + float.Epsilon)
                     radius = 0.0;
 
-                double angle = this.Hue + 180.0f;
+                double angle = this.Theta + 180.0f;
 
                 double x = radius * Math.Sin(angle * Math.PI / 180.0);
                 double y = radius * Math.Cos(angle * Math.PI / 180.0);
@@ -133,12 +192,12 @@ namespace HexLight.WpfControls
                 double mx = cx + x - this.selector.ActualWidth / 2;
                 double my = cy + y - this.selector.ActualHeight / 2;
 
-                hsv.hue = (float)Hue;
-                hsv.sat = (float)Saturation;
+                hsv.hue = (float)Theta;
+                hsv.sat = (float)Rad;
                 hsv.value = 1.0f;
 
                 this.selector.Margin = new Thickness(mx, my, 0, 0);
-                this.selector.Fill = new SolidColorBrush(hsv.ToRGB());
+                this.selector.Fill = new SolidColorBrush(RGBValue);
                 //this.selector.StrokeThickness = this.ThumbSize / 5.0;
             }
         }
@@ -173,19 +232,20 @@ namespace HexLight.WpfControls
         {
             if (isDragging)
             {
-                // Calculate Hue and Saturation from the mouse position
+                // Calculate Theta and Rad from the mouse position
                 UpdateSelectorFromPoint(Mouse.GetPosition(this));
             }
         }
 
         private void UpdateSelectorFromPoint(Point point)
         {
-            this.Hue = CalculateHue(point);
-            this.Saturation = CalculateSaturation(point);
+            this.Theta = CalculateTheta(point);
+            this.Rad = CalculateR(point);
+            //this.RGBValue = wheel.ColourMapping(this.Rad, this.Theta, 1.0);
             UpdateSelector();
         }
 
-        private double CalculateHue(Point point)
+        private double CalculateTheta(Point point)
         {
             double cx = this.ActualWidth / 2;
             double cy = this.ActualHeight / 2;
@@ -195,14 +255,11 @@ namespace HexLight.WpfControls
 
             double angle = Math.Atan2(dx, dy) / Math.PI * 180.0;
 
-            // Hue is offset by 180 degrees, so red appears at the top
-            double hue = angle - 180.0;
-            if (hue < 0) hue += 360.0;
-
-            return hue;
+            // Theta is offset by 180 degrees, so red appears at the top
+            return CircularMath.Mod(angle - 180.0);
         }
 
-        private double CalculateSaturation(Point point)
+        private double CalculateR(Point point)
         {
             double cx = this.ActualWidth / 2;
             double cy = this.ActualHeight / 2;
@@ -212,10 +269,8 @@ namespace HexLight.WpfControls
 
             double dist = Math.Sqrt(dx * dx + dy * dy);
 
-            // Saturation is defined between OuterRadius and InnerRadius (not OuterGradient and InnerGradient)
-            float sat = (float)((Math.Min(dist, wheel.ActualOuterRadius) - wheel.ActualInnerRadius) / (wheel.ActualOuterRadius - wheel.ActualInnerRadius));
-
-            return sat;
+            return Math.Min(dist, wheel.ActualOuterRadius) / wheel.ActualOuterRadius;
+            //return (float)((Math.Min(dist, wheel.ActualOuterRadius) - wheel.ActualInnerRadius) / (wheel.ActualOuterRadius - wheel.ActualInnerRadius));
         }
 
         #endregion
@@ -227,7 +282,7 @@ namespace HexLight.WpfControls
 
         private Storyboard sb = null;
 
-        private static DependencyProperty HSAnimationProperty = DependencyProperty.Register("HSAnimation", typeof(Point), typeof(HSVSelector), new FrameworkPropertyMetadata(OnHSPropertyAnimated));
+        private static DependencyProperty HSAnimationProperty = DependencyProperty.Register("HSAnimation", typeof(Point), typeof(WheelSelector), new FrameworkPropertyMetadata(OnHSPropertyAnimated));
 
         private Point HSAnimation
         {
@@ -237,10 +292,10 @@ namespace HexLight.WpfControls
 
         private static void OnHSPropertyAnimated(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            HSVSelector ctl = (obj as HSVSelector);
+            WheelSelector ctl = (obj as WheelSelector);
 
-            ctl.Hue = (args.NewValue as Point?).Value.X;
-            ctl.Saturation = (args.NewValue as Point?).Value.Y;
+            ctl.Theta = (args.NewValue as Point?).Value.X;
+            ctl.Rad = (args.NewValue as Point?).Value.Y;
 
             ctl.InvalidateVisual();
         }
@@ -255,8 +310,8 @@ namespace HexLight.WpfControls
             // updated at the same time. I tried using two seaprate DoubleAnimations
             // but the second one would not update the property.
 
-            Point from = new Point(this.Hue, this.Saturation);
-            Point to = new Point(CalculateHue(point), CalculateSaturation(point));
+            Point from = new Point(this.Theta, this.Rad);
+            Point to = new Point(CalculateTheta(point), CalculateR(point));
 
             // The shortest path actually crosses the 360-0 discontinuity
             if (from.X - to.X > 180.0)
@@ -275,7 +330,7 @@ namespace HexLight.WpfControls
 
             sb.Children.Add(hs_animation);
             Storyboard.SetTarget(hs_animation, this);
-            Storyboard.SetTargetProperty(hs_animation, new PropertyPath(HSVSelector.HSAnimationProperty));
+            Storyboard.SetTargetProperty(hs_animation, new PropertyPath(WheelSelector.HSAnimationProperty));
 
             sb.FillBehavior = FillBehavior.Stop;
 

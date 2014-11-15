@@ -38,7 +38,7 @@ namespace HexLight.WpfControls
 
         public static void OnPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            HSVWheel ctl = (obj as HSVWheel);
+            CIEPlotCanvas ctl = (obj as CIEPlotCanvas);
             ctl.InvalidateVisual();
         }
 

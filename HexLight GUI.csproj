@@ -104,11 +104,13 @@
     <Compile Include="WpfControls\CIESelector.xaml.cs">
       <DependentUpon>CIESelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WpfControls\HSVSelector.xaml.cs">
-      <DependentUpon>HSVSelector.xaml</DependentUpon>
+    <Compile Include="WpfControls\ColourWheels\HSVWheel.cs" />
+    <Compile Include="WpfControls\WheelSelector.xaml.cs">
+      <DependentUpon>WheelSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
-    <Compile Include="WpfControls\HSVWheel.cs" />
+    <Compile Include="WpfControls\ColourWheels\ColourWheel.cs" />
+    <Compile Include="WpfControls\ColourWheels\HybridWheel.cs" />
     <Compile Include="WpfControls\RadialSlider.xaml.cs">
       <DependentUpon>RadialSlider.xaml</DependentUpon>
     </Compile>
@@ -132,7 +134,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WpfControls\HSVSelector.xaml">
+    <Page Include="WpfControls\WheelSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
