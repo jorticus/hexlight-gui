@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HexLight.Control" 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type local:HexControllerHIDSettings}}" Height="80" Width="145">
+             d:DataContext="{d:DesignInstance {x:Type local:HexControllerHIDSettings}}" Height="105" Width="145">
     <Grid>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,34,0,0" TextWrapping="Wrap" Text="{Binding DeviceID}" VerticalAlignment="Top" Width="120"/>
         <Label Content="USB Device ID" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="USB Audio" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" IsChecked="{Binding UsbAudioEnabled}"/>
 
     </Grid>
 </UserControl>

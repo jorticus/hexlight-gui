@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Xml.Serialization;
 
 namespace HexLight.Control
 {
@@ -12,9 +13,26 @@ namespace HexLight.Control
 
     public abstract class ControllerSettings : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Returns the XAML form to use for the settings model
+        /// </summary>
         public abstract UserControl GetSettingsPage();
 
+        /// <summary>
+        /// Set to the current controller instance when instantiated
+        /// through Controllers.LoadController()
+        /// </summary>
+        [XmlIgnore]
+        public RGBController Controller;
+
         #region Property-Change Handlers
+
+        /// <summary>
+        /// Call when a connection-related property is changed,
+        /// so the settings handler knows to re-load the entire controller to make 
+        /// sure the new connection parameters are valid.
+        /// </summary>
+        /// <param name="name"></param>
         protected void ConnChanged(string name)
         {
             PropChanged(name);
@@ -23,6 +41,10 @@ namespace HexLight.Control
                 ConnectionPropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
+        /// <summary>
+        /// Call when a regular property is changed (Used for XAML model binding)
+        /// </summary>
+        /// <param name="name"></param>
         protected void PropChanged(string name)
         {
             if (PropertyChanged != null)
@@ -50,7 +72,8 @@ namespace HexLight.Control
     }
 
     /// <summary>
-    /// 
+    /// Use this attribute to decorate subclasses of RGBController.
+    /// specifies what class to use to use as the viewmodel for the settings form
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ControllerSettingsType : System.Attribute

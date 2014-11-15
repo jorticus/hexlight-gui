@@ -27,6 +27,9 @@ namespace HexLight.Control
             set { port = value; ConnChanged("Port"); }
         }
 
+        /// <summary>
+        /// Returns the XAML form to use for the settings model
+        /// </summary>
         public override UserControl GetSettingsPage()
         {
             return new SerialSettingsPage();

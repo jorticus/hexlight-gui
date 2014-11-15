@@ -22,12 +22,31 @@ namespace HexLight.Control
     public class HexControllerHIDSettings : ControllerSettings
     {
         private string deviceId = "VID_04D8&PID_1E00";
+        private bool usbAudioEnabled = false;
+
         public string DeviceID
         {
             get { return deviceId; }
             set { deviceId = value; ConnChanged("DeviceID"); }
         }
 
+        public bool UsbAudioEnabled
+        {
+            get { return usbAudioEnabled; }
+            set {
+                // Update the controller (Immediate effect)
+                var controller = (this.Controller as HexControllerHID);
+                if (controller != null)
+                    controller.EnableUsbAudio(value);
+
+                usbAudioEnabled = value;
+                PropChanged("UsbAudioEnabled");
+            }
+        }
+
+        /// <summary>
+        /// Returns the XAML form to use for the settings model
+        /// </summary>
         public override UserControl GetSettingsPage()
         {
             return new HIDSettingsPage();
@@ -38,7 +57,7 @@ namespace HexLight.Control
     [ControllerSettingsType(typeof(HexControllerHIDSettings))]
     public class HexControllerHID : HexController, IDisposable
     {
-        [XmlAttribute]
+        //[XmlAttribute]
         private string deviceID;
         private HidDevice device;
 
@@ -169,6 +188,8 @@ namespace HexLight.Control
             this.deviceID = settings.DeviceID;
             this.device = new HidDevice(deviceID);
             this.device.Scan();
+
+            this.EnableUsbAudio(settings.UsbAudioEnabled);
 
             // required when running outside visual studio for some reason???
             //SendPacket(0x00);

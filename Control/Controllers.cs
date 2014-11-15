@@ -179,9 +179,11 @@ namespace HexLight.Control
                 // Try and instantiate the controller with the current config
                 try
                 {
-                    return (RGBController)Activator.CreateInstance(controllerType,
+                    var controller = (RGBController)Activator.CreateInstance(controllerType,
                         new object[] { controllerSettings }
                     );
+                    controllerSettings.Controller = controller; // Back-reference
+                    return controller;
                 }
                 catch (TargetInvocationException ex) { throw ex.InnerException; }
 

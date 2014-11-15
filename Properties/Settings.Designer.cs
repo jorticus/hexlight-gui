@@ -25,7 +25,7 @@ namespace HexLight.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HexLight.Control.HexControllerHID")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Controller {
             get {
                 return ((string)(this["Controller"]));
