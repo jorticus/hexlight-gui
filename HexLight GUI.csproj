@@ -91,15 +91,11 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WinAPI\SetupAPI.cs" />
-    <Compile Include="WinAPI\WinApiFile.cs" />
-    <Compile Include="HID\HID.cs" />
     <Compile Include="PopupDial.xaml.cs">
       <DependentUpon>PopupDial.xaml</DependentUpon>
     </Compile>
     <Compile Include="RenderIcon.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Util\StructInterop.cs" />
     <Compile Include="WinAPI\WinAPI.cs" />
     <Compile Include="WpfControls\CIEPlot.xaml.cs">
       <DependentUpon>CIEPlot.xaml</DependentUpon>

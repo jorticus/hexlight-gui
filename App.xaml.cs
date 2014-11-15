@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Timers;
 using HexLight.Control;
-using HexLight.Util;
 using HexLight.Colour;
 using HexLight.Properties;
 using System.Windows.Media;
@@ -75,7 +74,7 @@ namespace HexLight
 
                 e.Handled = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Fail-safe
                 Shutdown(1);
@@ -190,7 +189,7 @@ namespace HexLight
                     controller.Brightness = 0.0f;
                 }
             }
-            catch (Exception ex) { } // Don't worry about exceptions while closing down
+            catch (Exception) { } // Don't worry about exceptions while closing down
         }
 
 

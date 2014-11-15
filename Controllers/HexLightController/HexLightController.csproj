@@ -46,6 +46,7 @@
     <Compile Include="HexController.cs" />
     <Compile Include="HexControllerHID.cs" />
     <Compile Include="HexControllerSerial.cs" />
+    <Compile Include="HID\HID.cs" />
     <Compile Include="SerialSettingsPage.xaml.cs">
       <DependentUpon>SerialSettingsPage.xaml</DependentUpon>
     </Compile>
@@ -54,6 +55,9 @@
     <Compile Include="HIDSettingsPage.xaml.cs">
       <DependentUpon>HIDSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\StructInterop.cs" />
+    <Compile Include="WinAPI\SetupAPI.cs" />
+    <Compile Include="WinAPI\WinApiFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HexColour\HexColour.csproj">

@@ -14,7 +14,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 //using Hardcodet.Wpf.TaskbarNotification;
-using HexLight.WinAPI;
 
 namespace HexLight
 {
