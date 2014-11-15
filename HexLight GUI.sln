@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexLight GUI", "HexLight GUI.csproj", "{8EDEC4E2-49B8-448F-BAC9-FBFA42A3E21E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexColour", "HexColour\HexColour.csproj", "{E9FA70FB-56C9-446D-93D8-77389E8497FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexLightController", "Controllers\HexLightController\HexLightController.csproj", "{5BD0BEE5-0CE3-44E7-AA44-426BA019CCF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{89C0D6F2-B58C-4513-A7D0-A34310A15090}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5BD0BEE5-0CE3-44E7-AA44-426BA019CCF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD0BEE5-0CE3-44E7-AA44-426BA019CCF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BD0BEE5-0CE3-44E7-AA44-426BA019CCF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C0D6F2-B58C-4513-A7D0-A34310A15090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C0D6F2-B58C-4513-A7D0-A34310A15090}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C0D6F2-B58C-4513-A7D0-A34310A15090}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C0D6F2-B58C-4513-A7D0-A34310A15090}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
