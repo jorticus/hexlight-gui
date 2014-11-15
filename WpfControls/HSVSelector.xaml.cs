@@ -251,16 +251,19 @@ namespace HexLight.WpfControls
             // by using databindings for the From and To fields.
             // This would allow the style to be overridden later on.
 
-            //TODO: Animate through white
-
-            //TODO: Handle discontinuity at hue=0=360 degrees
-
             //NOTE: Must use PointAnimation so both hue and saturation get
             // updated at the same time. I tried using two seaprate DoubleAnimations
             // but the second one would not update the property.
 
             Point from = new Point(this.Hue, this.Saturation);
             Point to = new Point(CalculateHue(point), CalculateSaturation(point));
+
+            // The shortest path actually crosses the 360-0 discontinuity
+            if (from.X - to.X > 180.0)
+                to.X += 360.0;
+            if (from.X - to.X < -180.0)
+                to.X -= 360.0;
+
             Duration duration = new Duration(TimeSpan.FromSeconds(AnimationSpeed));
 
             sb = new Storyboard();
