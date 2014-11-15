@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph DataVirtualized="True" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="(@1 @2 @5 Member=PropertyChanged)" Category="CodeSchema_Event" Bounds="862.37797757008,240.808526656899,147.326666666666,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="PropertyChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=32 StartCharacterOffset=49 EndLineNumber=32 EndCharacterOffset=49)" UseManualLocation="True" />
+    <Node Id="(@1 @2 Type=RGBController Member=Color)" Category="CodeSchema_Property" Bounds="900.013173518963,-638.163636230302,87.0190614540488,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Color" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/RGBController.cs&quot; StartLineNumber=28 StartCharacterOffset=8 EndLineNumber=28 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="(@7 @2 @11 Member=GetSettingsPage)" Category="CodeSchema_Method" Bounds="579.589075313764,-133.61109590097,123.386666666667,25.9600000000001" CodeSchemaProperty_IsPublic="True" CommonLabel="GetSettingsPage" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" IsOverloaded="True" Label="GetSettingsPage" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=41 StartCharacterOffset=8 EndLineNumber=41 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="(@7 @2 @14 Member=GetSettingsPage)" Category="CodeSchema_Method" Bounds="1208.0404313151,-149.194241027832,123.386666666667,25.96" CodeSchemaProperty_IsPublic="True" CommonLabel="GetSettingsPage" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" IsOverloaded="True" Label="GetSettingsPage" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=32 StartCharacterOffset=8 EndLineNumber=32 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@10" Category="CodeSchema_Class" Bounds="572.800077920381,-383.940285016665,169.213333333333,141.920321154785" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerHID" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="HexControllerHID" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=47 StartCharacterOffset=4 EndLineNumber=47 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@12" Category="CodeSchema_Class" Bounds="557.483655810629,-173.61119590097,196.853333333333,195.960400000001" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerHIDSettings" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="HexControllerHIDSettings" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=21 StartCharacterOffset=4 EndLineNumber=21 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@13" Category="CodeSchema_Class" Bounds="1155.54851586017,-401.212756650369,177.83,150.71780269165" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerSerial" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="HexControllerSerial" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=38 StartCharacterOffset=4 EndLineNumber=38 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@15" Category="CodeSchema_Class" Bounds="1166.99876464844,-189.194335557177,205.47,195.9604" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerSerialSettings" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="HexControllerSerialSettings" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=13 StartCharacterOffset=4 EndLineNumber=13 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@16" Category="CodeSchema_Class" Bounds="880.013173518963,-678.163736230302,141.089061454056,140.000300000012" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="RGBController" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="RGBController" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/RGBController.cs&quot; StartLineNumber=18 StartCharacterOffset=4 EndLineNumber=18 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@19" Category="CodeSchema_Class" Bounds="-195.009726243735,-390.725277279274,577.970152587891,253.840400224083" CodeSchemaProperty_IsPublic="True" CommonLabel="SettingsWindow" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="SettingsWindow" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/obj/Debug/SettingsWindow.g.i.cs&quot; StartLineNumber=41 StartCharacterOffset=4 EndLineNumber=41 EndCharacterOffset=4)" />
+    <Node Id="@20" Category="CodeSchema_Method" Bounds="592.800077920381,-343.940185016665,129.213333333333,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerHID" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Constructor" Label="HexControllerHID" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=170 StartCharacterOffset=8 EndLineNumber=170 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@21" Category="CodeSchema_Method" Bounds="1175.54851586017,-361.212656650369,137.83,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="HexControllerSerial" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Constructor" Label="HexControllerSerial" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=130 StartCharacterOffset=8 EndLineNumber=130 EndCharacterOffset=8)" />
+    <Node Id="@22" Category="CodeSchema_Method" Bounds="80.6002890150542,-350.725166246488,130.663333333333,25.96" CodeSchemaProperty_IsProtected="True" CommonLabel="LoadSettingsPage" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="LoadSettingsPage" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/SettingsWindow.xaml.cs&quot; StartLineNumber=152 StartCharacterOffset=8 EndLineNumber=152 EndCharacterOffset=8)" />
+    <Node Id="@24" Category="CodeSchema_Method" Bounds="862.373720658983,67.4972751781707,111.600972586667,25.9562828799999" CodeSchemaProperty_IsProtected="True" CommonLabel="ConnChanged" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="ConnChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=18 StartCharacterOffset=8 EndLineNumber=18 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@25" Category="CodeSchema_Method" Bounds="18.1040207045073,45.0357743052702,151.743333333333,25.96" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="GetControllerByName" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="GetControllerByName" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/Controllers.cs&quot; StartLineNumber=110 StartCharacterOffset=8 EndLineNumber=110 EndCharacterOffset=8)" />
+    <Node Id="@26" Category="CodeSchema_Method" Bounds="863.911053392004,129.852043776898,108.54950048,25.9562828799999" CodeSchemaProperty_IsProtected="True" CommonLabel="PropChanged" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="PropChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=26 StartCharacterOffset=8 EndLineNumber=26 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@27" Category="CodeSchema_Method" Bounds="88.6137139011216,-238.804973527982,114.636666666667,25.96" CodeSchemaProperty_IsProtected="True" CommonLabel="LoadController" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="LoadController" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/SettingsWindow.xaml.cs&quot; StartLineNumber=105 StartCharacterOffset=8 EndLineNumber=105 EndCharacterOffset=8)" />
+    <Node Id="@29" Category="CodeSchema_Method" Bounds="-175.009726243735,-294.765067979886,289.883333333333,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="ControllerSettings_ConnectionPropertyChanged" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="ControllerSettings_ConnectionPropertyChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/SettingsWindow.xaml.cs&quot; StartLineNumber=188 StartCharacterOffset=8 EndLineNumber=188 EndCharacterOffset=8)" />
+    <Node Id="@31" Category="CodeSchema_Method" Bounds="176.903759677489,-294.765075609281,186.056666666667,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="cbDrivers_SelectionChanged" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="cbDrivers_SelectionChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/SettingsWindow.xaml.cs&quot; StartLineNumber=233 StartCharacterOffset=8 EndLineNumber=233 EndCharacterOffset=8)" />
+    <Node Id="@32" Category="CodeSchema_Method" Bounds="18.1039527520332,-10.9243392201204,150,25.96" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="GetControllerSettings" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="GetControllerSettings" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/Controllers.cs&quot; StartLineNumber=124 StartCharacterOffset=8 EndLineNumber=124 EndCharacterOffset=8)" />
+    <Node Id="@33" Category="CodeSchema_Method" Bounds="35.7860161472153,-66.8845900746126,114.636666666667,25.96" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="LoadController" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="LoadController" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/Controllers.cs&quot; StartLineNumber=172 StartCharacterOffset=8 EndLineNumber=172 EndCharacterOffset=8)" />
+    <Node Id="@34" Category="CodeSchema_Method" Bounds="-175.009596035402,-182.844978258206,122.316666666667,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CommonLabel="SettingsWindow" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Constructor" Label="SettingsWindow" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/SettingsWindow.xaml.cs&quot; StartLineNumber=75 StartCharacterOffset=8 EndLineNumber=75 EndCharacterOffset=8)" />
+    <Node Id="@35" Category="CodeSchema_Property" Bounds="1219.09811885756,-93.2341355571771,85.2923947873815,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Baud" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=18 StartCharacterOffset=8 EndLineNumber=18 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@36" Category="CodeSchema_Property" Bounds="828.821740460629,-358.4491765668,113.585728120713,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Brightness" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexController.cs&quot; StartLineNumber=93 StartCharacterOffset=8 EndLineNumber=93 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@37" Category="CodeSchema_Property" Bounds="973.105073793924,-358.4491765668,87.0190614540494,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Color" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexController.cs&quot; StartLineNumber=83 StartCharacterOffset=8 EndLineNumber=83 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@38" Category="CodeSchema_Event" Bounds="862.377977570038,185.808426656898,207.98,25.0000000000005" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ConnectionPropertyChanged" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=33 StartCharacterOffset=49 EndLineNumber=33 EndCharacterOffset=49)" UseManualLocation="True" />
+    <Node Id="@39" Category="CodeSchema_Property" Bounds="579.589174853439,-22.6508959009698,105.219061454048,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="DeviceID" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=26 StartCharacterOffset=8 EndLineNumber=26 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@4" Category="CodeSchema_Class" Bounds="-1.89604724796681,-106.884687534054,191.743401285807,253.840784716797" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Controllers" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="Controllers" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/Controllers.cs&quot; StartLineNumber=15 StartCharacterOffset=4 EndLineNumber=15 EndCharacterOffset=4)" />
+    <Node Id="@40" Category="CodeSchema_Method" Bounds="904.677284751796,295.854181266608,123.386666666667,25.96" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="GetSettingsPage" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="GetSettingsPage" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=18 StartCharacterOffset=8 EndLineNumber=18 EndCharacterOffset=8)" />
+    <Node Id="@41" Category="CodeSchema_Method" Bounds="617.66298400762,-287.98006386188,79.4866666666667,25.96" CodeSchemaProperty_IsProtected="True" CommonLabel="Initialize" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="Initialize" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=176 StartCharacterOffset=8 EndLineNumber=176 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@42" Category="CodeSchema_Method" Bounds="1204.720243562,-296.455053958718,79.4866666666667,25.96" CodeSchemaProperty_IsProtected="True" CommonLabel="Initialize" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="Initialize" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=136 StartCharacterOffset=8 EndLineNumber=136 EndCharacterOffset=8)" />
+    <Node Id="@43" Category="CodeSchema_Method" Bounds="38.1790207045073,100.995994642184,111.593333333333,25.96" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsStatic="True" CommonLabel="ListControllers" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="ListControllers" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/Controllers.cs&quot; StartLineNumber=43 StartCharacterOffset=8 EndLineNumber=43 EndCharacterOffset=8)" />
+    <Node Id="@44" Category="CodeSchema_Property" Bounds="1220.52478552423,-38.234035557177,80.4390614540484,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Port" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///c:/users/jared/documents/projects/hexlight/hexlight gui/controllers/hexlightcontroller/hexcontrollerserial.cs&quot; StartLineNumber=23 StartCharacterOffset=8 EndLineNumber=23 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@45" Category="CodeSchema_Property" Bounds="900.013173518971,-583.163536230289,101.089061454048,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="Settings" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/RGBController.cs&quot; StartLineNumber=21 StartCharacterOffset=8 EndLineNumber=21 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@46" Category="CodeSchema_Method" Bounds="912.207926839193,-303.4490765668,74.8133333333334,25.96" CodeSchemaProperty_IsPrivate="True" CommonLabel="Update" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Method" Label="Update" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexController.cs&quot; StartLineNumber=222 StartCharacterOffset=8 EndLineNumber=222 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@47" Category="CodeSchema_Property" Bounds="579.589174853446,-77.6509959009703,152.642394787381,25.0000000000005" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" FunctionTypeFlags="Property Assignment" Group="Collapsed" Label="UsbAudioEnabled" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexControllerHID.cs&quot; StartLineNumber=32 StartCharacterOffset=8 EndLineNumber=32 EndCharacterOffset=8)" UseManualLocation="True" />
+    <Node Id="@6" Category="CodeSchema_Class" Bounds="842.373720658983,27.4971751781707,247.984256911055,314.317106088437" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="ControllerSettings" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="ControllerSettings" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Control/ControllerBase.cs&quot; StartLineNumber=12 StartCharacterOffset=4 EndLineNumber=12 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="@9" Category="CodeSchema_Class" Bounds="808.821740460629,-398.4492765668,271.302394787344,140.9603" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="HexController" DelayedChildNodesState="Incomplete" DelayedCrossGroupLinksState="Fetched" Group="Expanded" Icon="CodeSchema_Class" Label="HexController" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=&quot;file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/Controllers/HexLightController/HexController.cs&quot; StartLineNumber=11 StartCharacterOffset=4 EndLineNumber=11 EndCharacterOffset=4)" UseManualLocation="True" />
+    <Node Id="Application" Bounds="-215.009726243735,-430.725377279274,617.97015258789,597.681554644749" Group="Expanded" Label="Application" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="@10" Target="@20" Category="Contains" FetchingParent="@10" />
+    <Link Source="@10" Target="@41" Category="Contains" FetchingParent="@10" />
+    <Link Source="@10" Target="@9" Category="InheritsFrom" Bounds="742.013411253714,-320.390812074588,57.3212529415155,2.99299744255501" Weight="1" />
+    <Link Source="@12" Target="(@7 @2 @11 Member=GetSettingsPage)" Category="Contains" FetchingParent="@12" />
+    <Link Source="@12" Target="@39" Category="Contains" FetchingParent="@12" />
+    <Link Source="@12" Target="@47" Category="Contains" FetchingParent="@12" />
+    <Link Source="@12" Target="@6" Category="InheritsFrom" Bounds="863.163433121517,-172.199105726472,20.1458856135615,245.691189418079" Weight="1" />
+    <Link Source="@13" Target="@21" Category="Contains" FetchingParent="@13" />
+    <Link Source="@13" Target="@42" Category="Contains" FetchingParent="@13" />
+    <Link Source="@13" Target="@9" Category="InheritsFrom" Bounds="1089.62389909451,-326.945648899464,65.9246167656665,0.464842756884707" Weight="1" />
+    <Link Source="@15" Target="(@7 @2 @14 Member=GetSettingsPage)" Category="Contains" FetchingParent="@15" />
+    <Link Source="@15" Target="@35" Category="Contains" FetchingParent="@15" />
+    <Link Source="@15" Target="@44" Category="Contains" FetchingParent="@15" />
+    <Link Source="@15" Target="@6" Category="InheritsFrom" Weight="1" />
+    <Link Source="@16" Target="(@1 @2 Type=RGBController Member=Color)" Category="Contains" FetchingParent="@16" />
+    <Link Source="@16" Target="@45" Category="Contains" FetchingParent="@16" />
+    <Link Source="@19" Target="@22" Category="Contains" FetchingParent="@19" />
+    <Link Source="@19" Target="@27" Category="Contains" FetchingParent="@19" />
+    <Link Source="@19" Target="@29" Category="Contains" FetchingParent="@19" />
+    <Link Source="@19" Target="@31" Category="Contains" FetchingParent="@19" />
+    <Link Source="@19" Target="@34" Category="Contains" FetchingParent="@19" />
+    <Link Source="@20" Target="@41" Category="CodeSchema_Calls" Bounds="657.406448331197,-317.980189819336,0.000160332349423697,21.0001135256529" Weight="1" />
+    <Link Source="@20" Target="@45" Category="CodeSchema_Calls" Bounds="955.539676838987,-727.281732308501,6.52091848664247,255.027882821196" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@20" Target="@6" Category="References" Bounds="665.183993818605,-317.980189819336,202.375479919342,337.757118717142" Weight="1" />
+    <Link Source="@21" Target="@42" Category="CodeSchema_Calls" Bounds="1244.46352809405,-335.252656650369,2.80847539215756E-05,29.7976026916544" Weight="1" />
+    <Link Source="@21" Target="@45" Category="CodeSchema_Calls" Bounds="616.337467530593,-126.831871870091,159.32151331626,307.966860774612" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@21" Target="@6" Category="References" Bounds="1052.55325231414,-335.252650756836,185.136714635659,354.770920612273" Weight="1" />
+    <Link Source="@22" Target="@29" Category="CodeSchema_FunctionPointer" Bounds="19.3321992369845,-324.765185801479,85.7763715606434,27.2730342057988" Weight="1" />
+    <Link Source="@22" Target="@38" Category="CodeSchema_Calls" Bounds="488.524434672938,176.719692687988,45.4291004207071,815.814327296887" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@22" Target="@40" Category="CodeSchema_Calls" Weight="1" />
+    <Link Source="@22" Target="@6" Category="References" Bounds="35.849891146034,-169.1635546875,798.111518362218,303.494053166499" Weight="1" />
+    <Link Source="@24" Target="@26" Category="CodeSchema_Calls" Bounds="918.176607997044,93.4535442720312,0.00509554696054693,27.3985146389281" Weight="1" />
+    <Link Source="@25" Target="@43" Category="CodeSchema_Calls" Bounds="93.9756774902344,70.9957752092632,0,21.000250854492" Weight="1" />
+    <Link Source="@27" Target="@22" Category="CodeSchema_Calls" Bounds="145.931963780813,-315.765185801482,6.29548313781925E-05,76.9602198660749" Weight="2" />
+    <Link Source="@27" Target="@32" Category="CodeSchema_Calls" Bounds="350.791508382161,-617.848756997448,247.018571004315,27.2996345549917" Weight="1" />
+    <Link Source="@27" Target="@33" Category="CodeSchema_Calls" Bounds="99.7363941224559,-212.844965935407,42.2071504101133,137.357351991741" Weight="1" />
+    <Link Source="@27" Target="@45" Category="CodeSchema_Calls" Bounds="350.684097934565,-737.667217102617,545.311012999627,102.70827071109" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@29" Target="@27" Category="CodeSchema_Calls" Bounds="10.7553140948887,-268.805084563337,85.7764458489687,27.2730521142856" Weight="1" />
+    <Link Source="@31" Target="@27" Category="CodeSchema_Calls" Bounds="182.89729517023,-268.805065935407,58.272855901325,26.2980132233566" Weight="1" />
+    <Link Source="@32" Target="@6" Category="CodeSchema_ReturnTypeLink" Bounds="23.8878173828125,159.649075176961,809.489075421135,21.4979018377315" Weight="1" />
+    <Link Source="@33" Target="@16" Category="CodeSchema_ReturnTypeLink" Bounds="113.184774183237,-557.677749330247,759.270002130114,490.79314316744" Weight="1" />
+    <Link Source="@33" Target="@32" Category="CodeSchema_Calls" Bounds="93.1041106842088,-40.9246061628072,0.0001603331498643,21.0002813723326" Weight="1" />
+    <Link Source="@34" Target="@43" Category="CodeSchema_Calls" Bounds="-104.347382682437,-156.884994841658,183.502274552811,250.619435685215" Weight="1" />
+    <Link Source="@35" Target="@24" Category="CodeSchema_Calls" Bounds="953.023163758412,-78.5541701903642,292.955178462436,142.123085525866" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@36" Target="@46" Category="CodeSchema_Calls" Bounds="900.034185125324,-333.4491765668,27.8066214615586,24.1049152403858" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@37" Target="@46" Category="CodeSchema_Calls" Bounds="972.221695889128,-333.4491765668,29.2974051067807,24.2600429477105" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@39" Target="@24" Category="CodeSchema_Calls" Bounds="1223.03076926944,-763.123475434694,40.9292036814345,360.776635176145" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@4" Target="@25" Category="Contains" FetchingParent="@4" />
+    <Link Source="@4" Target="@32" Category="Contains" FetchingParent="@4" />
+    <Link Source="@4" Target="@33" Category="Contains" FetchingParent="@4" />
+    <Link Source="@4" Target="@43" Category="Contains" FetchingParent="@4" />
+    <Link Source="@41" Target="@39" Category="CodeSchema_Calls" Bounds="1002.13585042318,-401.547251303442,201.64156231334,8.96242706542614" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@41" Target="@45" Category="CodeSchema_Calls" Bounds="955.450659649775,-727.280857108281,6.66372640858208,310.987121146367" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@42" Target="@35" Category="CodeSchema_Calls" Bounds="1246.30382065163,-270.495051879883,22.4049352957913,158.029993084475" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@42" Target="@44" Category="CodeSchema_Calls" Bounds="1245.85737901532,-270.495051879883,22.5837506849223,210.312460769949" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@42" Target="@45" Category="CodeSchema_Calls" Bounds="601.461784745786,-121.288889873714,182.307329854231,308.214254448948" IsTargetVirtualized="True" Weight="1" />
+    <Link Source="@44" Target="@24" Category="CodeSchema_Calls" Bounds="965.083780345382,-26.3972908222419,269.173763935405,91.0118334858687" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@45" Target="@6" Category="References" Bounds="950.819287059826,-558.163536230289,12.0676037469065,576.662681417821" IsSourceVirtualized="True" Weight="4">
+      <Category Ref="CodeSchema_ReturnTypeLink" />
+    </Link>
+    <Link Source="@47" Target="@26" Category="CodeSchema_Calls" Bounds="1225.78377337529,-707.356844653929,60.2915040872983,250.009904395379" IsSourceVirtualized="True" Weight="1" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=PropertyChanged)" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@24" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@26" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@38" Category="Contains" FetchingParent="@6" />
+    <Link Source="@6" Target="@40" Category="Contains" FetchingParent="@6" />
+    <Link Source="@9" Target="@16" Category="InheritsFrom" Bounds="946.003500765917,-528.66567551217,2.82780883284136,130.21639894537" Weight="1" />
+    <Link Source="@9" Target="@36" Category="Contains" FetchingParent="@9" />
+    <Link Source="@9" Target="@37" Category="Contains" FetchingParent="@9" />
+    <Link Source="@9" Target="@46" Category="Contains" FetchingParent="@9" />
+    <Link Source="Application" Target="@19" Category="Contains" />
+    <Link Source="Application" Target="@4" Category="Contains" />
+  </Links>
+  <Categories>
+    <Category Id="CodeSchema_Calls" Label="Calls" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Called By" OutgoingActionLabel="Calls" />
+    <Category Id="CodeSchema_Class" Label="Class" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Classes" />
+    <Category Id="CodeSchema_Event" Label="Event" BasedOn="CodeSchema_Field" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Event" NavigationActionLabel="Events" />
+    <Category Id="CodeSchema_Field" Label="Field" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="Fields" />
+    <Category Id="CodeSchema_FunctionPointer" Label="Function Pointer" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Function Pointers" OutgoingActionLabel="Function Pointers" />
+    <Category Id="CodeSchema_Member" Label="Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="Members" />
+    <Category Id="CodeSchema_Method" Label="Method" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Link:Forward:CodeSchema_Calls" Icon="CodeSchema_Method" NavigationActionLabel="Methods" />
+    <Category Id="CodeSchema_Property" Label="Property" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Property" NavigationActionLabel="Properties" />
+    <Category Id="CodeSchema_ReturnTypeLink" Label="Return" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Return types" OutgoingActionLabel="Return types" />
+    <Category Id="CodeSchema_Type" Label="Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Types" />
+    <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
+    <Category Id="InheritsFrom" Label="Inherits From" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Inherited By" OutgoingActionLabel="Inherits From" />
+    <Category Id="References" Label="References" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Referenced By" OutgoingActionLabel="References" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsAbstract" Label="Is Abstract" Description="Flag to indicate member is 'Abstract' does not provide a full implementation" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsConstructor" Label="Is Constructor" Description="Flag to indicate the method is a constructor" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsFinal" Label="Is Final" Description="Flag to indicate the member is 'Final' and cannot be derived from" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsPrivate" Label="Is Private" Description="Flag to indicate the scope is Private" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsProtected" Label="Is Protected" Description="Flag to indicate the scope is Protected" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsPublic" Label="Is Public" Description="Flag to indicate the scope is Public" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsStatic" Label="Is Static" Description="Flag to indicate the member is a static member" DataType="System.Boolean" />
+    <Property Id="CommonLabel" DataType="System.String" />
+    <Property Id="DataVirtualized" Label="Data Virtualized" Description="If true, the graph can contain nodes and links that represent data for virtualized nodes/links (i.e. not actually created in the graph)." DataType="System.Boolean" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="DelayedChildNodesState" Label="Delayed Child Nodes State" Description="Unspecified if the delayed child nodes state is not specified. NotFetched if the group contains child nodes that are not fetched into the graph yet. Fetched if the group has all its delayed child nodes already fetched." DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="DelayedCrossGroupLinksState" Label="Delayed Cross-Group Links State" Description="Unspecified if the delayed cross-group links state is not specified. NotFetched if delayed cross-group links on this node are not fetched into the graph yet. Fetched if all delayed cross-group links have already fetched." DataType="Microsoft.VisualStudio.GraphModel.DelayedDataState" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="FetchingParent" DataType="Microsoft.VisualStudio.GraphModel.GraphNodeId" />
+    <Property Id="FunctionTypeFlags" Label="FunctionTypeFlags" Description="FunctionTypeFlags" DataType="System.String" />
+    <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="Icon" Label="Icon" Description="Icon" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsOverloaded" Label="IsOverloaded" Description="IsOverloaded" DataType="System.Boolean" />
+    <Property Id="IsSourceVirtualized" Label="Link Source Virtualized" Description="If true, the link source end contains data for virtualized nodes/links (i.e. not actually created in the graph)." DataType="System.Boolean" />
+    <Property Id="IsTargetVirtualized" Label="Link Target Virtualized" Description="If true, the link target end contains data for virtualized nodes/links (i.e. not actually created in the graph)." DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="Language" Label="Language" Description="Language" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="SourceLocation" Label="Start Line Number" DataType="Microsoft.VisualStudio.GraphModel.CodeSchema.SourceLocation" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="Visibility" Label="Visibility" Description="Defines whether a node in the graph is visible or not" DataType="System.Windows.Visibility" />
+    <Property Id="Weight" Label="Weight" Description="Weight" DataType="System.Double" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="Assembly" ValueType="Uri" />
+    <Name Id="Member" Label="Member" ValueType="System.Object" />
+    <Name Id="Name" Label="Name" ValueType="System.String" />
+    <Name Id="Namespace" Label="Namespace" ValueType="System.String" />
+    <Name Id="OverloadingParameters" Label="Parameter" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" Formatter="NameValueNoEscape" />
+    <Name Id="Type" Label="Type" ValueType="System.Object" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(8edec4e2-49b8-448f-bac9-fbfa42a3e21e.OutputPathUri)" />
+    <Alias n="2" Id="Namespace=HexLight.Control" />
+    <Alias n="3" Id="Type=Controllers" />
+    <Alias n="4" Id="(@1 @2 @3)" />
+    <Alias n="5" Id="Type=ControllerSettings" />
+    <Alias n="6" Id="(@1 @2 @5)" />
+    <Alias n="7" Uri="Assembly=$(5bd0bee5-0ce3-44e7-aa44-426ba019ccf4.OutputPathUri)" />
+    <Alias n="8" Id="Type=HexController" />
+    <Alias n="9" Id="(@7 @2 @8)" />
+    <Alias n="10" Id="(@7 @2 Type=HexControllerHID)" />
+    <Alias n="11" Id="Type=HexControllerHIDSettings" />
+    <Alias n="12" Id="(@7 @2 @11)" />
+    <Alias n="13" Id="(@7 @2 Type=HexControllerSerial)" />
+    <Alias n="14" Id="Type=HexControllerSerialSettings" />
+    <Alias n="15" Id="(@7 @2 @14)" />
+    <Alias n="16" Id="(@1 @2 Type=RGBController)" />
+    <Alias n="17" Id="Namespace=HexLight" />
+    <Alias n="18" Id="Type=SettingsWindow" />
+    <Alias n="19" Id="(@1 @17 @18)" />
+    <Alias n="20" Id="(@7 @2 Type=HexControllerHID Member=(Name=.ctor OverloadingParameters=[@6]))" />
+    <Alias n="21" Id="(@7 @2 Type=HexControllerSerial Member=(Name=.ctor OverloadingParameters=[@6]))" />
+    <Alias n="22" Id="(@1 @17 @18 Member=(Name=LoadSettingsPage OverloadingParameters=[@6]))" />
+    <Alias n="23" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.5/mscorlib.dll" />
+    <Alias n="24" Id="(@1 @2 @5 Member=(Name=ConnChanged OverloadingParameters=[(@23 Namespace=System Type=String)]))" />
+    <Alias n="25" Id="(@1 @2 @3 Member=(Name=GetControllerByName OverloadingParameters=[(@23 Namespace=System Type=String)]))" />
+    <Alias n="26" Id="(@1 @2 @5 Member=(Name=PropChanged OverloadingParameters=[(@23 Namespace=System Type=String)]))" />
+    <Alias n="27" Id="(@1 @17 @18 Member=(Name=LoadController OverloadingParameters=[(@23 Namespace=System Type=Type)]))" />
+    <Alias n="28" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.5/System.dll" />
+    <Alias n="29" Id="(@1 @17 @18 Member=(Name=ControllerSettings_ConnectionPropertyChanged OverloadingParameters=[(@23 Namespace=System Type=Object),(@28 Namespace=System.ComponentModel Type=PropertyChangedEventArgs)]))" />
+    <Alias n="30" Uri="Assembly=$(FxReferenceAssembliesUri)/.NETFramework/v4.5/PresentationFramework.dll" />
+    <Alias n="31" Id="(@1 @17 @18 Member=(Name=cbDrivers_SelectionChanged OverloadingParameters=[(@23 Namespace=System Type=Object),(@30 Namespace=System.Windows.Controls Type=SelectionChangedEventArgs)]))" />
+    <Alias n="32" Id="(@1 @2 @3 Member=(Name=GetControllerSettings OverloadingParameters=[(@28 Namespace=System.Configuration Type=ApplicationSettingsBase),(@23 Namespace=System Type=Type)]))" />
+    <Alias n="33" Id="(@1 @2 @3 Member=(Name=LoadController OverloadingParameters=[(@28 Namespace=System.Configuration Type=ApplicationSettingsBase),(@23 Namespace=System Type=Type)]))" />
+    <Alias n="34" Id="(@1 @17 @18 Member=.ctor)" />
+    <Alias n="35" Id="(@7 @2 @14 Member=Baud)" />
+    <Alias n="36" Id="(@7 @2 @8 Member=Brightness)" />
+    <Alias n="37" Id="(@7 @2 @8 Member=Color)" />
+    <Alias n="38" Id="(@1 @2 @5 Member=ConnectionPropertyChanged)" />
+    <Alias n="39" Id="(@7 @2 @11 Member=DeviceID)" />
+    <Alias n="40" Id="(@1 @2 @5 Member=GetSettingsPage)" />
+    <Alias n="41" Id="(@7 @2 Type=HexControllerHID Member=Initialize)" />
+    <Alias n="42" Id="(@7 @2 Type=HexControllerSerial Member=Initialize)" />
+    <Alias n="43" Id="(@1 @2 @3 Member=ListControllers)" />
+    <Alias n="44" Id="(@7 @2 @14 Member=Port)" />
+    <Alias n="45" Id="(@1 @2 Type=RGBController Member=Settings)" />
+    <Alias n="46" Id="(@7 @2 @8 Member=Update)" />
+    <Alias n="47" Id="(@7 @2 @11 Member=UsbAudioEnabled)" />
+  </IdentifierAliases>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Category 1" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Category1')" />
+      <Setter Property="Background" Value="#FFE51400" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Results" ValueLabel="True">
+      <Condition Expression="HasCategory('QueryResult')" />
+      <Setter Property="Background" Value="#FFBCFFBE" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Assembly" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Assembly')" />
+      <Setter Property="Background" Value="#FF094167" />
+      <Setter Property="Stroke" Value="#FF094167" />
+      <Setter Property="Icon" Value="CodeSchema_Assembly" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Namespace" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Namespace')" />
+      <Setter Property="Background" Value="#FF0E619A" />
+      <Setter Property="Stroke" Value="#FF0E619A" />
+      <Setter Property="Icon" Value="CodeSchema_Namespace" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Interface" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Interface')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Interface" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Struct" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Struct')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Struct" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Enumeration" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Enum')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Enum" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Delegate" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Delegate')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Delegate" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Class" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Type')" />
+      <Setter Property="Background" Value="#FF1382CE" />
+      <Setter Property="Stroke" Value="#FF1382CE" />
+      <Setter Property="Icon" Value="CodeSchema_Class" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Property')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Property" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Method" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Method') Or HasCategory('CodeSchema_CallStackUnresolvedMethod')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Method" />
+      <Setter Property="LayoutSettings" Value="List" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Event" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Event')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Event" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Field" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Field')" />
+      <Setter Property="Background" Value="#FFE0E0E0" />
+      <Setter Property="Stroke" Value="#FFE0E0E0" />
+      <Setter Property="Icon" Value="CodeSchema_Field" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Out Parameter" ValueLabel="Has category">
+      <Condition Expression="CodeSchemaProperty_IsOut = 'True'" />
+      <Setter Property="Icon" Value="CodeSchema_OutParameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Parameter" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Parameter')" />
+      <Setter Property="Icon" Value="CodeSchema_Parameter" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Local Variable" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_LocalExpression')" />
+      <Setter Property="Icon" Value="CodeSchema_LocalExpression" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Externals" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Externals')" />
+      <Setter Property="Background" Value="#FF424242" />
+      <Setter Property="Stroke" Value="#FF424242" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Inherits From" ValueLabel="Has category">
+      <Condition Expression="HasCategory('InheritsFrom')" />
+      <Setter Property="Stroke" Value="#FF00A600" />
+      <Setter Property="StrokeDashArray" Value="2 0" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Implements" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Implements')" />
+      <Setter Property="Stroke" Value="#8000A600" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Calls" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_Calls')" />
+      <Setter Property="Stroke" Value="#FFFF00FF" />
+      <Setter Property="StrokeDashArray" Value="2 0" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Function Pointer" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_FunctionPointer')" />
+      <Setter Property="Stroke" Value="#FFFF00FF" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Field Reference" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_FieldReference')" />
+      <Setter Property="Stroke" Value="#FF00AEEF" />
+      <Setter Property="DrawArrow" Value="true" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Inherits From" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('InheritsFrom') And Target.HasCategory('CodeSchema_Class')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Implements" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="HasCategory('Implements') And Target.HasCategory('CodeSchema_Interface')" />
+      <Setter Property="TargetDecorator" Value="OpenArrow" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Field Read" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Target.HasCategory('CodeSchema_Field') And HasCategory('CodeSchema_FieldRead')" />
+      <Setter Property="StrokeDashArray" Value="2 2" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Comment Link" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="Source.HasCategory('Comment')" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Cursor Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsCursorLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Disabled Breakpoint Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="DisabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Enabled Breakpoint Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="EnabledBreakpointCount" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Instruction Pointer Location Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsInstructionPointerLocation" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Current Callstack Changed" ValueLabel="True" Visibility="Hidden">
+      <Condition Expression="IsCurrentCallstackFrame" />
+      <Setter Property="IndicatorWest" Value="WestIndicator" />
+    </Style>
+  </Styles>
+  <Paths>
+    <Path Id="5bd0bee5-0ce3-44e7-aa44-426ba019ccf4.OutputPath" Value="C:\Users\Jared\Documents\Projects\HexLight\HexLight GUI\bin\Debug\HexLightController.dll" />
+    <Path Id="5bd0bee5-0ce3-44e7-aa44-426ba019ccf4.OutputPathUri" Value="file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/bin/Debug/HexLightController.dll" />
+    <Path Id="8edec4e2-49b8-448f-bac9-fbfa42a3e21e.OutputPath" Value="C:\Users\Jared\Documents\Projects\HexLight\HexLight GUI\bin\Debug\hexlight.exe" />
+    <Path Id="8edec4e2-49b8-448f-bac9-fbfa42a3e21e.OutputPathUri" Value="file:///C:/Users/Jared/Documents/Projects/HexLight/HexLight GUI/bin/Debug/hexlight.exe" />
+    <Path Id="FxReferenceAssemblies" Value="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework" />
+    <Path Id="FxReferenceAssembliesUri" Value="file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework" />
+  </Paths>
+</DirectedGraph>
