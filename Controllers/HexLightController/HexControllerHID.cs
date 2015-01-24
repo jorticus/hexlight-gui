@@ -61,6 +61,9 @@ namespace HexLight.Control
         private string deviceID;
         private HidDevice device;
 
+        private WinAPI.WinApiFile tx;
+        private WinAPI.WinApiFile rx;
+
         #region Protocol Structs
 
         private const int COMMAND_PACKET_SIZE = 65;
@@ -86,18 +89,14 @@ namespace HexLight.Control
             HLDCFramer framer = new HLDCFramer();
             while (true)
             {
-                using (var rx = device.GetReadFile())
+                byte[] buffer = new byte[COMMAND_PACKET_SIZE];
+                rx.Read(buffer, COMMAND_PACKET_SIZE);
+
+                foreach (var b in buffer)
                 {
-                    byte[] buffer = new byte[COMMAND_PACKET_SIZE];
-                    rx.Read(buffer, COMMAND_PACKET_SIZE);
-
-                    foreach (var b in buffer)
-                    {
-                        bool finished = framer.ProcessByte(b);
-                        if (finished && framer.FrameBytes != null)
-                            return framer.FrameBytes;
-                    }
-
+                    bool finished = framer.ProcessByte(b);
+                    if (finished && framer.FrameBytes != null)
+                        return framer.FrameBytes;
                 }
             }
         }
@@ -111,8 +110,7 @@ namespace HexLight.Control
             for (int i = 0; i < padding; i++)
                 data.Add(0);
 
-            using (var tx = device.GetWriteFile())
-                tx.Write(data.ToArray(), COMMAND_PACKET_SIZE);
+            tx.Write(data.ToArray(), COMMAND_PACKET_SIZE);
         }
 
         /// <summary>
@@ -165,6 +163,24 @@ namespace HexLight.Control
             return payload;
         }
 
+        /// <summary>
+        /// Open access to the device
+        /// </summary>
+        protected override void Open()
+        {
+            tx = device.GetWriteFile();
+            rx = device.GetReadFile();
+        }
+
+        /// <summary>
+        /// Close access to the device
+        /// </summary>
+        protected override void Close()
+        {
+            tx.Close();
+            rx.Close();
+        }
+
         #endregion
 
         /// <summary>
@@ -189,10 +205,12 @@ namespace HexLight.Control
             this.device = new HidDevice(deviceID);
             this.device.Scan();
 
-            this.EnableUsbAudio(settings.UsbAudioEnabled);
+            Open();
+
+            //this.EnableUsbAudio(settings.UsbAudioEnabled);
 
             // required when running outside visual studio for some reason???
-            //SendPacket(0x00);
+            SendPacket(0x00);
 
             this.Connected = true;
         }
@@ -201,6 +219,8 @@ namespace HexLight.Control
         {
             Color = Colors.Black;
             this.Connected = false;
+
+            Close();
         }
     }
 }

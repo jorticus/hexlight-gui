@@ -120,6 +120,22 @@ namespace HexLight.Control
         #endregion
 
         /// <summary>
+        /// Open access to the device
+        /// </summary>
+        protected override void Open()
+        {
+            serial.Open();
+        }
+
+        /// <summary>
+        /// Close access to the device
+        /// </summary>
+        protected override void Close()
+        {
+            serial.Close();
+        }
+
+        /// <summary>
         /// Parameterless constructor, use default settings
         /// </summary>
         public HexControllerSerial()
@@ -140,14 +156,14 @@ namespace HexLight.Control
             this.port = settings.Port;
             this.baud = settings.Baud;
             serial = new SerialPort(port, baud);
-            serial.Open();
+            Open();
             this.Connected = true;
         }
 
         public override void Dispose()
         {
+            Close();
             this.Connected = false;
-            serial.Close();
         }
     }
 }
