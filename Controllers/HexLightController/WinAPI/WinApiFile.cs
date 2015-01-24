@@ -181,7 +181,6 @@ namespace HexLight.WinAPI
 
         public uint Read(byte[] buffer, uint cbToRead, int timeout = DEFAULT_TIMEOUT)
         {
-            uint cbThatWereRead = 0;
             OVERLAPPED overlapped = new OVERLAPPED();
 
             if (!ReadFile(_hFile, buffer, cbToRead, IntPtr.Zero, ref overlapped))
@@ -205,12 +204,11 @@ namespace HexLight.WinAPI
                 }
             }
             
-            return cbThatWereRead;
+            return cbToRead;
         }
 
         public uint Write(byte[] buffer, uint cbToWrite, int timeout = DEFAULT_TIMEOUT)
         {
-            uint cbThatWereWritten = 0;
             OVERLAPPED overlapped = new OVERLAPPED();
 
             if (!WriteFile(_hFile, buffer, cbToWrite, IntPtr.Zero, ref overlapped))
@@ -232,7 +230,7 @@ namespace HexLight.WinAPI
                 }
             }
 
-            return cbThatWereWritten;
+            return cbToWrite;
         }
 
         public T ReadStructure<T>()
