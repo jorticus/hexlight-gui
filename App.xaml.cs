@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Configuration.Provider;
 using WinForms = System.Windows.Forms;
 using System.Reflection;
+using HexLight.Engines;
 
 namespace HexLight
 {
@@ -26,6 +27,8 @@ namespace HexLight
         }
     }
 
+    public enum Mode { Manual, Rowdz };
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -35,6 +38,8 @@ namespace HexLight
         public RGBController controller;
         public RGBColor color;
         public HSVColor hsvColor;
+
+        public RowdzEngine rowdzEngine;
 
         public ViewModel viewModel;
 
@@ -47,6 +52,9 @@ namespace HexLight
 
         private static Timer updateTimer;
         private const double UPDATE_INTERVAL = 1000.0 / 60.0;
+
+        public Mode mode { get { return _mode; } set { this.SetMode(value); } }
+        public Mode _mode = Mode.Manual;
 
         public App() : base()
         {
@@ -159,17 +167,30 @@ namespace HexLight
 #endif
             try
             {
-                controller.Color = color;
-                controller.Brightness = brightness;
+                if (controller != null)
+                {
+                    switch (mode)
+                    {
+                        case Mode.Manual:
+                            controller.Color = color;
+                            controller.Brightness = brightness;
+                            break;
+
+                        case Mode.Rowdz:
+                            controller.Color = rowdzEngine.Update();
+                            controller.Brightness = brightness;
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                /*(sender as Timer).Stop();
+                (sender as Timer).Stop();
                 // Pass the exception to the main thread
                 Application.Current.Dispatcher.Invoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
                     new Action<Exception>((exc) => { throw new TimerException("Exception in Timer Thread", exc, sender as Timer); }), ex);
-                 */
+                 
             }
 #if DEBUG
             (sender as Timer).Start();
@@ -190,6 +211,26 @@ namespace HexLight
                 }
             }
             catch (Exception) { } // Don't worry about exceptions while closing down
+        }
+
+        private void SetMode(Mode _mode)
+        {
+            switch (_mode)
+            {
+                case Mode.Manual:
+                    if (rowdzEngine != null)
+                    {
+                        rowdzEngine.Disable();
+                        rowdzEngine = null;
+                    }
+                    break;
+
+                case Mode.Rowdz:
+                    rowdzEngine = new RowdzEngine();
+                    rowdzEngine.Enable();
+                    break;
+            }
+            this._mode = _mode;
         }
 
 

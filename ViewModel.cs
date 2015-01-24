@@ -15,7 +15,7 @@ namespace HexLight
         private HSVColor hsvColor;
         private CIEXYZColour xyzColor;
         private CIEXYYColor xyyColor;
-        private bool luminanceCorrection = true;
+        private bool luminanceCorrection = false;
 
         private ColorTemperature temperature;
         private float brightness;

@@ -59,5 +59,19 @@ namespace HexLight
 
             //(application.controller as HexController).EnableUsbAudio((sender as CheckBox).IsChecked.Value);
         }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (this.tabControl.SelectedIndex)
+            {
+                case 0:
+                    application.mode = Mode.Manual;
+                    break;
+
+                case 1:
+                    application.mode = Mode.Rowdz;
+                    break;
+            }
+        }
     }
 }
