@@ -132,6 +132,8 @@ namespace HexLight
 
 
             viewModel = new ViewModel();
+            viewModel.Sensitivity = 1.0f;
+            viewModel.DecayRate = 0.01f;
 
             controlWindow = new ControlWindow(viewModel);
             popupDial = new PopupDial(viewModel);
@@ -172,15 +174,17 @@ namespace HexLight
                     switch (mode)
                     {
                         case Mode.Manual:
-                            controller.Color = color;
-                            controller.Brightness = brightness;
                             break;
 
                         case Mode.Rowdz:
-                            controller.Color = rowdzEngine.Update();
-                            controller.Brightness = brightness;
+                            rowdzEngine.sensitivity = viewModel.Sensitivity;
+                            rowdzEngine.intensityDecayRate = viewModel.DecayRate;
+                            viewModel.RGB = rowdzEngine.Update();
                             break;
                     }
+
+                    controller.Color = color;
+                    controller.Brightness = brightness;
                 }
             }
             catch (Exception ex)

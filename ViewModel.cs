@@ -238,6 +238,11 @@ namespace HexLight
 
         #endregion
 
+        #region RowdzEngine
+        public float Sensitivity { get; set; }
+        public float DecayRate { get; set; }
+        #endregion
+
         #region Property Change Event Handlers
 
         public event PropertyChangedEventHandler PropertyChanged;

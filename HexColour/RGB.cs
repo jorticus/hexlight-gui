@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Drawing;
+
 
 namespace HexLight.Colour
 {
@@ -106,14 +108,24 @@ namespace HexLight.Colour
             return 0.2126f * r + 0.7152f * g + 0.0722f * b;
         }
 
-        public static implicit operator RGBColor(Color c)
+        public static implicit operator RGBColor(System.Windows.Media.Color c)
         {
             return new RGBColor(c.R/255.0f, c.G/255.0f, c.B/255.0f);
         }
 
-        public static implicit operator Color(RGBColor c)
+        public static implicit operator RGBColor(System.Drawing.Color c)
         {
-            return new Color() { R = (byte)(c.r*255), G = (byte)(c.g*255), B = (byte)(c.b*255), A = 255 };
+            return new RGBColor(c.R / 255.0f, c.G / 255.0f, c.B / 255.0f);
+        }
+
+        public static implicit operator System.Windows.Media.Color(RGBColor c)
+        {
+            return new System.Windows.Media.Color() { A = 255, R = (byte)(c.r * 255), G = (byte)(c.g * 255), B = (byte)(c.b * 255) };
+        }
+
+        public static implicit operator System.Drawing.Color(RGBColor c)
+        {
+            return System.Drawing.Color.FromArgb(255, (byte)(c.r * 255), (byte)(c.g * 255), (byte)(c.b * 255));
         }
 
         #endregion
