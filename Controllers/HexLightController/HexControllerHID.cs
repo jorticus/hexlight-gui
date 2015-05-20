@@ -86,19 +86,15 @@ namespace HexLight.Control
         /// </summary>
         protected override byte[] ReceiveFrame()
         {
-            HLDCFramer framer = new HLDCFramer();
-            while (true)
-            {
-                byte[] buffer = new byte[COMMAND_PACKET_SIZE];
-                rx.Read(buffer, COMMAND_PACKET_SIZE);
+            byte[] buffer = new byte[COMMAND_PACKET_SIZE];
+            uint r = rx.Read(buffer, COMMAND_PACKET_SIZE);
+            if (r != COMMAND_PACKET_SIZE)
+                throw new WinAPI.WinApiFileException("Received data invalid - length mismatch");
+            
+            // Throw away the first byte (Windows Reserved)
+            buffer = buffer.Skip(1).ToArray();
 
-                foreach (var b in buffer)
-                {
-                    bool finished = framer.ProcessByte(b);
-                    if (finished && framer.FrameBytes != null)
-                        return framer.FrameBytes;
-                }
-            }
+            return buffer;
         }
 
         private void WritePacket(byte[] packet)
@@ -121,13 +117,13 @@ namespace HexLight.Control
         /// <param name="payload">Command parameter data to send</param>
         protected override void SendPacket<T>(byte command, T payload)
         {
-            byte[] packet = HLDCProtocol.CreatePacket<T>(command, payload);
+            byte[] packet = HexProtocol.CreatePacket<T>(command, payload);
             WritePacket(packet);
         }
 
         protected override void SendPacket(byte command, byte[] payload = null)
         {
-            byte[] packet = HLDCProtocol.CreatePacket(command, payload);
+            byte[] packet = HexProtocol.CreatePacket(command, payload);
             WritePacket(packet);
         }
 
@@ -142,7 +138,7 @@ namespace HexLight.Control
             byte[] response = ReceiveFrame();
             byte command;
             byte[] payload;
-            HLDCProtocol.ParsePacket(response, out command, out payload);
+            HexProtocol.ParsePacket(response, out command, out payload);
 
             if (command != expected_command)
                 throw new Exception("Invalid data received");
@@ -155,7 +151,7 @@ namespace HexLight.Control
             byte[] response = ReceiveFrame();
             byte command;
             T payload;
-            HLDCProtocol.ParsePacket<T>(response, out command, out payload);
+            HexProtocol.ParsePacket<T>(response, out command, out payload);
 
             if (command != expected_command)
                 throw new Exception("HLDC Protocol Error - Invalid reply");
@@ -210,7 +206,7 @@ namespace HexLight.Control
             //this.EnableUsbAudio(settings.UsbAudioEnabled);
 
             // required when running outside visual studio for some reason???
-            SendPacket(0x00);
+            //SendPacket(0x00);
 
             this.Connected = true;
         }

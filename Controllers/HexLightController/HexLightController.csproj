@@ -48,6 +48,7 @@
     <Compile Include="HexControllerHID.cs" />
     <Compile Include="HexControllerSerial.cs" />
     <Compile Include="HID\HID.cs" />
+    <Compile Include="HexProtocol.cs" />
     <Compile Include="SerialSettingsPage.xaml.cs">
       <DependentUpon>SerialSettingsPage.xaml</DependentUpon>
     </Compile>
