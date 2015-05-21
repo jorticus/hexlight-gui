@@ -108,13 +108,13 @@ namespace HexLight
             // Try load the controller
             if (controllerType != null)
             {
+                ActiveControllerType = controllerType;
+
+                if (ActiveController != null)
+                    ActiveController = null;    // Close any existing connections
+
                 try
                 {
-                    ActiveControllerType = controllerType;
-
-                    if (ActiveController != null)
-                        ActiveController = null;    // Close any existing connections
-
                     ActiveController = Controllers.LoadController(Settings.Default, controllerType);
                     SetError(null);
                 }
@@ -222,12 +222,14 @@ namespace HexLight
                 Settings.Default[controllerName] = (ActiveController != null) ? ActiveController.Settings : scratchSettings;
 
             Settings.Default.Save();
+            DialogResult = true;
             Close();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Settings.Default.Reload();
+            DialogResult = false;
             Close();
         }
 

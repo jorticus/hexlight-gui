@@ -51,7 +51,9 @@ namespace HexLight
         private WinForms.NotifyIcon trayIcon;
 
         private static Timer updateTimer;
+        private static Timer connectTimer;
         private const double UPDATE_INTERVAL = 1000.0 / 60.0;
+        private const double CONNECT_INTERVAL = 250.0;
 
         public Mode mode { get { return _mode; } set { this.SetMode(value); } }
         public Mode _mode = Mode.Manual;
@@ -90,46 +92,82 @@ namespace HexLight
             }
         }
 
+        /// <summary>
+        /// Load the controller with the current settings,
+        /// and attempt to connect
+        /// </summary>
+        private void LoadController()
+        {
+            var settings = HexLight.Properties.Settings.Default;
+
+            // Get the class of the controller to use
+            var controllerName = settings.Controller;
+            var controllerType = Controllers.GetControllerByName(controllerName);
+
+            // Instantiate the controller and load any custom settings for it
+            controller = Controllers.LoadController(settings, controllerType);
+
+            // Attempt to connect (to validate the current settings)
+            controller.Connect();
+        }
+
+        /// <summary>
+        /// Attempt to load the controller with the current settings,
+        /// showing the settings dialog if can't load
+        /// </summary>
+        private void TryLoadController()
+        {
+            try
+            {
+                LoadController();
+            }
+            catch (ControllerConnectionException cex)
+            {
+                Exception ex = cex;
+                // Show the settings dialog if an exception occurrs, 
+                // to allow the user to re-configure if necessary.
+                while (true)
+                {
+                    var fm = new SettingsWindow();
+                    bool ignore = ExceptionDialog.ShowException("Could not connect to the device. Check application settings and try again", ex, ExceptionSeverity.Warning);
+
+                    // Ignore
+                    if (ignore)
+                        break; // Just start the application
+
+                    bool? result = fm.ShowDialog();
+                    bool ok = (result.HasValue && result.Value);
+
+                    // Cancel, exit application
+                    if (!ok)
+                    {
+                        Shutdown(1);
+                        return;
+                    }
+
+                    // If settings have changed, we'll need to re-load the controller
+                    try
+                    {
+                        LoadController();
+                        break; // Settings are now valid, don't loop
+                    }
+                    catch (Exception _ex)
+                    {
+                        ex = _ex; // For next iteration of the loop
+                    }
+                }
+            }
+        }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            /*RenderIcon.RenderToPng(16, 16, "16px.png", 0.65);
-            RenderIcon.RenderToPng(32, 32, "32px.png", 0.55);
-            RenderIcon.RenderToPng(48, 48, "48px.png", 0.55);
-            RenderIcon.RenderToPng(256, 256, "256px.png", 0.45);*/
-            //RenderIcon.RenderToPng(32, 32, "hsv.png", 0);
+            this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
 
-            var settings = HexLight.Properties.Settings.Default;
+            TryLoadController();
 
-            try
-            {
-                // Get the class of the controller to use
-                var controllerName = settings.Controller;
-                var controllerType = Controllers.GetControllerByName(controllerName);
-
-                // Instantiate the controller and load any custom settings for it
-                controller = Controllers.LoadController(settings, controllerType);
-
-            }
-            catch (Exception ex)
-            {
-                // Show the settings dialog if an exception occurrs, 
-                // to allow the user to re-configure if necessary.
-                var fm = new SettingsWindow();
-                ExceptionDialog.ShowException("Could not connect to the device. Check application settings and try again", ex, severity: ExceptionSeverity.Warning);
-                fm.ShowDialog();
-                Shutdown(1);
-                return;
-            }
-
-            /*var fm2 = new SettingsWindow();
-            fm2.ShowDialog();
-            Shutdown(1);*/
-
-            //controller.Color = Colors.Black;
-            //controller.Brightness = 0.0f;
-            //controller.FadeTo(ColorTemperature.Hot, 0.2);
-
+            // Attach event handlers
+            controller.ConnectNotification += OnControllerConnected;
+            controller.DisconnectNotification += OnControllerDisconnected;
 
             viewModel = new ViewModel();
             viewModel.Sensitivity = 1.0f;
@@ -144,7 +182,11 @@ namespace HexLight
 
             updateTimer = new Timer(UPDATE_INTERVAL);
             updateTimer.Elapsed += updateTimer_Elapsed;
-            updateTimer.Enabled = true;
+            updateTimer.Enabled = controller.Connected;
+
+            connectTimer = new Timer(CONNECT_INTERVAL);
+            connectTimer.Elapsed += connectTimer_Elapsed;
+            connectTimer.Enabled = !controller.Connected;
 
             ///// Tray Icon & Tray Menu /////
 
@@ -162,30 +204,42 @@ namespace HexLight
             });
         }
 
-        void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        /// <summary>
+        /// Update the controller
+        /// </summary>
+        private void Update()
+        {
+            switch (mode)
+            {
+                case Mode.Manual:
+                    break;
+
+                case Mode.Rowdz:
+                    rowdzEngine.sensitivity = viewModel.Sensitivity;
+                    rowdzEngine.intensityDecayRate = viewModel.DecayRate;
+                    viewModel.RGB = rowdzEngine.Update();
+                    break;
+            }
+
+            controller.Color = color;
+            controller.Brightness = brightness;
+        }
+
+        private void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
 #if DEBUG
             (sender as Timer).Stop();
 #endif
             try
             {
-                if (controller != null)
+                if (controller != null && controller.Connected)
                 {
-                    switch (mode)
-                    {
-                        case Mode.Manual:
-                            break;
-
-                        case Mode.Rowdz:
-                            rowdzEngine.sensitivity = viewModel.Sensitivity;
-                            rowdzEngine.intensityDecayRate = viewModel.DecayRate;
-                            viewModel.RGB = rowdzEngine.Update();
-                            break;
-                    }
-
-                    controller.Color = color;
-                    controller.Brightness = brightness;
+                    Update();
                 }
+            }
+            catch (ControllerConnectionException)
+            {
+                // The device has disconnected, ignore the exception
             }
             catch (Exception ex)
             {
@@ -195,6 +249,27 @@ namespace HexLight
                     System.Windows.Threading.DispatcherPriority.Normal,
                     new Action<Exception>((exc) => { throw new TimerException("Exception in Timer Thread", exc, sender as Timer); }), ex);
                  
+            }
+#if DEBUG
+            (sender as Timer).Start();
+#endif
+        }
+
+        void connectTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+#if DEBUG
+            (sender as Timer).Stop();
+#endif
+            if (controller != null)
+            {
+                try
+                {
+                    controller.Connect();
+                } 
+                catch (ControllerConnectionException)
+                {
+                    // Ignore if we can't connect
+                }
             }
 #if DEBUG
             (sender as Timer).Start();
@@ -215,6 +290,8 @@ namespace HexLight
                 }
             }
             catch (Exception) { } // Don't worry about exceptions while closing down
+
+            Shutdown();
         }
 
         private void SetMode(Mode _mode)
@@ -236,6 +313,30 @@ namespace HexLight
             }
             this._mode = _mode;
         }
+
+        #region Connection Management
+
+        protected void OnControllerConnected(object sender, EventArgs e)
+        {
+            if (connectTimer != null && updateTimer != null)
+            {
+                connectTimer.Enabled = false;
+                trayIcon.ShowBalloonTip(2000, "Connected", "RGB controller connected", WinForms.ToolTipIcon.Info);
+                updateTimer.Enabled = true;
+            }
+        }
+
+        protected void OnControllerDisconnected(object sender, EventArgs e)
+        {
+            if (connectTimer != null && updateTimer != null)
+            {
+                updateTimer.Enabled = false;
+                trayIcon.ShowBalloonTip(2000, "Disconnected", "RGB controller disconnected", WinForms.ToolTipIcon.Error);
+                connectTimer.Enabled = true;
+            }
+        }
+
+        #endregion
 
 
         #region Tray Menu
