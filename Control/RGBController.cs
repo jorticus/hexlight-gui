@@ -13,6 +13,14 @@ using System.Configuration;
 
 namespace HexLight.Control
 {
+    public class ControllerConnectionException : Exception
+    {
+        public ControllerConnectionException() { }
+        public ControllerConnectionException(string message) : base(message) { }
+        public ControllerConnectionException(string message, Exception innerException) : base(message, innerException) { }
+    }
+    
+
     /// <summary>
     /// This defines the minimum required implementation for any RGB controller interface
     /// </summary>
@@ -22,6 +30,10 @@ namespace HexLight.Control
         public ControllerSettings Settings { get; set; }
 
         #region Abstract Definitions
+
+        public abstract void Connect();
+
+        public abstract void Disconnect();
 
         /// <summary>
         /// Updates the colour of the LED lights, and returns the current value of the lights.
@@ -68,6 +80,32 @@ namespace HexLight.Control
 
             
             Color = dest;
+        }
+
+        #endregion
+
+        #region Notifications
+
+        public event EventHandler DisconnectNotification;
+        public event EventHandler ConnectNotification;
+
+        #endregion
+
+
+        #region Private Utilities
+
+        protected void NotifyDisconnect()
+        {
+            this.Connected = false;
+            if (DisconnectNotification != null)
+                DisconnectNotification(this, new EventArgs());
+        }
+
+        protected void NotifyConnect()
+        {
+            this.Connected = true;
+            if (ConnectNotification != null)
+                ConnectNotification(this, new EventArgs());
         }
 
         #endregion

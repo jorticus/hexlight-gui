@@ -90,11 +90,12 @@ namespace HexLight.Control
             uint r = rx.Read(buffer, COMMAND_PACKET_SIZE);
             if (r != COMMAND_PACKET_SIZE)
                 throw new WinAPI.WinApiFileException("Received data invalid - length mismatch");
-            
+
             // Throw away the first byte (Windows Reserved)
             buffer = buffer.Skip(1).ToArray();
 
             return buffer;
+
         }
 
         private void WritePacket(byte[] packet)
@@ -117,14 +118,36 @@ namespace HexLight.Control
         /// <param name="payload">Command parameter data to send</param>
         protected override void SendPacket<T>(byte command, T payload)
         {
-            byte[] packet = HexProtocol.CreatePacket<T>(command, payload);
-            WritePacket(packet);
+            if (!Connected)
+                throw new Exception("Controller is not connected");
+
+            try
+            {
+                byte[] packet = HexProtocol.CreatePacket<T>(command, payload);
+                WritePacket(packet);
+            }
+            catch (Exception ex)
+            {
+                Disconnect();
+                throw new ControllerConnectionException("Connection to controller lost", innerException:ex);
+            }
         }
 
         protected override void SendPacket(byte command, byte[] payload = null)
         {
-            byte[] packet = HexProtocol.CreatePacket(command, payload);
-            WritePacket(packet);
+            if (!Connected)
+                throw new Exception("Controller is not connected");
+
+            try
+            {
+                byte[] packet = HexProtocol.CreatePacket(command, payload);
+                WritePacket(packet);
+            }
+            catch (Exception ex)
+            {
+                Disconnect();
+                throw new ControllerConnectionException("Connection to controller lost", innerException:ex);
+            }
         }
 
         /// <summary>
@@ -135,46 +158,42 @@ namespace HexLight.Control
         /// <returns>Raw payload bytes</returns>
         protected override byte[] ReadReply(byte expected_command)
         {
-            byte[] response = ReceiveFrame();
-            byte command;
-            byte[] payload;
-            HexProtocol.ParsePacket(response, out command, out payload);
+            try {
+                byte[] response = ReceiveFrame();
+                byte command;
+                byte[] payload;
+                HexProtocol.ParsePacket(response, out command, out payload);
 
-            if (command != expected_command)
-                throw new Exception("Invalid data received");
+                if (command != expected_command)
+                    throw new HLDCProtocolException("Unexpected or invalid reply received");
 
-            return payload;
+                return payload;
+            }
+            catch (Exception ex)
+            {
+                Disconnect();
+                throw new ControllerConnectionException("Connection to controller lost", innerException: ex);
+            }
         }
 
         protected override T ReadReply<T>(byte expected_command)
         {
-            byte[] response = ReceiveFrame();
-            byte command;
-            T payload;
-            HexProtocol.ParsePacket<T>(response, out command, out payload);
+            try {
+                byte[] response = ReceiveFrame();
+                byte command;
+                T payload;
+                HexProtocol.ParsePacket<T>(response, out command, out payload);
 
-            if (command != expected_command)
-                throw new Exception("HLDC Protocol Error - Invalid reply");
+                if (command != expected_command)
+                    throw new HLDCProtocolException("Unexpected or invalid reply received");
 
-            return payload;
-        }
-
-        /// <summary>
-        /// Open access to the device
-        /// </summary>
-        protected override void Open()
-        {
-            tx = device.GetWriteFile();
-            rx = device.GetReadFile();
-        }
-
-        /// <summary>
-        /// Close access to the device
-        /// </summary>
-        protected override void Close()
-        {
-            tx.Close();
-            rx.Close();
+                return payload;
+            }
+            catch (Exception ex)
+            {
+                Disconnect();
+                throw new ControllerConnectionException("Connection to controller lost", innerException: ex);
+            }
         }
 
         #endregion
@@ -198,25 +217,56 @@ namespace HexLight.Control
         {
             var settings = (Settings as HexControllerHIDSettings);
             this.deviceID = settings.DeviceID;
-            this.device = new HidDevice(deviceID);
-            this.device.Scan();
+        }
 
-            Open();
+        public override void Connect()
+        {
+            if (!Connected)
+            {
+                this.device = new HidDevice(deviceID);
 
-            //this.EnableUsbAudio(settings.UsbAudioEnabled);
+                // Look up the VID/PID in the connected devices registry
+                try
+                {
+                    this.device.Scan();
+                }
+                catch (HidDeviceException ex)
+                {
+                    throw new ControllerConnectionException("Could not find USB controller - is it plugged in?", innerException: ex);
+                }
 
-            // required when running outside visual studio for some reason???
-            //SendPacket(0x00);
+                // Open file handles for communication
+                try
+                {
+                    tx = device.GetWriteFile();
+                    rx = device.GetReadFile();
+                }
+                catch (Exception ex)
+                {
+                    throw new ControllerConnectionException("Could not connect to USB controller", innerException:ex);
+                }
 
-            this.Connected = true;
+
+                // required when running outside visual studio for some reason???
+                //SendPacket(0x00);
+            }
+            NotifyConnect();
+        }
+
+        public override void Disconnect()
+        {
+            if (Connected)
+            {
+                tx.Close();
+                rx.Close();
+                this.device = null;
+            }
+            NotifyDisconnect();
         }
 
         public override void Dispose()
         {
-            Color = Colors.Black;
-            this.Connected = false;
-
-            Close();
+            Disconnect();
         }
     }
 }

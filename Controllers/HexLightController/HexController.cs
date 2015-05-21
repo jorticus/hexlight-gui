@@ -207,16 +207,6 @@ namespace HexLight.Control
         #endregion
 
 
-        /// <summary>
-        /// Open access to the device
-        /// </summary>
-        protected abstract void Open();
-
-        /// <summary>
-        /// Close access to the device
-        /// </summary>
-        protected abstract void Close();
-
         private float limit(float val) {
             if (val < 0.0f) return 0.0f;
             if (val > 1.0f) return 1.0f;

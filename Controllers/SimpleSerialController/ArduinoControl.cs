@@ -38,8 +38,6 @@ namespace HexLight.Control
     [ControllerSettingsType(typeof(SimpleSerialControllerSettings))]
     public class SimpleSerialController : RGBController
     {
-        private const bool apply_cie = false;
-
         private RGBColor color;
         private float brightness;
         private string port;
@@ -69,9 +67,20 @@ namespace HexLight.Control
         private void Update()
         {
             RGBColor value = color * brightness;
-            RGBColor corrected = (apply_cie) ? CIE1931.CorrectRGB(value) : value;
-            byte[] packet = { (byte)'X', corrected.Rb, corrected.Gb, corrected.Bb };
-            serial.Write(packet, 0, 4);
+
+            // Simple packet format - the char 'X' followed by 3 bytes, each 0-255.
+            byte[] packet = { (byte)'X', value.Rb, value.Gb, value.Bb };
+
+            try
+            {
+                serial.Write(packet, 0, 4);
+            }
+            catch (Exception ex)
+            {
+                // If there are any issues with the connection, disconnect.
+                Disconnect();
+                throw new ControllerConnectionException("Connection to controller lost", innerException:ex);
+            }
         }
 
         /// <summary>
@@ -95,16 +104,33 @@ namespace HexLight.Control
             this.port = settings.Port;
             this.baud = settings.Baud;
             serial = new SerialPort(port, baud);
-            serial.Open();
-            this.Connected = true;
             this.brightness = 1.0f;
+        }
+
+        public override void Connect()
+        {
+            try
+            {
+                if (!serial.IsOpen)
+                    serial.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new ControllerConnectionException("Could not connect to Arduino controller", innerException: ex);
+            }
+            NotifyConnect();
+        }
+
+        public override void Disconnect()
+        {
+            if (serial.IsOpen)
+                serial.Close();
+            NotifyDisconnect();
         }
 
         public override void Dispose()
         {
-            this.Connected = false;
-            //Color = Colors.Black;
-            serial.Close();
+            Disconnect();
         }
     }
 }
