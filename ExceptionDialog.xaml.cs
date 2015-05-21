@@ -23,12 +23,24 @@ namespace HexLight
 
     public partial class ExceptionDialog : Window
     {
-        public enum ModalResult { Ignore, Abort, Debug }
+        public enum ModalResult { Ignore, Abort, Ok, Debug }
         public ModalResult modalResult = ModalResult.Ignore;
 
         public ExceptionDialog()
         {
             InitializeComponent();
+        }
+
+        protected static string BuildExceptionDetails(Exception ex)
+        {
+            string message = ex.ToString();
+
+            if (ex.InnerException != null)
+            {
+                message += "\n\n" + BuildExceptionDetails(ex.InnerException);
+            }
+
+            return message;
         }
 
         public static bool ShowException(string message, Exception ex = null, ExceptionSeverity severity = ExceptionSeverity.Error)
@@ -38,10 +50,10 @@ namespace HexLight
 
             if (ex != null)
             {
-                if (message != null) fm.messageLabel.Text += "\n\n";
+                if (message != null) fm.messageLabel.Text += "\n\nDetail:\n";
                 fm.messageLabel.Text += ex.Message;
 
-                fm.detailsLabel.Text = "Exception Details:\n\n" + ex.ToString();
+                fm.detailsLabel.Text = "Exception Details:\n\n" + BuildExceptionDetails(ex);
             }
             else
             {
@@ -53,28 +65,35 @@ namespace HexLight
             switch (severity)
             {
                 case ExceptionSeverity.Critical:
-                    fm.btnIgnore.Visibility = Visibility.Hidden;
-                    fm.btnDebug.Visibility = Visibility.Hidden;
+                    fm.btnIgnore.Visibility = Visibility.Collapsed;
+                    fm.btnDebug.Visibility = Visibility.Collapsed;
+                    fm.btnOk.Visibility = Visibility.Collapsed;
+                    fm.btnAbort.IsCancel = true;
+                    fm.btnAbort.IsDefault = true;
                     fm.Title += " - Critical Error";
                     break;
                 case ExceptionSeverity.Error:
+                    fm.btnOk.Visibility = Visibility.Collapsed;
+                    fm.btnIgnore.IsCancel = true;
+                    fm.btnIgnore.IsDefault = true;
                     fm.Title += " - Error";
                     break;
                 case ExceptionSeverity.Unhandled:
+                    fm.btnOk.Visibility = Visibility.Collapsed;
+                    fm.btnIgnore.IsCancel = true;
+                    fm.btnIgnore.IsDefault = true;
                     fm.Title += " - Unhandled Exception";
                     break;
                 case ExceptionSeverity.Warning:
-                    fm.btnIgnore.Visibility = Visibility.Hidden;
-                    fm.btnDebug.Visibility = Visibility.Hidden;
-                    fm.btnAbort.Content = "OK";
+                    fm.btnDebug.Visibility = Visibility.Collapsed;
+                    fm.btnAbort.Visibility = Visibility.Collapsed;
+                    fm.btnIgnore.IsCancel = true;
+                    fm.btnOk.IsDefault = true;
                     fm.Title += " - Error";
                     break;
             }
 
             fm.ShowDialog();
-
-            if (severity == ExceptionSeverity.Warning)
-                return true;
 
             // Shutdown the app if required
             if (severity == ExceptionSeverity.Critical || fm.modalResult == ModalResult.Abort)
@@ -84,7 +103,15 @@ namespace HexLight
             }
 
             if (fm.modalResult == ModalResult.Debug)
+            {
                 Debugger.Launch();
+                Debugger.Break();
+
+                // Welcome, you have been brought here from the [Debug] button.
+                // Where to from here?
+                // - Try stepping out to see what caused the exception
+                // - Examin the stack traces to see what caused the exception
+            }
 
             return (fm.modalResult == ModalResult.Ignore);
         }
@@ -104,6 +131,12 @@ namespace HexLight
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             modalResult = ModalResult.Debug;
+            Close();
+        }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            modalResult = ModalResult.Ok;
             Close();
         }
 
