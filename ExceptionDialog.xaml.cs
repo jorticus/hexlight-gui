@@ -20,7 +20,6 @@ namespace HexLight
     public enum ExceptionSeverity { Warning, Error, Critical, Unhandled }
     
 
-
     public partial class ExceptionDialog : Window
     {
         public enum ModalResult { Ignore, Abort, Ok, Debug }
@@ -43,7 +42,27 @@ namespace HexLight
             return message;
         }
 
-        public static bool ShowException(string message, Exception ex = null, ExceptionSeverity severity = ExceptionSeverity.Error)
+        /// <summary>
+        /// Show an exception dialog of varying severity:
+        /// ExceptionSeverity.Warning
+        ///     Does not abort the program
+        ///     Buttons: [Ok]
+        /// ExceptionSeverity.Error
+        ///     A (possibly expected) error that can be recovered from.
+        ///     Buttons: [Debug] [Ignore] [Abort]
+        /// ExceptionSeverity.Unhandled
+        ///     An unexpected/unhandled exception, probably caught by the global exception handler function.
+        ///     The exception can still be ignored, but this may lead to abnormal program operation.
+        ///     Buttons: [Debug] [Ignore] [Abort]
+        /// ExceptionSeverity.Critical
+        ///     An unrecoverable error - user can only abort the program
+        ///     Buttons: [Debug] [Abort]
+        /// </summary>
+        /// <param name="message">The message to present to the user</param>
+        /// <param name="ex">The exception that caused this message to appear (optional)</param>
+        /// <param name="severity">The severity of the exception</param>
+        /// <returns>The button that was clicked</returns>
+        public static ModalResult ShowException(string message, Exception ex = null, ExceptionSeverity severity = ExceptionSeverity.Error)
         {
             var fm = new ExceptionDialog();
             fm.messageLabel.Text = (message != null) ? message : "";
@@ -72,22 +91,24 @@ namespace HexLight
                     fm.btnAbort.IsDefault = true;
                     fm.Title += " - Critical Error";
                     break;
+                case ExceptionSeverity.Unhandled:
+                    fm.btnOk.Visibility = Visibility.Collapsed;
+                    fm.btnAbort.IsCancel = true;
+                    fm.btnAbort.IsDefault = true;
+                    fm.Title += " - Unhandled Exception";
+                    break;
                 case ExceptionSeverity.Error:
                     fm.btnOk.Visibility = Visibility.Collapsed;
+                    //fm.btnAbort.Visibility = Visibility.Collapsed;
                     fm.btnIgnore.IsCancel = true;
                     fm.btnIgnore.IsDefault = true;
                     fm.Title += " - Error";
                     break;
-                case ExceptionSeverity.Unhandled:
-                    fm.btnOk.Visibility = Visibility.Collapsed;
-                    fm.btnIgnore.IsCancel = true;
-                    fm.btnIgnore.IsDefault = true;
-                    fm.Title += " - Unhandled Exception";
-                    break;
                 case ExceptionSeverity.Warning:
                     fm.btnDebug.Visibility = Visibility.Collapsed;
                     fm.btnAbort.Visibility = Visibility.Collapsed;
-                    fm.btnIgnore.IsCancel = true;
+                    fm.btnIgnore.Visibility = Visibility.Collapsed;
+                    fm.btnOk.IsCancel = true;
                     fm.btnOk.IsDefault = true;
                     fm.Title += " - Error";
                     break;
@@ -99,7 +120,8 @@ namespace HexLight
             if (severity == ExceptionSeverity.Critical || fm.modalResult == ModalResult.Abort)
             {
                 Application.Current.Shutdown(1);
-                return true;
+                System.Environment.Exit(1);
+                return fm.modalResult;
             }
 
             if (fm.modalResult == ModalResult.Debug)
@@ -113,7 +135,7 @@ namespace HexLight
                 // - Examin the stack traces to see what caused the exception
             }
 
-            return (fm.modalResult == ModalResult.Ignore);
+            return fm.modalResult;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
