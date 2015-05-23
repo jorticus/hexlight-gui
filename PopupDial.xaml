@@ -4,11 +4,12 @@
         xmlns:WpfControls="clr-namespace:HexLight.WpfControls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:HexLight" mc:Ignorable="d" x:Class="HexLight.PopupDial" d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}"
         Title="PopupDial" Height="128" Width="163" AllowsTransparency="True" WindowStyle="None" Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" Effect="{DynamicResource FormDropShadow}" Deactivated="Window_Deactivated" Visibility="Visible" Activated="Window_Activated" Closed="Window_Closed" Closing="Window_Closing">
     <Window.Resources>
+        <local:BooleanToNumericConverter x:Key="BooleanToOpacityConverter" TrueValue="1.0" FalseValue="0.7"/>
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
         <DropShadowEffect x:Key="FormDropShadow" Opacity="0.4" BlurRadius="16"/>
     </Window.Resources>
     <Grid>
-        <WpfControls:WheelSelector x:Name="selector" SnapsToDevicePixels="False" Margin="10,10,0,10" ThumbSize="20" Theta="{Binding Hue}" Rad="{Binding Saturation}" HorizontalAlignment="Left" Width="112"/>
+        <WpfControls:WheelSelector IsEnabled="{Binding ManualControl}" x:Name="selector" SnapsToDevicePixels="False" Margin="10,10,0,10" ThumbSize="20" Theta="{Binding Hue}" Rad="{Binding Saturation}" HorizontalAlignment="Left" Width="112" Opacity="{Binding ManualControl, Converter={StaticResource BooleanToOpacityConverter}}"/>
         <WpfControls:RadialSlider Margin="68,10,-13,0" ArcOffset="56,0" ArcStopAngle="147" Height="108" VerticalAlignment="Top" ArcRadius="44" ThumbSize="22,14" BorderThickness="0" ArcStrokeThickness="9" ArcStartAngle="33" ThumbStrokeThickness="3" Foreground="White" Width="108" ThumbOutline="#FFA6A6A6" Maximum="0" Value="{Binding Brightness}" Minimum="1">
             <WpfControls:RadialSlider.ArcBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

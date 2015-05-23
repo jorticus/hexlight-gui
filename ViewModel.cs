@@ -19,6 +19,8 @@ namespace HexLight
 
         private ColorTemperature temperature;
         private float brightness;
+
+        private bool manualControl = true;
         
         private App application { get { return (App.Current as App); } }
 
@@ -33,6 +35,17 @@ namespace HexLight
         }
 
         #region Model Properties
+
+        public bool ManualControl
+        {
+            get { return manualControl; }
+            set
+            {
+                manualControl = value;
+                if (this.PropertyChanged != null)
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("ManualControl"));
+            }
+        }
 
         public float Red
         {

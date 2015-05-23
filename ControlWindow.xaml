@@ -87,7 +87,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Rectangle Height="64" VerticalAlignment="Top" Opacity="0.995" Stroke="#19AEAEAE" Effect="{DynamicResource SubtleDropShadow}" Margin="406,2,10,0">
+        <Rectangle Height="64" VerticalAlignment="Top" Stroke="#19AEAEAE" Effect="{DynamicResource SubtleDropShadow}" Margin="406,2,10,0">
             <Rectangle.Fill>
                 <SolidColorBrush Color="{Binding SystemColor}"/>
             </Rectangle.Fill>

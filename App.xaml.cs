@@ -66,7 +66,19 @@ namespace HexLight
         /// Mode.Engine:
         ///     LEDs are updated through the current engine
         /// </summary>
-        public Mode Mode { get; set; }
+        public Mode Mode
+        {
+            get
+            {
+                return _mode;
+            }
+            set
+            {
+                _mode = value;
+                viewModel.ManualControl = (value == Mode.Manual);
+            }
+        }
+        private Mode _mode;
 
         /// <summary>
         /// Set the current engine to use when in Engine mode
@@ -292,7 +304,7 @@ namespace HexLight
                 case Mode.Engine:
                     if (currentEngine != null)
                     {
-                        viewModel.RGB = currentEngine.Update(0.0); // TODO - tick rate
+                        viewModel.RGB = currentEngine.Update(UPDATE_INTERVAL);
                     }
                     break;
             }

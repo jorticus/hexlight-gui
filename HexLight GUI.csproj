@@ -110,6 +110,7 @@
       <DependentUpon>CIESelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfControls\ColourWheels\HSVWheel.cs" />
+    <Compile Include="WpfControls\Converters.cs" />
     <Compile Include="WpfControls\WheelSelector.xaml.cs">
       <DependentUpon>WheelSelector.xaml</DependentUpon>
     </Compile>
