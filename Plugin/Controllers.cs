@@ -167,7 +167,7 @@ namespace HexLight.Control
     public class ControllerItem
     {
         public Type Controller { get; protected set; }
-        public static ControllerItem NullController = new ControllerItem(null);
+        //public static ControllerItem NullController = new ControllerItem(null);
 
         public ControllerItem() { Controller = null; }
 

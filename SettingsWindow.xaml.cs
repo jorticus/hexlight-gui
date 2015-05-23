@@ -83,9 +83,9 @@ namespace HexLight
             // Populate the listbox
             cbDrivers.Items.Clear();
 
-            cbDrivers.Items.Add(ControllerItem.NullController);
-            if (activeControllerName == null || activeControllerName == "")
-                cbDrivers.SelectedIndex = 0;
+            //cbDrivers.Items.Add(ControllerItem.NullController);
+            //if (activeControllerName == null || activeControllerName == "")
+            //    cbDrivers.SelectedIndex = 0;
 
             foreach (var controllerType in controllers)
             {

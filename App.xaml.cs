@@ -147,7 +147,12 @@ namespace HexLight
 
             // Get the class of the controller to use
             var controllerName = settings.Controller;
+            if (controllerName == null || controllerName == "")
+                throw new ControllerConnectionException("No controller currently configured");
+
             var controllerType = Controllers.GetControllerByName(controllerName);
+            if (controllerType == null)
+                throw new ControllerConnectionException(String.Format("No controller found by name '{0}'", controllerName));
 
             // Instantiate the controller and load any custom settings for it
             controller = Controllers.LoadController(settings, controllerType);
