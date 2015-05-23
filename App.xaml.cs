@@ -6,14 +6,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Timers;
-using HexLight.Control;
-using HexLight.Colour;
-using HexLight.Properties;
 using System.Windows.Media;
 using System.Configuration.Provider;
 using WinForms = System.Windows.Forms;
 using System.Reflection;
-using HexLight.Engines;
+
+using HexLight.Control;
+using HexLight.Engine;
+using HexLight.Colour;
+using HexLight.Properties;
+using System.Windows.Controls;
+using HexLight.Plugin;
 
 namespace HexLight
 {
@@ -27,7 +30,7 @@ namespace HexLight
         }
     }
 
-    public enum Mode { Manual, Rowdz };
+    public enum Mode { Manual, Engine };
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -35,11 +38,13 @@ namespace HexLight
     public partial class App : Application
     {
         public float brightness;
-        public RGBController controller;
         public RGBColor color;
         public HSVColor hsvColor;
 
-        public RowdzEngine rowdzEngine;
+        public RGBController controller;
+
+        public HexEngine currentEngine;
+        public List<HexEngine> engines;
 
         public ViewModel viewModel;
 
@@ -129,14 +134,14 @@ namespace HexLight
                 while (true)
                 {
                     var fm = new SettingsWindow();
-                    bool ignore = ExceptionDialog.ShowException("Could not connect to the device. Check application settings and try again", ex, ExceptionSeverity.Warning);
+                    var result = ExceptionDialog.ShowException("Could not connect to the device. Check application settings and try again", ex, ExceptionSeverity.Warning);
 
                     // Ignore
-                    if (ignore)
+                    if (result == ExceptionDialog.ModalResult.Ignore)
                         break; // Just start the application
 
-                    bool? result = fm.ShowDialog();
-                    bool ok = (result.HasValue && result.Value);
+                    bool? _ok = fm.ShowDialog();
+                    bool ok = (_ok.HasValue && _ok.Value);
 
                     // Cancel, exit application
                     if (!ok)
@@ -159,6 +164,44 @@ namespace HexLight
             }
         }
 
+        /// <summary>
+        /// Try and load all engines present
+        /// </summary>
+        private void LoadEngines(ControlWindow controlWindow)
+        {
+            var engineTypes = Engines.ListEngines();
+
+            // Load engines & populate tabs
+            foreach (var engineType in engineTypes)
+            {
+                string name = Engines.GetEngineName(engineType);
+
+                // Try to load the engine
+                HexEngine engine = null;
+                UserControl page = null;
+                try
+                {
+                    engine = Engines.LoadEngine(engineType);
+                }
+                catch (NotImplementedException)
+                {
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    string assyName = Plugins.GetAssemblyName(engineType);
+                    if (assyName != null)
+                        name += " (" + assyName + ")";
+
+                    ExceptionDialog.ShowException(String.Format("Could not load {0}", name), ex, ExceptionSeverity.Error);
+                    continue; // Ignore was pressed
+                }
+
+                // Add tab & page to the control window
+                controlWindow.AddEngine(name, page, engine);
+            }
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             this.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
@@ -170,11 +213,11 @@ namespace HexLight
             controller.DisconnectNotification += OnControllerDisconnected;
 
             viewModel = new ViewModel();
-            viewModel.Sensitivity = 1.0f;
-            viewModel.DecayRate = 0.01f;
 
             controlWindow = new ControlWindow(viewModel);
             popupDial = new PopupDial(viewModel);
+
+            LoadEngines(controlWindow);
 
             #if DEBUG
                 controlWindow.Show();
@@ -214,11 +257,11 @@ namespace HexLight
                 case Mode.Manual:
                     break;
 
-                case Mode.Rowdz:
-                    rowdzEngine.sensitivity = viewModel.Sensitivity;
-                    rowdzEngine.intensityDecayRate = viewModel.DecayRate;
-                    viewModel.RGB = rowdzEngine.Update();
-                    break;
+                //case Mode.Rowdz:
+                //    rowdzEngine.sensitivity = viewModel.Sensitivity;
+                //    rowdzEngine.intensityDecayRate = viewModel.DecayRate;
+                //    viewModel.RGB = rowdzEngine.Update();
+                //    break;
             }
 
             controller.Color = color;
@@ -300,18 +343,18 @@ namespace HexLight
         {
             switch (_mode)
             {
-                case Mode.Manual:
-                    if (rowdzEngine != null)
-                    {
-                        rowdzEngine.Disable();
-                        rowdzEngine = null;
-                    }
-                    break;
+                //case Mode.Manual:
+                //    if (rowdzEngine != null)
+                //    {
+                //        rowdzEngine.Disable();
+                //        rowdzEngine = null;
+                //    }
+                //    break;
 
-                case Mode.Rowdz:
-                    rowdzEngine = new RowdzEngine();
-                    rowdzEngine.Enable();
-                    break;
+                //case Mode.Rowdz:
+                //    rowdzEngine = new RowdzEngine();
+                //    rowdzEngine.Enable();
+                //    break;
             }
             this._mode = _mode;
         }

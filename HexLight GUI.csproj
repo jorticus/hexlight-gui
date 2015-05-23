@@ -57,12 +57,6 @@
     <Reference Include="MathNet.Numerics">
       <HintPath>packages\MathNet.Numerics.3.0.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX">
-      <HintPath>..\..\..\Visual Studio 2010\Libraries\SharpDX\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DirectSound">
-      <HintPath>..\..\..\Visual Studio 2010\Libraries\SharpDX\SharpDX.DirectSound.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -86,20 +80,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DSP\BeatDetector.cs" />
-    <Compile Include="Control\ControllerBase.cs" />
-    <Compile Include="Control\RGBController.cs">
+    <Compile Include="Plugin\ControllerBase.cs" />
+    <Compile Include="Plugin\Engines.cs" />
+    <Compile Include="Plugin\Plugins.cs" />
+    <Compile Include="Plugin\RGBController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Control\Controllers.cs" />
-    <Compile Include="Engines\Util\Audio.cs" />
-    <Compile Include="Engines\Util\CircularBuffer.cs" />
-    <Compile Include="Engines\RowdzEngine.cs" />
+    <Compile Include="Plugin\Controllers.cs" />
+    <Compile Include="Plugin\EngineBase.cs" />
+    <Compile Include="Plugin\HexEngine.cs" />
     <Compile Include="ExceptionDialog.xaml.cs">
       <DependentUpon>ExceptionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DSP\FFT.cs" />
-    <Compile Include="DSP\IntensityDetector.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -108,7 +100,6 @@
     </Compile>
     <Compile Include="RenderIcon.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="DSP\Sonogram.cs" />
     <Compile Include="Util\CircularMath.cs" />
     <Compile Include="WinAPI\Glass.cs" />
     <Compile Include="WinAPI\WinAPI.cs" />

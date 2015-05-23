@@ -6,7 +6,7 @@ using SharpDX.DirectSound;
 using SharpDX.Multimedia;
 using System.Threading;
 
-namespace HexLight.Engines.Util
+namespace HexLight.Engine.Util
 {
     public delegate void ProcessAudioEvent(short[] buffer);
 

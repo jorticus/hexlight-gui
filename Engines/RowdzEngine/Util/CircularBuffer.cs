@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections;
 using System.ComponentModel;
 
-namespace HexLight.Engines.Util
+namespace HexLight.Engine.Util
 {
 
     class CircularBuffer<T>

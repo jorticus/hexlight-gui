@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HexLight.Control;
+using HexLight.Engine;
 using HexLight.Colour;
 using HexLight.WpfControls;
 using HexLight.WinAPI;
@@ -27,6 +28,31 @@ namespace HexLight
         public App application { get { return (App.Current as App); } }
         public RGBColor Color { get { return application.color; } set { application.color = value; } }
 
+
+        public void AddEngine(string label, UserControl page = null, HexEngine engine = null)
+        {
+            var tab = new TabItem();
+
+            var labelTemplate = this.colourTabLabel;
+            
+            var tabLabel = new Label() { 
+                Content = label,
+                FontSize = labelTemplate.FontSize,
+                FontFamily = labelTemplate.FontFamily,
+                Padding = labelTemplate.Padding,
+                BorderThickness = labelTemplate.BorderThickness,
+                BorderBrush = labelTemplate.BorderBrush
+            };
+
+            if (engine == null || page == null)
+                tabLabel.Foreground = new SolidColorBrush(Colors.Red);
+
+            tab.Header = tabLabel;
+
+            tab.Content = page;
+
+            tabControl.Items.Add(tab);
+        }
 
         public ControlWindow(object viewModel = null)
         {
@@ -71,7 +97,7 @@ namespace HexLight
                     break;
 
                 case 1:
-                    application.mode = Mode.Rowdz;
+                    application.mode = Mode.Engine;
                     break;
             }
         }

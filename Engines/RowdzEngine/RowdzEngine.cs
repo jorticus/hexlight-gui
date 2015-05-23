@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using HexLight.Engine;
 using HexLight.Colour;
-using HexLight.Engines.Util;
+using HexLight.Engine.Util;
 
-namespace HexLight.Engines
+namespace HexLight.Engine
 {
-    public class RowdzEngine
+    public class RowdzEngine : HexEngine
     {
         private bool enabled = false;
 
@@ -37,7 +39,12 @@ namespace HexLight.Engines
             // Yer!
         }
 
-        public void Enable()
+        public override UserControl GetControlPage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Enable()
         {
             // Open audio device
             try
@@ -68,10 +75,15 @@ namespace HexLight.Engines
             enabled = true;
         }
 
-        public void Disable()
+        public override void Disable()
         {
             audioCapture.Stop();
             enabled = false;
+        }
+
+        public override RGBColor Update(double tick_time)
+        {
+            throw new NotImplementedException();
         }
 
         public RGBColor Update()
