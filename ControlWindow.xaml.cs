@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using HexLight.Control;
 using HexLight.Colour;
 using HexLight.WpfControls;
+using HexLight.WinAPI;
 
 namespace HexLight
 {
@@ -25,6 +26,7 @@ namespace HexLight
     {
         public App application { get { return (App.Current as App); } }
         public RGBColor Color { get { return application.color; } set { application.color = value; } }
+
 
         public ControlWindow(object viewModel = null)
         {
@@ -72,6 +74,11 @@ namespace HexLight
                     application.mode = Mode.Rowdz;
                     break;
             }
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Glass.ExtendFrameIntoClientArea(this, new Thickness(0, 50, 0, 0));
         }
     }
 }

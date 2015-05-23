@@ -5,13 +5,13 @@
         xmlns:controls="clr-namespace:HexLight.WpfControls"
         xmlns:colourWheels="clr-namespace:HexLight.WpfControls.ColourWheels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Properties="clr-namespace:HexLight.Properties" mc:Ignorable="d" x:Name="window" x:Class="HexLight.ControlWindow"
-        Title="HexLight Control Panel" Height="322.333" Width="490.667" Closing="window_Closing" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen">
+        Title="HexLight Control Panel" Height="322.333" Width="490.667" Closing="window_Closing" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" Loaded="window_Loaded" Background="Transparent" ResizeMode="CanMinimize">
     <Window.Resources>
         <local:ViewModel x:Key="ViewModel"/>
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
     </Window.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}" SnapsToDevicePixels="True">
-        <TabControl x:Name="tabControl" Margin="4,0,85,1" IsSynchronizedWithCurrentItem="False" TabStripPlacement="Left" BorderThickness="1,0,0,0" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl x:Name="tabControl" Margin="-1,0" IsSynchronizedWithCurrentItem="False" BorderThickness="1,1,0,0" SelectionChanged="TabControl_SelectionChanged" Grid.ColumnSpan="2">
             <TabItem>
                 <TabItem.Header>
                     <Label Content="Colour" FontSize="18" FontFamily="Segoe UI Semilight" Padding="0" BorderThickness="0,2"></Label>
@@ -81,8 +81,8 @@
                     <Slider x:Name="tbValue" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Value}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Height="25"/>
                     <Slider x:Name="tbTemperature" HorizontalAlignment="Left" Margin="10,214,0,0" VerticalAlignment="Top" Width="120" Maximum="12000" LargeChange="1000" Value="{Binding Temperature}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Minimum="2000" AutoToolTipPlacement="BottomRight" SmallChange="100" ToolTip="" Height="25"/>
                     <Slider x:Name="tbBrightness" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Width="120" Maximum="1" LargeChange="0.1" Value="{Binding Brightness}" TickPlacement="BottomRight" Foreground="#00E5E5E5" Height="25"/>
-                    <controls:WheelSelector WheelClass="{x:Type colourWheels:HSVWheel}" Margin="133,21,0,0" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" RGBValue="{Binding RGB}" HorizontalAlignment="Left" Width="176" Height="172" VerticalAlignment="Top"/>
-                    <controls:RadialSlider Margin="222,20,0,0" Minimum="1" ArcOffset="88,0" ArcStopAngle="147" Height="174" VerticalAlignment="Top" ArcRadius="72" ThumbSize="22,14" BorderThickness="0" ArcStrokeThickness="9" ArcBrush="#7FB6B6B6" ArcStartAngle="33" ThumbStrokeThickness="3" Foreground="White" Value="{Binding Brightness}" Width="176" ThumbOutline="#FFA6A6A6" Maximum="0" HorizontalAlignment="Left"/>
+                    <controls:WheelSelector WheelClass="{x:Type colourWheels:HSVWheel}" Margin="155,0,0,0" Loaded="HSVSelector_Loaded" SnapsToDevicePixels="False" Effect="{DynamicResource SubtleDropShadow}" ThumbSize="24" RGBValue="{Binding RGB}" HorizontalAlignment="Left" Width="252" Height="243" VerticalAlignment="Top"/>
+                    <controls:RadialSlider Margin="283,0,0,0" Minimum="1" ArcOffset="82,0" ArcStopAngle="147" Height="249" VerticalAlignment="Top" ArcRadius="116" ThumbSize="26,17" BorderThickness="0" ArcStrokeThickness="9" ArcBrush="#7FB6B6B6" ArcStartAngle="33" ThumbStrokeThickness="3" Foreground="White" Value="{Binding Brightness}" Width="165" ThumbOutline="#FFA6A6A6" Maximum="0" HorizontalAlignment="Left"/>
 
                 </Grid>
             </TabItem>
@@ -91,16 +91,16 @@
                     <Label Content="Rowdz" FontSize="18" FontFamily="Segoe UI Semilight" Padding="0" BorderThickness="0,2"></Label>
                 </TabItem.Header>
                 <Grid>
-                    
+
                     <Label Content="Sensitivity" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Padding="5,5,5,0"/>
-                    <Slider x:Name="tbSensitivity" Margin="10,24,10,239" Maximum="2" Value="{Binding Sensitivity}"/>
+                    <Slider x:Name="tbSensitivity" Margin="10,24,10,204" Maximum="2" Value="{Binding Sensitivity}" Height="20"/>
 
                     <Label Content="Decay" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Padding="5,5,5,0"/>
-                    <Slider x:Name="tbDecay" Margin="10,70,10,193" Value="{Binding DecayRate}" Maximum="1"/>
+                    <Slider x:Name="tbDecay" Margin="10,70,10,160" Value="{Binding DecayRate}" Maximum="1" Height="20"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Rectangle Height="64" VerticalAlignment="Top" Opacity="0.995" Stroke="#19AEAEAE" Effect="{DynamicResource SubtleDropShadow}" Margin="401,10,9,0">
+        <Rectangle Height="64" VerticalAlignment="Top" Opacity="0.995" Stroke="#19AEAEAE" Effect="{DynamicResource SubtleDropShadow}" Margin="406,2,10,0">
             <Rectangle.Fill>
                 <SolidColorBrush Color="{Binding SystemColor}"/>
             </Rectangle.Fill>

@@ -110,6 +110,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="DSP\Sonogram.cs" />
     <Compile Include="Util\CircularMath.cs" />
+    <Compile Include="WinAPI\Glass.cs" />
     <Compile Include="WinAPI\WinAPI.cs" />
     <Compile Include="WpfControls\CIEPlot.xaml.cs">
       <DependentUpon>CIEPlot.xaml</DependentUpon>
