@@ -11,7 +11,7 @@
         <DropShadowEffect x:Key="SubtleDropShadow" ShadowDepth="0" Opacity="0.3"/>
     </Window.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}" SnapsToDevicePixels="True">
-        <TabControl x:Name="tabControl" Margin="-1,0" IsSynchronizedWithCurrentItem="False" BorderThickness="1,1,0,0" SelectionChanged="TabControl_SelectionChanged" Grid.ColumnSpan="2">
+        <TabControl x:Name="tabControl" Margin="0" IsSynchronizedWithCurrentItem="False" BorderThickness="1" SelectionChanged="TabControl_SelectionChanged" Grid.ColumnSpan="2">
             <TabItem>
                 <TabItem.Header>
                     <Label x:Name="colourTabLabel" Content="Colour" FontSize="18" FontFamily="Segoe UI Semilight" Padding="0" BorderThickness="0,2"></Label>

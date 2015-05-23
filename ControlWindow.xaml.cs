@@ -117,7 +117,7 @@ namespace HexLight
 
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
-            Glass.ExtendFrameIntoClientArea(this, new Thickness(0, 50, 0, 0));
+            Glass.ExtendFrameIntoClientArea(this, new Thickness(1, 50, 1, 1));
         }
     }
 }
