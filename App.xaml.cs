@@ -264,7 +264,9 @@ namespace HexLight
             {
                 try
                 {
-                    controller.Connect();
+                    if (!controller.Connected)
+                        controller.Connect();
+                    (sender as Timer).Stop(); // Safety
                 } 
                 catch (ControllerConnectionException)
                 {
