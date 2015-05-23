@@ -50,6 +50,7 @@ namespace HexLight
             tab.Header = tabLabel;
 
             tab.Content = page;
+            tab.DataContext = engine; // Store a reference to the engine so we can activate it
 
             tabControl.Items.Add(tab);
         }
@@ -90,15 +91,27 @@ namespace HexLight
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (this.tabControl.SelectedIndex)
-            {
-                case 0:
-                    application.mode = Mode.Manual;
-                    break;
+            int index = this.tabControl.SelectedIndex;
 
-                case 1:
-                    application.mode = Mode.Engine;
-                    break;
+            if (index < 0)
+            {
+                throw new Exception("Invalid tab index");
+            }
+            else if (index == 0)
+            {
+                // Use manual mode to update LEDs
+                application.SetEngine(null);
+                application.Mode = Mode.Manual;
+            }
+            else
+            {
+                // Use an engine to update LEDs
+                // Each tab has its own associated engine object (stored in the DataContext)
+                var item = (this.tabControl.SelectedItem as TabItem);
+                var engine = (item.DataContext as HexEngine);
+
+                application.SetEngine(engine);
+                application.Mode = Mode.Engine;
             }
         }
 

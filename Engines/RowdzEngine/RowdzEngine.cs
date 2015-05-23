@@ -9,10 +9,13 @@ using HexLight.Engine;
 using HexLight.Colour;
 using HexLight.Engine.Util;
 
-namespace HexLight.Engine
+namespace HexLight.Engine.Rowdz
 {
+    [EngineName("Rowdz")]
     public class RowdzEngine : HexEngine
     {
+        public Rowdz.ViewModel viewModel;
+
         private bool enabled = false;
 
         private int fftWidth = 256;
@@ -25,9 +28,7 @@ namespace HexLight.Engine
         private DSP.IntensityDetector intensityDetector;
 
         private float audioLevel = 0.0f;
-        public float sensitivity = 1.0f;
         //private bool audioLoaded = false;
-        public float intensityDecayRate = 0.01f;
 
         private float[] leftch;
         private float[] rightch;
@@ -36,16 +37,29 @@ namespace HexLight.Engine
 
         public RowdzEngine()
         {
-            // Yer!
+            viewModel = new Rowdz.ViewModel();
         }
 
         public override UserControl GetControlPage()
         {
-            throw new NotImplementedException();
+            var page = new ControlPage();
+
+            page.DataContext = viewModel;
+
+            // Allow parent to define width/height
+            page.Width = double.NaN;
+            page.Height = double.NaN;
+
+            return page;
         }
 
         public override void Enable()
         {
+            if (enabled)
+                return;
+
+            // Fok I'm so r0wdy
+
             // Open audio device
             try
             {
@@ -77,13 +91,16 @@ namespace HexLight.Engine
 
         public override void Disable()
         {
+            if (!enabled)
+                return;
+
             audioCapture.Stop();
             enabled = false;
         }
 
         public override RGBColor Update(double tick_time)
         {
-            throw new NotImplementedException();
+            return Update();
         }
 
         public RGBColor Update()
@@ -124,6 +141,9 @@ namespace HexLight.Engine
         // UNSAFE THREAD CALL
         private void AudioBufferFull(short[] buffer)
         {
+            float sensitivity = (float)viewModel.Sensitivity;
+            float decayRate = (float)viewModel.DecayRate; 
+
             bufferMutex.WaitOne();
             try
             {
@@ -156,7 +176,7 @@ namespace HexLight.Engine
                 //sonogram.AddLine(fft.Bands);
 
                 //intensityDetector.Threshold = AudioEditor.threshold;
-                intensityDetector.Decay = intensityDecayRate;
+                intensityDetector.Decay = decayRate;
                 intensityDetector.ProcessFFT(fft.Bands);
             }
             finally

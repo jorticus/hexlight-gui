@@ -45,13 +45,12 @@ namespace HexLight
 
         public HexEngine currentEngine;
         public List<HexEngine> engines;
+        public IEnumerable<Type> controllers;
 
         public ViewModel viewModel;
 
         public PopupDial popupDial;
         public ControlWindow controlWindow;
-
-        public IEnumerable<Type> controllers;
 
         private WinForms.NotifyIcon trayIcon;
 
@@ -60,8 +59,35 @@ namespace HexLight
         private const double UPDATE_INTERVAL = 1000.0 / 60.0;
         private const double CONNECT_INTERVAL = 250.0;
 
-        public Mode mode { get { return _mode; } set { this.SetMode(value); } }
-        public Mode _mode = Mode.Manual;
+        /// <summary>
+        /// The current LED update mode
+        /// Mode.Manual:
+        ///     LEDs are updated through the ViewModel
+        /// Mode.Engine:
+        ///     LEDs are updated through the current engine
+        /// </summary>
+        public Mode Mode { get; set; }
+
+        /// <summary>
+        /// Set the current engine to use when in Engine mode
+        /// Set to null to disable the engine.
+        /// Engines are automatically disabled/enabled when switching
+        /// </summary>
+        /// <param name="engine"></param>
+        public void SetEngine(HexEngine engine)
+        {
+            // Switch engines
+            if (engine != currentEngine)
+            {
+                if (currentEngine != null)
+                    currentEngine.Disable();
+
+                if (engine != null)
+                    engine.Enable();
+            }
+
+            currentEngine = engine;
+        }
 
         public App() : base()
         {
@@ -96,6 +122,8 @@ namespace HexLight
                 return;
             }
         }
+
+        #region Plugin Loading
 
         /// <summary>
         /// Load the controller with the current settings,
@@ -182,6 +210,7 @@ namespace HexLight
                 try
                 {
                     engine = Engines.LoadEngine(engineType);
+                    page = engine.GetControlPage();
                 }
                 catch (NotImplementedException)
                 {
@@ -201,6 +230,8 @@ namespace HexLight
                 controlWindow.AddEngine(name, page, engine);
             }
         }
+
+        #endregion
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -252,21 +283,25 @@ namespace HexLight
         /// </summary>
         private void Update()
         {
-            switch (mode)
+            switch (Mode)
             {
                 case Mode.Manual:
+                    
                     break;
 
-                //case Mode.Rowdz:
-                //    rowdzEngine.sensitivity = viewModel.Sensitivity;
-                //    rowdzEngine.intensityDecayRate = viewModel.DecayRate;
-                //    viewModel.RGB = rowdzEngine.Update();
-                //    break;
+                case Mode.Engine:
+                    if (currentEngine != null)
+                    {
+                        viewModel.RGB = currentEngine.Update(0.0); // TODO - tick rate
+                    }
+                    break;
             }
 
             controller.Color = color;
             controller.Brightness = brightness;
         }
+
+        #region Timers
 
         private void updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -321,6 +356,8 @@ namespace HexLight
 #endif
         }
 
+        #endregion
+
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             if (updateTimer != null)
@@ -337,26 +374,6 @@ namespace HexLight
             catch (Exception) { } // Don't worry about exceptions while closing down
 
             Shutdown();
-        }
-
-        private void SetMode(Mode _mode)
-        {
-            switch (_mode)
-            {
-                //case Mode.Manual:
-                //    if (rowdzEngine != null)
-                //    {
-                //        rowdzEngine.Disable();
-                //        rowdzEngine = null;
-                //    }
-                //    break;
-
-                //case Mode.Rowdz:
-                //    rowdzEngine = new RowdzEngine();
-                //    rowdzEngine.Enable();
-                //    break;
-            }
-            this._mode = _mode;
         }
 
         #region Connection Management
@@ -382,7 +399,6 @@ namespace HexLight
         }
 
         #endregion
-
 
         #region Tray Menu
 

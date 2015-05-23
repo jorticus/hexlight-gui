@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="HexLight.Engine.ControlPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HexLight.Engine.Rowdz"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="206" Width="293">
+    <UserControl.Resources>
+        <local:ViewModel x:Key="ViewModel"/>
+    </UserControl.Resources>
+    <Grid d:DataContext="{d:DesignInstance {x:Type local:ViewModel}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="128"/>
+        </Grid.ColumnDefinitions>
+        <Slider Margin="10,27,10,0" VerticalAlignment="Top" Value="{Binding Sensitivity}" Minimum="{x:Static local:ViewModel.SensitivityMin}" Maximum="{x:Static local:ViewModel.SensitivityMax}" />
+        <Label Content="Sensitivity" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,4,0,0"/>
+        <Slider Margin="10,68,10,0" VerticalAlignment="Top" Value="{Binding DecayRate}" Minimum="{x:Static local:ViewModel.DecayRateMin}" Maximum="{x:Static local:ViewModel.DecayRateMax}"/>
+        <Label Content="Decay" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0"/>
+    </Grid>
+</UserControl>
