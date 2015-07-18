@@ -363,6 +363,7 @@ namespace HexLight
                     if (!controller.Connected)
                         controller.Connect();
                     (sender as Timer).Stop(); // Safety
+                    return;
                 } 
                 catch (ControllerConnectionException)
                 {
