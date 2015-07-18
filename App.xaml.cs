@@ -56,7 +56,7 @@ namespace HexLight
 
         private static Timer updateTimer;
         private static Timer connectTimer;
-        private const double UPDATE_INTERVAL = 1000.0 / 60.0;
+        private const double UPDATE_INTERVAL = 1000.0 / 1000.0;
         private const double CONNECT_INTERVAL = 250.0;
 
         /// <summary>
@@ -334,7 +334,8 @@ namespace HexLight
             }
             catch (ControllerConnectionException)
             {
-                // The device has disconnected, ignore the exception
+                // The device has disconnected, ignore the exception and try to re-connect
+                connectTimer.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -343,7 +344,7 @@ namespace HexLight
                 Application.Current.Dispatcher.Invoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
                     new Action<Exception>((exc) => { throw new TimerException("Exception in Timer Thread", exc, sender as Timer); }), ex);
-                 
+                return; // Don't re-enable the timer
             }
 #if DEBUG
             (sender as Timer).Start();
@@ -411,7 +412,7 @@ namespace HexLight
             {
                 updateTimer.Enabled = false;
                 trayIcon.ShowBalloonTip(2000, "Disconnected", "RGB controller disconnected", WinForms.ToolTipIcon.Error);
-                connectTimer.Enabled = true;
+                // Connect timer may be enabled in the update timer
             }
         }
 

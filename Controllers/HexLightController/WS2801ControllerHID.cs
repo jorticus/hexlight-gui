@@ -154,6 +154,12 @@ namespace HexLight.Control
 
                 return payload;
             }
+            catch (HLDCProtocolException ex)
+            {
+                // Critical error!
+                Disconnect();
+                throw ex;
+            }
             catch (Exception ex)
             {
                 Disconnect();
@@ -174,6 +180,11 @@ namespace HexLight.Control
                     throw new HLDCProtocolException("Unexpected or invalid reply received");
 
                 return payload;
+            }
+            catch (HLDCProtocolException ex)
+            {
+                // Critical error!
+                throw ex;
             }
             catch (Exception ex)
             {
@@ -232,10 +243,12 @@ namespace HexLight.Control
                     throw new ControllerConnectionException("Could not connect to USB controller", innerException: ex);
                 }
 
+                this.Connected = true;
 
                 // required when running outside visual studio for some reason???
                 //SendPacket(0x00);
             }
+
             NotifyConnect();
         }
 
