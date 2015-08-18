@@ -110,11 +110,15 @@ namespace HexLight
         {
             try
             {
+                Exception outer_ex = e.Exception;
                 Exception ex = e.Exception;
 
                 // If exception occurred in another thread
                 if (e.Exception is System.Reflection.TargetInvocationException && e.Exception.InnerException != null)
+                {
                     ex = e.Exception.InnerException;
+                    outer_ex = e.Exception.InnerException;
+                }
 
                 if (ex is TimerException)
                     ex = ex.InnerException;
@@ -122,8 +126,11 @@ namespace HexLight
                 ExceptionDialog.ShowException(null, ex, ExceptionSeverity.Unhandled);
 
                 // Re-enable timer if Ignoring the exception
-                if (ex is TimerException && (ex as TimerException).Timer.Enabled == false)
-                    (ex as TimerException).Timer.Start();
+                if (outer_ex is TimerException && (outer_ex as TimerException).Timer.Enabled == false)
+                {
+                    (outer_ex as TimerException).Timer.Start();
+                    connectTimer.Start();
+                }
 
                 e.Handled = true;
             }
