@@ -6,11 +6,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using HexLight.Colour;
+using HexLight.Util;
 
 namespace HexLight.Control
 {
     public abstract class HexBaseController : RGBController
     {
+        private const int RETRIES = 3;
+
         #region Protocol Command Defs
 
         private const byte CMD_TEST = 0x00;
@@ -21,7 +24,7 @@ namespace HexLight.Control
 
         #endregion
 
-        #region Protocol Handlers
+        #region Protocol Interface
 
         /// <summary>
         /// Read a complete frame from the serial device.
@@ -29,22 +32,107 @@ namespace HexLight.Control
         protected abstract byte[] ReceiveFrame();
 
         /// <summary>
-        /// Send a command to the device
+        /// Abstract method to send a raw packet to the device
         /// </summary>
-        /// <typeparam name="T">The struct to use for parameters</typeparam>
-        /// <param name="command">Command to execute</param>
-        /// <param name="payload">Command parameter data to send</param>
-        protected abstract void SendPacket<T>(byte command, T payload);
+        /// <param name="command">The command to execute</param>
+        /// <param name="payload">Raw payload data (optional)</param>
         protected abstract void SendPacket(byte command, byte[] payload = null);
 
         /// <summary>
-        /// Wait for a reply from the device, after sending a command.
-        /// If the command is not what was expected, an exception is raised.
+        /// Abstract method for reading the reply returned after sending a packet
         /// </summary>
+        /// <remarks>
+        /// Waits for a reply from the device, after sending a command.
+        /// If the command is not what was expected, an exception is raised.
+        /// DO NOT USE DIRECTLY - prefer TransferPacket instead.
+        /// </remarks>
         /// <param name="expected_command">The command that is expected</param>
-        /// <returns>Raw payload bytes</returns>
+        /// <returns>Raw response data</returns>
         protected abstract byte[] ReadReply(byte expected_command);
-        protected abstract T ReadReply<T>(byte expected_command);
+
+        #endregion
+
+        #region Protocol Transfer
+
+        /// <summary>
+        /// Send a command with an optional payload and optional response.
+        /// </summary>
+        /// <remarks>
+        /// Waits until a reply is received.
+        /// Will retry transmission a few times if the packet transfer fails.
+        /// DO NOT USE DIRECTLY - prefer TransferPacket instead.
+        /// </remarks>
+        /// <exception cref="HLDCProtocolException">Corrupted/Lost Packet Data</exception>
+        /// <exception cref="ControllerConnectionException">Fatal unrecoverable error - device has been disconnected for safety</exception>
+        /// <param name="command">The command</param>
+        /// <param name="payload">Optional raw payload</param>
+        /// <returns>The raw data received</returns>
+        protected byte[] TransferPacket(byte command, byte[] payload = null)
+        {
+            int i = 0;
+            while (true)
+            {
+                try
+                {
+                    SendPacket(command, payload);
+                    return ReadReply(command);
+                }
+                catch (HLDCProtocolException)
+                {
+                    if (i++ == RETRIES)
+                        throw;
+
+                    continue;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Wrapper for TransferPacket(byte command, byte[] payload)
+        /// </summary>
+        /// 
+        /// <typeparam name="T">Struct type for payload</typeparam>
+        /// <typeparam name="R">Struct type for response</typeparam>
+        /// <param name="command">Command to send</param>
+        /// <param name="payload">Payload struct</param>
+        /// <returns>Response struct</returns>
+        protected R TransferPacket<T, R>(byte command, T payload)
+        {
+            byte[] payload_bytes = StructInterop.StructToByteArray<T>(payload);
+            byte[] response_bytes = TransferPacket(command, payload_bytes);
+            return StructInterop.ByteArrayToStruct<R>(response_bytes);
+        }
+
+        /// <summary>
+        /// Wrapper for TransferPacket(byte command, byte[] payload)
+        /// </summary>
+        /// <remarks>
+        /// Doesn't expect a response. Any response data is discarded,
+        /// but will still block until a response is received.
+        /// </remarks>
+        /// <typeparam name="T">Struct type for payload</typeparam>
+        /// <param name="command">Command to send</param>
+        /// <param name="payload">Payload struct</param>
+        protected void TransferPacket<T>(byte command, T payload)
+        {
+            byte[] payload_bytes = StructInterop.StructToByteArray<T>(payload);
+            TransferPacket(command, payload_bytes);
+        }
+
+        /// <summary>
+        /// Wrapper for TransferPacket(byte command, byte[] payload)
+        /// </summary>
+        /// <remarks>
+        /// Command doesn't expect a payload, but returns a response.
+        /// </remarks>
+        /// <typeparam name="R">Struct type for response</typeparam>
+        /// <param name="command">Command to send</param>
+        /// <returns>Response struct</returns>
+        protected R TransferPacket<R>(byte command)
+        {
+            byte[] response_bytes = TransferPacket(command);
+            return StructInterop.ByteArrayToStruct<R>(response_bytes);
+        }
 
         #endregion
 
@@ -52,14 +140,12 @@ namespace HexLight.Control
 
         public void PowerOn()
         {
-            SendPacket(CMD_POWER_ON);
-            ReadReply(CMD_POWER_ON);
+            TransferPacket(CMD_POWER_ON);
         }
 
         public void PowerOff()
         {
-            SendPacket(CMD_POWER_OFF);
-            ReadReply(CMD_POWER_OFF);
+            TransferPacket(CMD_POWER_OFF);
         }
 
         #endregion

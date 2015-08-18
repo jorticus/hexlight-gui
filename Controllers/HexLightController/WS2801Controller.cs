@@ -93,18 +93,11 @@ namespace HexLight.Control
         #endregion
 
         /// <summary>
-        /// Configure the physical layout of the WS2801 strings
+        /// Configure the physical layout of the WS2801 grid
         /// </summary>
-        /// <param name="StringLength">The length of each string</param>
-        /// <param name="NumStrings">The number of strings (Max: 10 strings)</param>
-        public void ConfigureLayout(Int16 StringLength, Int16 NumStrings)
+        public void ConfigureLayout(Int16 Width, Int16 Height)
         {
-            SendPacket<LayoutConfigurationStruct>(CMD_CONFIGURE_LAYOUT, new LayoutConfigurationStruct
-            {
-                StringLength = StringLength,
-                NumStrings = NumStrings
-            });
-            ReadReply(CMD_CONFIGURE_LAYOUT);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -113,8 +106,7 @@ namespace HexLight.Control
         /// </summary>
         public void Clear()
         {
-            SendPacket(CMD_CLEAR);
-            ReadReply(CMD_CLEAR);
+            TransferPacket(CMD_CLEAR);
         }
 
         /// <summary>
@@ -122,8 +114,7 @@ namespace HexLight.Control
         /// </summary>
         public void Update()
         {
-            SendPacket(CMD_UPDATE);
-            ReadReply(CMD_UPDATE);
+            TransferPacket(CMD_UPDATE);
         }
 
         /// <summary>
@@ -133,13 +124,12 @@ namespace HexLight.Control
         /// <param name="colour">The colour to shift in</param>
         public void ShiftIn(RGBColor colour)
         {
-            SendPacket<RGBPixelStruct>(CMD_SHIFT_IN, new RGBPixelStruct
+            TransferPacket<RGBPixelStruct>(CMD_SHIFT_IN, new RGBPixelStruct
             {
                 Red = colour.Rb,
                 Green = colour.Gb,
                 Blue = colour.Bb
             });
-            ReadReply(CMD_SHIFT_IN);
         }
 
         /// <summary>
@@ -148,13 +138,12 @@ namespace HexLight.Control
         /// <param name="colour">The colour to use</param>
         private void SetAll(RGBColor colour)
         {
-            SendPacket<RGBPixelStruct>(CMD_SET_ALL, new RGBPixelStruct
+            TransferPacket<RGBPixelStruct>(CMD_SET_ALL, new RGBPixelStruct
             {
                 Red = colour.Rb,
                 Green = colour.Gb,
                 Blue = colour.Bb
             });
-            ReadReply(CMD_SET_ALL);
         }
 
     }

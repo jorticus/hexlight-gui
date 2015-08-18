@@ -67,18 +67,6 @@ namespace HexLight.Control
             return framer.FrameBytes;
         }
 
-        /// <summary>
-        /// Send a command to the device
-        /// </summary>
-        /// <typeparam name="T">The struct to use for parameters</typeparam>
-        /// <param name="command">Command to execute</param>
-        /// <param name="payload">Command parameter data to send</param>
-        protected override void SendPacket<T>(byte command, T payload)
-        {
-            byte[] packet = HLDCProtocol.CreatePacket<T>(command, payload);
-            serial.Write(packet, 0, packet.Length);
-        }
-
         protected override void SendPacket(byte command, byte[] payload = null)
         {
             byte[] packet = HLDCProtocol.CreatePacket(command, payload);
@@ -97,19 +85,6 @@ namespace HexLight.Control
             byte command;
             byte[] payload;
             HLDCProtocol.ParsePacket(response, out command, out payload);
-
-            if (command != expected_command)
-                throw new Exception("HLDC Protocol Error - Invalid reply");
-
-            return payload;
-        }
-
-        protected override T ReadReply<T>(byte expected_command)
-        {
-            byte[] response = ReceiveFrame();
-            byte command;
-            T payload;
-            HLDCProtocol.ParsePacket<T>(response, out command, out payload);
 
             if (command != expected_command)
                 throw new Exception("HLDC Protocol Error - Invalid reply");

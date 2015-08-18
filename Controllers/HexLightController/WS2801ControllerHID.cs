@@ -94,29 +94,6 @@ namespace HexLight.Control
             tx.Write(data.ToArray(), COMMAND_PACKET_SIZE);
         }
 
-        /// <summary>
-        /// Send a command to the device
-        /// </summary>
-        /// <typeparam name="T">The struct to use for parameters</typeparam>
-        /// <param name="command">Command to execute</param>
-        /// <param name="payload">Command parameter data to send</param>
-        protected override void SendPacket<T>(byte command, T payload)
-        {
-            if (!Connected)
-                throw new Exception("Controller is not connected");
-
-            try
-            {
-                byte[] packet = HexProtocol.CreatePacket<T>(command, payload);
-                WritePacket(packet);
-            }
-            catch (Exception ex)
-            {
-                Disconnect();
-                throw new ControllerConnectionException("Connection to controller lost", innerException: ex);
-            }
-        }
-
         protected override void SendPacket(byte command, byte[] payload = null)
         {
             if (!Connected)
@@ -149,42 +126,22 @@ namespace HexLight.Control
                 byte[] payload;
                 HexProtocol.ParsePacket(response, out command, out payload);
 
+                // Detect packet loss
+                if (command == 0x00)
+                    throw new HLDCProtocolException("No response from the device - packet was lost?");
+
+                // Detect mismatched/corrupt packet
                 if (command != expected_command)
-                    throw new HLDCProtocolException("Unexpected or invalid reply received");
+                    throw new HLDCProtocolException(String.Format(
+                        "Unexpected or invalid reply received (Expected: 0x{0:X2}, Got: 0x{1:X2})",
+                        expected_command, command));
 
                 return payload;
             }
             catch (HLDCProtocolException ex)
             {
-                // Critical error!
-                Disconnect();
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                Disconnect();
-                throw new ControllerConnectionException("Connection to controller lost", innerException: ex);
-            }
-        }
-
-        protected override T ReadReply<T>(byte expected_command)
-        {
-            try
-            {
-                byte[] response = ReceiveFrame();
-                byte command;
-                T payload;
-                HexProtocol.ParsePacket<T>(response, out command, out payload);
-
-                if (command != expected_command)
-                    throw new HLDCProtocolException("Unexpected or invalid reply received");
-
-                return payload;
-            }
-            catch (HLDCProtocolException ex)
-            {
-                // Critical error!
-                throw ex;
+                // Packet error, allow TransferPacket to retry
+                throw;
             }
             catch (Exception ex)
             {

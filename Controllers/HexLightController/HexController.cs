@@ -104,15 +104,12 @@ namespace HexLight.Control
 
         public void SetMode(Mode mode)
         {
-            SendPacket(CMD_SET_MODE, new byte[] { (byte)mode });
-            ReadReply(CMD_SET_MODE);
+            TransferPacket(CMD_SET_MODE, new byte[] { (byte)mode });
         }
 
         public void SetPWM(PWMStruct values)
         {
-            SendPacket<PWMStruct>(CMD_SET_PWM, values);
-            ReadReply(CMD_SET_PWM);
-            //TODO: Need to try and synchronize packets better
+            TransferPacket<PWMStruct>(CMD_SET_PWM, values);
         }
 
         // Not valid, because the PWM value isn't available for reading
@@ -124,46 +121,39 @@ namespace HexLight.Control
 
         public void SetXYZ(CIEXYZColour xyz)
         {
-            SendPacket<XYZStruct>(CMD_SET_XYZ, new XYZStruct
+            TransferPacket<XYZStruct>(CMD_SET_XYZ, new XYZStruct
             {
                 X = (float)xyz.X,
                 Y = (float)xyz.Y,
                 Z = (float)xyz.Z
             });
-            ReadReply(CMD_SET_XYZ);
         }
 
         public CIEXYZColour GetXYZ()
         {
-            SendPacket(CMD_GET_XYZ);
-            //var xyz = ReadReply<XYZStruct>(CMD_GET_XYZ);
-            //return new CIEXYZColour(xyz.X, xyz.Y, xyz.Z);
-            return new CIEXYZColour();
+            var xyz = TransferPacket<XYZStruct>(CMD_GET_XYZ);
+            return new CIEXYZColour(xyz.X, xyz.Y, xyz.Z);
         }
 
         public void SetXYY(CIEXYYColor xyy)
         {
-            SendPacket<XYYStruct>(CMD_SET_XYY, new XYYStruct
+            TransferPacket<XYYStruct>(CMD_SET_XYY, new XYYStruct
             {
                 x = (float)xyy.x,
                 y = (float)xyy.y,
                 Y = (float)xyy.Y
             });
-            ReadReply(CMD_SET_XYY);
         }
 
         public CIEXYYColor GetXYY()
         {
-            SendPacket(CMD_GET_XYY);
-            //var xyy = ReadReply<XYYStruct>(CMD_GET_XYY);
-            //return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
-            return new CIEXYYColor();
+            var xyy = TransferPacket<XYYStruct>(CMD_GET_XYY);
+            return new CIEXYYColor(xyy.x, xyy.y, xyy.Y);
         }
 
         public void EnableUsbAudio(bool enabled)
         {
-            SendPacket(CMD_ENABLE_USBAUDIO, new byte[] { (byte)((enabled) ? 1 : 0) });
-            ReadReply(CMD_ENABLE_USBAUDIO);
+            TransferPacket(CMD_ENABLE_USBAUDIO, new byte[] { (byte)((enabled) ? 1 : 0) });
         }
 
         #endregion
